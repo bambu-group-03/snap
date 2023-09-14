@@ -34,9 +34,6 @@ runs:
       with:
         eas-version: latest
         token: ${{ inputs.EXPO_TOKEN }}
-    - name: debug envs
-      run: echo ${{ env.EAS_PROJECT_ID }} && echo $EAS_PROJECT_ID
-      shell: bash
     - name: ⚙️ Run Prebuild
       run: pnpm prebuild:${{ inputs.APP_ENV }}
       shell: bash
