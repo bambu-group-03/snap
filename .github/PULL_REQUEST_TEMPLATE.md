@@ -1,23 +1,17 @@
-## What does this do?
+## ¿Qué hace esto?
 
 <!---
-_Describe what your changes **do**; did you add a $COOL_FEATURE? Write about it here._
+_Describe qué **hacen** tus cambios; ¿Agregaste un $COOL_FEATURE? Escribe sobre ello aquí._
 -->
 
-## Why did you do this?
+## ¿Por qué hiciste esto?
 
 <!---
-_**Why** did you make these changes? This is your opportunity to provide the rationale that drove the design of your solution._
+_**¿Por qué** hiciste estos cambios? Esta es su oportunidad de brindar la justificación que impulsó el diseño de su solución._
 -->
 
-## Who/what does this impact?
+## ¿A quién/qué afecta esto?
 
 <!---
-_Does your code affect something downstream? Are there side effects people should know about? Tag any developers that should be kept abreast of this change._
--->
-
-## How did you test this?
-
-<!---
-_How did you test your change? Document it here._
+_¿Su código afecta algo posterior? ¿Existen efectos secundarios que la gente debería conocer? Etiqueta a los desarrolladores que deban mantenerse al tanto de este cambio._
 -->

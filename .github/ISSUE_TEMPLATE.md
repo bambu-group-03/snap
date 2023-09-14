@@ -1,13 +1,13 @@
 # Summary:
 
-## Steps to reproduce:
+## Pasos para reproducir:
 
-## Expected behavior:
+## Comportamiento esperado:
 
-## Additional notes:
+## Notas adicionales:
 
-#### Tasks
+#### Tareas
 
-- [ ] Task 1
-- [ ] Task 2
-- [ ] Task 3
+- [ ] Tarea 1
+- [ ] Tarea 2
+- [ ] Tarea 3
