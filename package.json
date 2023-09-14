@@ -29,9 +29,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "type-check": "tsc  --noemit",
     "lint:translations": "eslint ./src/translations/ --fix --ext .json  ",
-    "eas-build-pre-install": "./scripts/eas-pre-install",
-    "install-maestro": "curl -Ls 'https://get.maestro.mobile.dev' | bash",
-    "e2e-test": "maestro test .maestro/ -e APP_ID=com.bambu.development"
+    "eas-build-pre-install": "./scripts/eas-pre-install"
   },
   "dependencies": {
     "@bacons/link-assets": "^1.1.0",
