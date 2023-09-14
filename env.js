@@ -34,7 +34,7 @@ require('dotenv').config({
 const BUNDLE_ID = 'com.snap'; // ios bundle id
 const PACKAGE = 'com.snap'; // android package name
 const NAME = 'snap'; // app name
-const EXPO_ACCOUNT_OWNER = 'expo-owner'; // expo account owner
+const EXPO_ACCOUNT_OWNER = process.env.EXPO_ACCOUNT_OWNER ?? 'expo-owner'; // expo account owner
 
 /**
  * We declare a function withEnvSuffix that will add a suffix to the variable name based on the APP_ENV
