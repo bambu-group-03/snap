@@ -36,13 +36,13 @@ runs:
           token: ${{ inputs.EXPO_TOKEN }}
 
       - name: ⚙️ Run Prebuild
+        run: echo ${{ env.EAS_PROJECT_ID }}
+        run: echo $EAS_PROJECT_ID
         run: pnpm prebuild:${{ inputs.APP_ENV }}
         shell: bash
 
       - name: 📱 Run Android Build
         if: ${{ inputs.ANDROID == 'true' }}
-        run: echo ${{ env.EAS_PROJECT_ID }}
-        run: echo $EAS_PROJECT_ID
         run: pnpm build:${{ inputs.APP_ENV }}:android --non-interactive  --no-wait --message "Build  ${{ inputs.APP_ENV }} ${{ inputs.VERSION }}"
         shell: bash
 
