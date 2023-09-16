@@ -28,7 +28,7 @@ const GoToAddPost = () => {
   const { navigate } = useNavigation();
   return (
     <Pressable onPress={() => navigate('AddPost')} className="p-2">
-      <Text className="text-primary-300">Create</Text>
+      <Text className="text-primary-300">Snap</Text>
     </Pressable>
   );
 };
