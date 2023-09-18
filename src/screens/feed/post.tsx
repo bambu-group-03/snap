@@ -37,7 +37,3 @@ export const Post = () => {
     </View>
   );
 };
-
-// # OAuth
-// - Resolver con SDK
-// - Desde el backend, pegarle al firebase
