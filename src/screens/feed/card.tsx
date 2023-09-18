@@ -29,7 +29,7 @@ export const Card = ({ body, onPress = () => {} }: Props) => {
         }}
       />
 
-      <Button label={'Likes:' + count.toString()} onPress={like} />
+      <Button label={'Likes: ' + count.toString()} onPress={like} />
       <Button label={'Share'} onPress={() => console.log('share')} />
       <Button label={'reSnap'} onPress={() => console.log('re snap')} />
     </Pressable>
