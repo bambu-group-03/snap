@@ -16,13 +16,23 @@ export const Login = () => {
     // console.log(data.email);
     // console.log(data.password); // Aca paso los datos al servidor
 
-    logInWithEmailAndPassword(data.email, data.password);
+    logInWithEmailAndPassword(data.email, data.password).then((userCred) => {
+      let access_token = 'default-access-token';
+      let refresh_token = 'default-refresh-token';
 
-    // ask for token to the server
-    let access_token = 'access-token';
-    let refresh = 'refresh-token';
+      if (userCred !== null) {
+        userCred.user.getIdToken().then((token) => {
+          access_token = token;
+        });
 
-    signIn({ access: access_token, refresh: refresh });
+        refresh_token = userCred.user.refreshToken;
+      }
+
+      console.log(access_token);
+      console.log(refresh_token);
+
+      signIn({ access: access_token, refresh: refresh_token });
+    });
   };
   return (
     <>

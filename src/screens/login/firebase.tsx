@@ -1,6 +1,7 @@
-// Log in to firebase
+// https://blog.logrocket.com/user-authentication-firebase-react-apps/
 
 import { initializeApp } from 'firebase/app';
+import type { UserCredential } from 'firebase/auth';
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -20,14 +21,23 @@ import {
 } from 'firebase/firestore';
 
 // Poner datos de nosotros aca
+// const firebaseConfig = {
+//   apiKey: 'AIzaSyDIXJ5YT7hoNbBFqK3TBcV41-TzIO-7n7w',
+//   authDomain: 'fir-auth-6edd8.firebaseapp.com',
+//   projectId: 'fir-auth-6edd8',
+//   storageBucket: 'fir-auth-6edd8.appspot.com',
+//   messagingSenderId: '904760319835',
+//   appId: '1:904760319835:web:44fd0d957f114b4e51447e',
+//   measurementId: 'G-Q4TYKH9GG7',
+// };
+
 const firebaseConfig = {
-  apiKey: 'AIzaSyDIXJ5YT7hoNbBFqK3TBcV41-TzIO-7n7w',
-  authDomain: 'fir-auth-6edd8.firebaseapp.com',
-  projectId: 'fir-auth-6edd8',
-  storageBucket: 'fir-auth-6edd8.appspot.com',
-  messagingSenderId: '904760319835',
-  appId: '1:904760319835:web:44fd0d957f114b4e51447e',
-  measurementId: 'G-Q4TYKH9GG7',
+  apiKey: 'AIzaSyDBwxqTxARST5GZhjX3hEvoYBK1tSojke4',
+  authDomain: 'bambu-snap.firebaseapp.com',
+  projectId: 'bambu-snap',
+  storageBucket: 'bambu-snap.appspot.com',
+  messagingSenderId: '673926404216',
+  appId: '1:673926404216:web:8b98dbbf12d9caafdc758d',
 };
 
 const app = initializeApp(firebaseConfig);
@@ -56,11 +66,15 @@ const signInWithGoogle = async () => {
 };
 
 const logInWithEmailAndPassword = async (email: string, password: string) => {
+  let userCred: UserCredential | null = null;
+
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    userCred = await signInWithEmailAndPassword(auth, email, password);
   } catch (err) {
     console.error(err);
   }
+
+  return userCred;
 };
 
 const registerWithEmailAndPassword = async (
