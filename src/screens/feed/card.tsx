@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import type { Post } from '@/api';
-import { Image, Pressable, Text, View } from '@/ui';
+import { Button, Image, Pressable, Text, View } from '@/ui';
 
 type Props = Post & { onPress?: () => void };
 
 export const Card = ({ body, onPress = () => {} }: Props) => {
+  const [count, setCount] = useState(0);
+  const like = () => setCount((prevCount) => prevCount + 1);
+
   return (
     <Pressable
       className="m-2 block overflow-hidden rounded-xl  bg-neutral-200 p-2 shadow-xl dark:bg-charcoal-900"
@@ -19,7 +22,6 @@ export const Card = ({ body, onPress = () => {} }: Props) => {
           {body}
         </Text>
       </View>
-
       <Image
         className="h-56 w-full object-cover "
         source={{
@@ -27,11 +29,9 @@ export const Card = ({ body, onPress = () => {} }: Props) => {
         }}
       />
 
-      <Pressable>
-        <Text>Like</Text>
-        <Text>Share</Text>
-        <Text>Retweet</Text>
-      </Pressable>
+      <Button label={'Likes:' + count.toString()} onPress={like} />
+      <Button label={'Share'} onPress={() => console.log('share')} />
+      <Button label={'reSnap'} onPress={() => console.log('re snap')} />
     </Pressable>
   );
 };
