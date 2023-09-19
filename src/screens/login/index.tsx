@@ -28,8 +28,6 @@ export const Login = () => {
           signIn({ access: access_token, refresh: refresh_token });
         });
       }
-
-      signIn({ access: access_token, refresh: refresh_token });
     });
   };
   return (
