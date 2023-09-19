@@ -4,6 +4,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { Image } from '@/ui';
 import { Button, ControlledInput, Text, View } from '@/ui';
 
 const schema = z.object({
@@ -32,6 +33,11 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
   });
   return (
     <View className="flex-1 justify-center p-4">
+      <Image
+        style={{ width: 200, height: 200, alignSelf: 'center' }}
+        source={require('../../../assets/icon.png')}
+      />
+
       <Text testID="form-title" variant="h1" className="pb-6 text-center">
         Sign In
       </Text>
