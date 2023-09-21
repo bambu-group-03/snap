@@ -24,10 +24,14 @@ const schema = z.object({
 export type FormType = z.infer<typeof schema>;
 
 export type LoginFormProps = {
-  onSubmit?: SubmitHandler<FormType>;
+  onLogInSubmit?: SubmitHandler<FormType>;
+  onSignUpSubmit?: SubmitHandler<FormType>;
 };
 
-export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
+export const LoginForm = ({
+  onLogInSubmit = () => {},
+  onSignUpSubmit = () => {},
+}: LoginFormProps) => {
   const { handleSubmit, control } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
@@ -66,8 +70,14 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
       <Button
         testID="login-button"
         label="Login"
-        onPress={handleSubmit(onSubmit)}
-        variant="primary"
+        onPress={handleSubmit(onLogInSubmit)}
+        variant="outline"
+      />
+      <Button
+        testID="sign-up-button"
+        label="Sign Up"
+        onPress={handleSubmit(onSignUpSubmit)}
+        variant="secondary"
       />
     </View>
   );
