@@ -33,7 +33,7 @@ export const Login = () => {
   const onSigUpSubmit: LoginFormProps['onSignUpSubmit'] = (data) => {
     registerWithEmailAndPassword(data.email, data.password).then((userCred) => {
       if (userCred !== null) {
-        registerIntoDb(data.email, userCred.user.uid).then((res) => {
+        registerIntoDb(data.name, data.email, userCred.user.uid).then((res) => {
           if (res !== null && res.status == 200) {
             userCred.user.getIdToken().then((token) => {
               let access_token = token;
@@ -48,7 +48,7 @@ export const Login = () => {
               alert('Error in SignUp: Call a Dev!');
             }
 
-            //TODO: borrar_en_firebase_usuario();
+            // TODO: borrar_en_firebase_usuario();
           }
         });
       }

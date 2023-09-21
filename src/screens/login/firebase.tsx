@@ -75,24 +75,23 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
 };
 
 // Post to identity-socializer para el userCred
-const registerIntoDb = async (email: string, uuid: string) => {
+const registerIntoDb = async (name = 'ANONIM', email: string, uuid: string) => {
   let res = null;
 
-  console.log(email);
-  console.log(uuid);
-
   // 'http://10.0.2.2:8000/api/echo/'
-  const url = 'http://10.0.2.2:8000/api/echo/'; // Reemplaza con tu URL
+  const url = 'http://10.0.2.2:8000/api/auth/register'; // Reemplaza con tu URL
 
   const datos = {
-    message: 'ESTO ES UN MENSAJE',
+    name: name,
+    email: email,
+    uuid: uuid,
   };
 
   try {
     res = await fetch(url, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json', // Ajusta según el tipo de datos que envíes
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(datos),
     });
