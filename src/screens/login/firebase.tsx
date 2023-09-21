@@ -90,6 +90,8 @@ const registerWithEmailAndPassword = async (
     //   authProvider: 'local',
     //   email,
     // });
+
+    // Post to identity-socializer para el userCred
   } catch (err) {
     console.error(err);
   }
