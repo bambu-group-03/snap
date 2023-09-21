@@ -7,6 +7,7 @@ import { FocusAwareStatusBar } from '@/ui';
 import {
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
+  signInWithGoogle,
 } from './firebase';
 import type { LoginFormProps } from './login-form';
 import { LoginForm } from './login-form';
@@ -40,10 +41,28 @@ export const Login = () => {
       }
     });
   };
+
+  const onLogInGoogleSubmit: LoginFormProps['onLogInGoogleSubmit'] = () => {
+    signInWithGoogle().then((userCred) => {
+      if (userCred !== null) {
+        userCred.user.getIdToken().then((token) => {
+          let access_token = token;
+          let refresh_token = userCred.user.refreshToken;
+
+          signIn({ access: access_token, refresh: refresh_token });
+        });
+      }
+    });
+  };
+
   return (
     <>
       <FocusAwareStatusBar />
-      <LoginForm onLogInSubmit={onLogInSubmit} onSignUpSubmit={onSigUpSubmit} />
+      <LoginForm
+        onLogInSubmit={onLogInSubmit}
+        onSignUpSubmit={onSigUpSubmit}
+        onLogInGoogleSubmit={onLogInGoogleSubmit}
+      />
     </>
   );
 };

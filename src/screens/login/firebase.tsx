@@ -11,14 +11,7 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
-import {
-  addDoc,
-  collection,
-  getDocs,
-  getFirestore,
-  query,
-  where,
-} from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
 
 // Poner datos de nosotros aca
 // const firebaseConfig = {
@@ -47,22 +40,26 @@ const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
 const signInWithGoogle = async () => {
+  let userCred: UserCredential | null = null;
+
   try {
-    const res = await signInWithPopup(auth, googleProvider);
-    const user = res.user;
-    const q = query(collection(db, 'users'), where('uid', '==', user.uid));
-    const docs = await getDocs(q);
-    if (docs.docs.length === 0) {
-      await addDoc(collection(db, 'users'), {
-        uid: user.uid,
-        name: user.displayName,
-        authProvider: 'google',
-        email: user.email,
-      });
-    }
+    userCred = await signInWithPopup(auth, googleProvider);
+    // const user = userCred.user;
+    // const q = query(collection(db, 'users'), where('uid', '==', user.uid));
+    // const docs = await getDocs(q);
+    // if (docs.docs.length === 0) {
+    //   await addDoc(collection(db, 'users'), {
+    //     uid: user.uid,
+    //     name: user.displayName,
+    //     authProvider: 'google',
+    //     email: user.email,
+    //   });
+    // }
   } catch (err) {
     console.error(err);
   }
+
+  return userCred;
 };
 
 const logInWithEmailAndPassword = async (email: string, password: string) => {
