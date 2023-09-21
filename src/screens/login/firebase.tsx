@@ -74,6 +74,35 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
   return userCred;
 };
 
+// Post to identity-socializer para el userCred
+const registerIntoDb = async (email: string, uuid: string) => {
+  let res = null;
+
+  console.log(email);
+  console.log(uuid);
+
+  // 'http://10.0.2.2:8000/api/echo/'
+  const url = 'http://10.0.2.2:8000/api/echo/'; // Reemplaza con tu URL
+
+  const datos = {
+    message: 'ESTO ES UN MENSAJE',
+  };
+
+  try {
+    res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json', // Ajusta según el tipo de datos que envíes
+      },
+      body: JSON.stringify(datos),
+    });
+  } catch (err) {
+    console.error(err);
+  }
+
+  return res;
+};
+
 const registerWithEmailAndPassword = async (
   email: string,
   password: string
@@ -83,6 +112,7 @@ const registerWithEmailAndPassword = async (
 
   try {
     userCred = await createUserWithEmailAndPassword(auth, email, password);
+
     //const user = res.user;
     // await addDoc(collection(db, 'users'), {
     //   uid: user.uid,
@@ -90,8 +120,6 @@ const registerWithEmailAndPassword = async (
     //   authProvider: 'local',
     //   email,
     // });
-
-    // Post to identity-socializer para el userCred
   } catch (err) {
     console.error(err);
   }
@@ -117,6 +145,7 @@ export {
   db,
   logInWithEmailAndPassword,
   logout,
+  registerIntoDb,
   registerWithEmailAndPassword,
   sendPasswordReset,
   signInWithGoogle,

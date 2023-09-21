@@ -2,7 +2,6 @@
   <img alt="logo" src="./assets/icon.png" width="124px" style="border-radius:10px"/><br/>
 Snap Mobile App </h1>
 
-
 ## 🔗 Requirements
 
 - [React Native dev environment ](https://reactnative.dev/docs/environment-setup)
@@ -29,3 +28,7 @@ To run the app on Android
 ```sh
 pnpm android
 ```
+
+## Docker
+
+docker compose -f deploy/docker-compose.yml -f deploy/docker-compose.dev.yml --project-directory . up --build
