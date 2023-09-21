@@ -75,16 +75,17 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
 };
 
 // Post to identity-socializer para el userCred
-const registerIntoDb = async (name = 'ANONIM', email: string, uuid: string) => {
+const registerIntoDb = async (name = 'ANONIM', email: string, id: string) => {
   let res = null;
 
-  // 'http://10.0.2.2:8000/api/echo/'
-  const url = 'http://10.0.2.2:8000/api/auth/register'; // Reemplaza con tu URL
+  // 'http://10.0.2.2:8000/api/auth/register'
+  const url =
+    'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/register'; // Reemplaza con tu URL
 
   const datos = {
-    name: name,
+    id: id,
     email: email,
-    uuid: uuid,
+    name: name,
   };
 
   try {
