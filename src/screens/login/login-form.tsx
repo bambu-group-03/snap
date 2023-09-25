@@ -24,22 +24,28 @@ const schema = z.object({
 export type FormType = z.infer<typeof schema>;
 
 export type LoginFormProps = {
-  onSubmit?: SubmitHandler<FormType>;
+  onLogInSubmit?: SubmitHandler<FormType>;
+  onSignUpSubmit?: SubmitHandler<FormType>;
+  onLogInGoogleSubmit?: () => void;
 };
 
-export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
+export const LoginForm = ({
+  onLogInSubmit = () => {},
+  onSignUpSubmit = () => {},
+  onLogInGoogleSubmit = () => {},
+}: LoginFormProps) => {
   const { handleSubmit, control } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
   return (
-    <View className="flex-1 justify-center p-4">
+    <View className="flex-1 justify-center p-4 ">
       <Image
         style={{ width: 200, height: 200, alignSelf: 'center' }}
         source={require('../../../assets/icon.png')}
       />
 
       <Text testID="form-title" variant="h1" className="pb-6 text-center">
-        Sign In
+        Welcome
       </Text>
 
       <ControlledInput
@@ -63,11 +69,25 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
         placeholder="***"
         secureTextEntry={true}
       />
+
+      <Button
+        testID="login-button"
+        label="Login with Google"
+        onPress={handleSubmit(onLogInGoogleSubmit)}
+        variant="primary"
+      />
+
       <Button
         testID="login-button"
         label="Login"
-        onPress={handleSubmit(onSubmit)}
-        variant="primary"
+        onPress={handleSubmit(onLogInSubmit)}
+        variant="outline"
+      />
+      <Button
+        testID="sign-up-button"
+        label="Sign Up"
+        onPress={handleSubmit(onSignUpSubmit)}
+        variant="secondary"
       />
     </View>
   );

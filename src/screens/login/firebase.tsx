@@ -11,14 +11,7 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
-import {
-  addDoc,
-  collection,
-  getDocs,
-  getFirestore,
-  query,
-  where,
-} from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
 
 // Poner datos de nosotros aca
 // const firebaseConfig = {
@@ -47,22 +40,26 @@ const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
 const signInWithGoogle = async () => {
+  let userCred: UserCredential | null = null;
+
   try {
-    const res = await signInWithPopup(auth, googleProvider);
-    const user = res.user;
-    const q = query(collection(db, 'users'), where('uid', '==', user.uid));
-    const docs = await getDocs(q);
-    if (docs.docs.length === 0) {
-      await addDoc(collection(db, 'users'), {
-        uid: user.uid,
-        name: user.displayName,
-        authProvider: 'google',
-        email: user.email,
-      });
-    }
+    userCred = await signInWithPopup(auth, googleProvider);
+    // const user = userCred.user;
+    // const q = query(collection(db, 'users'), where('uid', '==', user.uid));
+    // const docs = await getDocs(q);
+    // if (docs.docs.length === 0) {
+    //   await addDoc(collection(db, 'users'), {
+    //     uid: user.uid,
+    //     name: user.displayName,
+    //     authProvider: 'google',
+    //     email: user.email,
+    //   });
+    // }
   } catch (err) {
     console.error(err);
   }
+
+  return userCred;
 };
 
 const logInWithEmailAndPassword = async (email: string, password: string) => {
@@ -77,29 +74,63 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
   return userCred;
 };
 
-const registerWithEmailAndPassword = async (
-  name: string,
-  email: string,
-  password: string
-) => {
+// Post to identity-socializer para el userCred
+const registerIntoDb = async (name = 'ANONIM', email: string, id: string) => {
+  let res = null;
+
+  // 'http://10.0.2.2:8000/api/auth/register'
+  const url =
+    'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/register'; // Reemplaza con tu URL
+
+  const datos = {
+    id: id,
+    email: email,
+    name: name,
+  };
+
   try {
-    const res = await createUserWithEmailAndPassword(auth, email, password);
-    const user = res.user;
-    await addDoc(collection(db, 'users'), {
-      uid: user.uid,
-      name,
-      authProvider: 'local',
-      email,
+    res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(datos),
     });
   } catch (err) {
     console.error(err);
   }
+
+  return res;
+};
+
+const registerWithEmailAndPassword = async (
+  email: string,
+  password: string
+  //  name?: string
+) => {
+  let userCred: UserCredential | null = null;
+
+  try {
+    userCred = await createUserWithEmailAndPassword(auth, email, password);
+
+    //const user = res.user;
+    // await addDoc(collection(db, 'users'), {
+    //   uid: user.uid,
+    //   name,
+    //   authProvider: 'local',
+    //   email,
+    // });
+  } catch (err) {
+    console.error(err);
+  }
+
+  return userCred;
 };
 
 const sendPasswordReset = async (email: string) => {
   try {
     await sendPasswordResetEmail(auth, email);
-    alert('Password reset link sent!');
+    console.error('Password reset link sent!');
   } catch (err) {
     console.error(err);
   }
@@ -114,6 +145,7 @@ export {
   db,
   logInWithEmailAndPassword,
   logout,
+  registerIntoDb,
   registerWithEmailAndPassword,
   sendPasswordReset,
   signInWithGoogle,
