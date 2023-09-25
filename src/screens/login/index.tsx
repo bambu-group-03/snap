@@ -34,7 +34,7 @@ export const Login = () => {
     registerWithEmailAndPassword(data.email, data.password).then((userCred) => {
       if (userCred !== null) {
         registerIntoDb(data.name, data.email, userCred.user.uid).then((res) => {
-          if (res !== null && res.status == 200) {
+          if (res !== null && res.status === 200) {
             userCred.user.getIdToken().then((token) => {
               let access_token = token;
               let refresh_token = userCred.user.refreshToken;
@@ -43,9 +43,9 @@ export const Login = () => {
             });
           } else {
             if (res?.status !== 200) {
-              alert('Error in DB: Response status != 200');
+              console.error('Error in DB: Response status != 200');
             } else {
-              alert('Error in SignUp: Call a Dev!');
+              console.error('Error in SignUp: Call a Dev!');
             }
 
             // TODO: borrar_en_firebase_usuario();
