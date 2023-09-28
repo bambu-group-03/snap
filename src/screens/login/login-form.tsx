@@ -40,7 +40,7 @@ export const LoginForm = ({
   return (
     <View className="flex-1 justify-center p-4 ">
       <Image
-        style={{ width: 200, height: 200, alignSelf: 'center' }}
+        style={{ width: 100, height: 100, alignSelf: 'center' }}
         source={require('../../../assets/icon.png')}
       />
 
