@@ -13,6 +13,8 @@ import {
 } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
+import { signIn } from '@/core/auth';
+
 // Poner datos de nosotros aca
 // const firebaseConfig = {
 //   apiKey: 'AIzaSyDIXJ5YT7hoNbBFqK3TBcV41-TzIO-7n7w',
@@ -25,7 +27,7 @@ import { getFirestore } from 'firebase/firestore';
 // };
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDBwxqTxARST5GZhjX3hEvoYBK1tSojke4',
+  apiKey: 'AIzaSyApY18BS1qvXcpV0sMF6klszr5AwFSxKt4',
   authDomain: 'bambu-snap.firebaseapp.com',
   projectId: 'bambu-snap',
   storageBucket: 'bambu-snap.appspot.com',
@@ -140,9 +142,19 @@ const logout = () => {
   signOut(auth);
 };
 
+const handleAuth = async (userCred: UserCredential | null) => {
+  if (userCred !== null) {
+    const token = await userCred.user.getIdToken();
+    const access_token = token;
+    const refresh_token = userCred.user.refreshToken;
+    signIn({ access: access_token, refresh: refresh_token });
+  }
+};
+
 export {
   auth,
   db,
+  handleAuth,
   logInWithEmailAndPassword,
   logout,
   registerIntoDb,
