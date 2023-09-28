@@ -1,11 +1,11 @@
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useAuth } from '@/core';
 import { useSoftKeyboardEffect } from '@/core/keyboard';
-import { auth } from '@/screens/login/firebase';
+import { auth, handleAuth } from '@/screens/login/firebase';
 import { FocusAwareStatusBar } from '@/ui';
 
 import {
@@ -20,48 +20,47 @@ WebBrowser.maybeCompleteAuthSession();
 
 export const Login = () => {
   const signIn = useAuth.use.signIn();
-  useSoftKeyboardEffect();
   const [_, response, promptAsync] = Google.useIdTokenAuthRequest({
     androidClientId:
-      '673926404216-utjf1e9lfk05mhhellig5sieg0fon99j.apps.googleusercontent.com',
+      '673926404216-g8qapqik3gqhi82l4spomgj1ec3rca9q.apps.googleusercontent.com',
   });
 
-  React.useEffect(() => {
-    if (response?.type === 'success') {
-      const { id_token } = response.params;
-      const credential = GoogleAuthProvider.credential(id_token);
-      signInWithCredential(auth, credential);
-    }
-  }, [response]);
+  useSoftKeyboardEffect();
+
+  useEffect(() => {
+    const handleGoogleResponse = async () => {
+      if (response?.type === 'success') {
+        const { id_token } = response.params;
+        const credential = GoogleAuthProvider.credential(id_token);
+        const userCred = await signInWithCredential(auth, credential);
+        if (userCred !== null) {
+          const token = await userCred.user.getIdToken();
+          const access_token = token;
+          const refresh_token = userCred.user.refreshToken;
+          signIn({ access: access_token, refresh: refresh_token });
+        }
+      }
+    };
+
+    handleGoogleResponse();
+  }, [response, signIn]);
 
   const onLogInSubmit: LoginFormProps['onLogInSubmit'] = (data) => {
-    logInWithEmailAndPassword(data.email, data.password).then((userCred) => {
-      if (userCred !== null) {
-        userCred.user.getIdToken().then((token) => {
-          let access_token = token;
-          let refresh_token = userCred.user.refreshToken;
-          signIn({ access: access_token, refresh: refresh_token });
-        });
-      }
-    });
+    logInWithEmailAndPassword(data.email, data.password).then(handleAuth);
   };
 
-  const onSigUpSubmit: LoginFormProps['onSignUpSubmit'] = (data) => {
+  const onSignUpSubmit: LoginFormProps['onSignUpSubmit'] = (data) => {
     registerWithEmailAndPassword(data.email, data.password).then((userCred) => {
       if (userCred !== null) {
         registerIntoDb(data.name, data.email, userCred.user.uid).then((res) => {
           if (res !== null && res.status === 200) {
-            userCred.user.getIdToken().then((token) => {
-              let access_token = token;
-              let refresh_token = userCred.user.refreshToken;
-              signIn({ access: access_token, refresh: refresh_token });
-            });
+            handleAuth(userCred);
           } else {
-            if (res?.status !== 200) {
-              console.error('Error in DB: Response status != 200');
-            } else {
-              console.error('Error in SignUp: Call a Dev!');
-            }
+            console.error(
+              res?.status !== 200
+                ? 'Error in DB: Response status != 200'
+                : 'Error in SignUp: Call a Dev!'
+            );
           }
         });
       }
@@ -77,9 +76,11 @@ export const Login = () => {
       <FocusAwareStatusBar />
       <LoginForm
         onLogInSubmit={onLogInSubmit}
-        onSignUpSubmit={onSigUpSubmit}
+        onSignUpSubmit={onSignUpSubmit}
         onLogInGoogleSubmit={onLogInGoogleSubmit}
       />
     </>
   );
 };
+
+export default Login;
