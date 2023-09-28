@@ -73,7 +73,7 @@ export const LoginForm = ({
       <Button
         testID="login-button"
         label="Login with Google"
-        onPress={handleSubmit(onLogInGoogleSubmit)}
+        onPress={onLogInGoogleSubmit}
         variant="primary"
       />
 
