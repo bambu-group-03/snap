@@ -46,17 +46,6 @@ const signInWithGoogle = async () => {
 
   try {
     userCred = await signInWithPopup(auth, googleProvider);
-    // const user = userCred.user;
-    // const q = query(collection(db, 'users'), where('uid', '==', user.uid));
-    // const docs = await getDocs(q);
-    // if (docs.docs.length === 0) {
-    //   await addDoc(collection(db, 'users'), {
-    //     uid: user.uid,
-    //     name: user.displayName,
-    //     authProvider: 'google',
-    //     email: user.email,
-    //   });
-    // }
   } catch (err) {
     console.error(err);
   }
@@ -114,14 +103,6 @@ const registerWithEmailAndPassword = async (
 
   try {
     userCred = await createUserWithEmailAndPassword(auth, email, password);
-
-    //const user = res.user;
-    // await addDoc(collection(db, 'users'), {
-    //   uid: user.uid,
-    //   name,
-    //   authProvider: 'local',
-    //   email,
-    // });
   } catch (err) {
     console.error(err);
   }
@@ -144,8 +125,7 @@ const logout = () => {
 
 const handleAuth = async (userCred: UserCredential | null) => {
   if (userCred !== null) {
-    const token = await userCred.user.getIdToken();
-    const access_token = token;
+    const access_token = await userCred.user.getIdToken();
     const refresh_token = userCred.user.refreshToken;
     signIn({ access: access_token, refresh: refresh_token });
   }

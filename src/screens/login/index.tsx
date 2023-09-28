@@ -3,7 +3,6 @@ import * as WebBrowser from 'expo-web-browser';
 import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
 import React, { useEffect } from 'react';
 
-import { useAuth } from '@/core';
 import { useSoftKeyboardEffect } from '@/core/keyboard';
 import { auth, handleAuth } from '@/screens/login/firebase';
 import { FocusAwareStatusBar } from '@/ui';
@@ -19,7 +18,7 @@ import { LoginForm } from './login-form';
 WebBrowser.maybeCompleteAuthSession();
 
 export const Login = () => {
-  const signIn = useAuth.use.signIn();
+  //const signIn = useAuth.use.signIn();
   const [_, response, promptAsync] = Google.useIdTokenAuthRequest({
     androidClientId:
       '673926404216-g8qapqik3gqhi82l4spomgj1ec3rca9q.apps.googleusercontent.com',
@@ -33,17 +32,12 @@ export const Login = () => {
         const { id_token } = response.params;
         const credential = GoogleAuthProvider.credential(id_token);
         const userCred = await signInWithCredential(auth, credential);
-        if (userCred !== null) {
-          const token = await userCred.user.getIdToken();
-          const access_token = token;
-          const refresh_token = userCred.user.refreshToken;
-          signIn({ access: access_token, refresh: refresh_token });
-        }
+        handleAuth(userCred);
       }
     };
 
     handleGoogleResponse();
-  }, [response, signIn]);
+  }, [response]); //[response, singIn]);
 
   const onLogInSubmit: LoginFormProps['onLogInSubmit'] = (data) => {
     logInWithEmailAndPassword(data.email, data.password).then(handleAuth);
