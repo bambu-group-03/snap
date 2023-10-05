@@ -40,6 +40,16 @@ const _useAuth = create<AuthState>((set, get) => ({
 
 export const useAuth = createSelectors(_useAuth);
 
+/**
+ * Signs the user out, removing the authentication token.
+ */
 export const signOut = () => _useAuth.getState().signOut();
+/**
+ * Signs the user in with the provided authentication token.
+ * @param token - The authentication token to sign in with.
+ */
 export const signIn = (token: TokenType) => _useAuth.getState().signIn(token);
+/**
+ * Hydrates the authentication state by checking for a stored authentication token.
+ */
 export const hydrateAuth = () => _useAuth.getState().hydrate();

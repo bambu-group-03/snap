@@ -13,6 +13,8 @@ import {
 } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
+import { signIn } from '@/core/auth';
+
 // Poner datos de nosotros aca
 // const firebaseConfig = {
 //   apiKey: 'AIzaSyDIXJ5YT7hoNbBFqK3TBcV41-TzIO-7n7w',
@@ -25,7 +27,7 @@ import { getFirestore } from 'firebase/firestore';
 // };
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDBwxqTxARST5GZhjX3hEvoYBK1tSojke4',
+  apiKey: 'AIzaSyApY18BS1qvXcpV0sMF6klszr5AwFSxKt4',
   authDomain: 'bambu-snap.firebaseapp.com',
   projectId: 'bambu-snap',
   storageBucket: 'bambu-snap.appspot.com',
@@ -44,17 +46,6 @@ const signInWithGoogle = async () => {
 
   try {
     userCred = await signInWithPopup(auth, googleProvider);
-    // const user = userCred.user;
-    // const q = query(collection(db, 'users'), where('uid', '==', user.uid));
-    // const docs = await getDocs(q);
-    // if (docs.docs.length === 0) {
-    //   await addDoc(collection(db, 'users'), {
-    //     uid: user.uid,
-    //     name: user.displayName,
-    //     authProvider: 'google',
-    //     email: user.email,
-    //   });
-    // }
   } catch (err) {
     console.error(err);
   }
@@ -112,14 +103,6 @@ const registerWithEmailAndPassword = async (
 
   try {
     userCred = await createUserWithEmailAndPassword(auth, email, password);
-
-    //const user = res.user;
-    // await addDoc(collection(db, 'users'), {
-    //   uid: user.uid,
-    //   name,
-    //   authProvider: 'local',
-    //   email,
-    // });
   } catch (err) {
     console.error(err);
   }
@@ -140,9 +123,18 @@ const logout = () => {
   signOut(auth);
 };
 
+const handleAuth = async (userCred: UserCredential | null) => {
+  if (userCred !== null) {
+    const access_token = await userCred.user.getIdToken();
+    const refresh_token = userCred.user.refreshToken;
+    signIn({ access: access_token, refresh: refresh_token });
+  }
+};
+
 export {
   auth,
   db,
+  handleAuth,
   logInWithEmailAndPassword,
   logout,
   registerIntoDb,
