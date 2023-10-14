@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-import type { Post } from '@/api';
+import type { Snap } from '@/api';
 import { Button, Image, Pressable, Text, View } from '@/ui';
 
-type Props = Post & { onPress?: () => void };
+type Props = Snap & { onPress?: () => void };
 
-export const Card = ({ body, onPress = () => {} }: Props) => {
+export const Card = ({ content, author, onPress = () => {} }: Props) => {
   const [count, setCount] = useState(0);
   const like = () => setCount((prevCount) => prevCount + 1);
 
@@ -16,10 +16,10 @@ export const Card = ({ body, onPress = () => {} }: Props) => {
     >
       <View>
         <Text variant="md" numberOfLines={1} className="font-bold">
-          {'@pandaluis'}
+          {`@${author}`}
         </Text>
         <Text variant="xs" numberOfLines={3}>
-          {body}
+          {content}
         </Text>
       </View>
       <Image
