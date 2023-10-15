@@ -2,16 +2,16 @@ import type { AxiosError } from 'axios';
 import { createQuery } from 'react-query-kit';
 
 import { client } from '../common';
-import type { Post } from './types';
+import type { Snap } from './types';
 
-type Variables = { id: number };
-type Response = Post;
+type Variables = { tweet_id: number };
+type Response = Snap;
 
-export const usePost = createQuery<Response, Variables, AxiosError>({
-  primaryKey: 'posts',
+export const useSnap = createQuery<Response, Variables, AxiosError>({
+  primaryKey: '/api/feed/tweet',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
     return client
-      .get(`${primaryKey}/${variables.id}`)
+      .get(`${primaryKey}/${variables.tweet_id}`)
       .then((response) => response.data);
   },
 });

@@ -1,14 +1,14 @@
 import { useRoute } from '@react-navigation/native';
 import * as React from 'react';
 
-import { usePost } from '@/api';
+import { useSnap } from '@/api';
 import type { RouteProp } from '@/navigation/types';
 import { ActivityIndicator, FocusAwareStatusBar, Text, View } from '@/ui';
 
-export const Post = () => {
-  const { params } = useRoute<RouteProp<'Post'>>();
-  const { data, isLoading, isError } = usePost({
-    variables: { id: params.id },
+export const Snap = () => {
+  const { params } = useRoute<RouteProp<'Snap'>>();
+  const { data, isLoading, isError } = useSnap({
+    variables: { tweet_id: params.id },
   });
 
   if (isLoading) {
@@ -32,8 +32,7 @@ export const Post = () => {
   return (
     <View className="flex-1 ">
       <FocusAwareStatusBar />
-      <Text variant="h2">{data.title}</Text>
-      <Text variant="md">{data.body} </Text>
+      <Text variant="md">{data.content} </Text>
     </View>
   );
 };

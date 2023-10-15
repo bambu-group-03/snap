@@ -1,3 +1,3 @@
 export * from './common';
-export * from './posts';
+export * from './snaps';
 export * from './types';

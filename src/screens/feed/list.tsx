@@ -2,19 +2,21 @@ import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import React from 'react';
 
-import type { Post } from '@/api';
-import { usePosts } from '@/api';
+import type { Snap } from '@/api';
+import { useSnaps } from '@/api';
 import { EmptyList, FocusAwareStatusBar, Text, View } from '@/ui';
 
 import { Card } from './card';
 
 export const Feed = () => {
-  const { data, isLoading, isError } = usePosts();
+  const { data, isLoading, isError } = useSnaps({
+    variables: { user_id: 420 },
+  });
   const { navigate } = useNavigation();
 
   const renderItem = React.useCallback(
-    ({ item }: { item: Post }) => (
-      <Card {...item} onPress={() => navigate('Post', { id: item.id })} />
+    ({ item }: { item: Snap }) => (
+      <Card {...item} onPress={() => navigate('Snap', { id: item.id })} />
     ),
     [navigate]
   );

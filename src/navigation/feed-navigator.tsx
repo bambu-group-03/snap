@@ -3,13 +3,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
 import { useAuth } from '@/core';
-import { AddPost, Feed, Post } from '@/screens';
+import { AddSnap, Feed, Snap } from '@/screens';
 import { Pressable, Text } from '@/ui';
 
 export type FeedStackParamList = {
   Feed: undefined;
-  Post: { id: number };
-  AddPost: undefined;
+  Snap: { id: number };
+  AddSnap: undefined;
   Auth: undefined;
 };
 
@@ -24,10 +24,10 @@ const GoToLogout = () => {
   );
 };
 
-const GoToAddPost = () => {
+const GoToAddSnap = () => {
   const { navigate } = useNavigation();
   return (
-    <Pressable onPress={() => navigate('AddPost')} className="p-2">
+    <Pressable onPress={() => navigate('AddSnap')} className="p-2">
       <Text className="text-primary-300">Snap</Text>
     </Pressable>
   );
@@ -41,17 +41,17 @@ export const FeedNavigator = () => {
           // eslint-disable-next-line react/no-unstable-nested-components
           headerRight: () => (
             <>
-              <GoToAddPost />
+              <GoToAddSnap />
               <GoToLogout />
             </>
           ),
         }}
       >
         <Stack.Screen name="Feed" component={Feed} />
-        <Stack.Screen name="Post" component={Post} />
+        <Stack.Screen name="Snap" component={Snap} />
       </Stack.Group>
 
-      <Stack.Screen name="AddPost" component={AddPost} />
+      <Stack.Screen name="AddSnap" component={AddSnap} />
     </Stack.Navigator>
   );
 };
