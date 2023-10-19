@@ -4,7 +4,7 @@ import { createMutation } from 'react-query-kit';
 import { client } from '../common';
 import type { Snap } from './types';
 
-type Variables = { user_id: number; content: string };
+type Variables = { user_id: string; content: string };
 type Response = Snap;
 
 export const useAddSnap = createMutation<Response, Variables, AxiosError>({
