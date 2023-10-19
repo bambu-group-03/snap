@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import type { Snap } from '@/api';
-import { Button, Image, Pressable, Text, View } from '@/ui';
+import { Button, Pressable, Text, View } from '@/ui';
 
 type Props = Snap & { onPress?: () => void };
 
@@ -22,16 +22,10 @@ export const Card = ({ content, author, onPress = () => {} }: Props) => {
           {content}
         </Text>
       </View>
-      <Image
-        className="h-56 w-full object-cover "
-        source={{
-          uri: 'https://cff2.earth.com/uploads/2018/06/27125210/Panda-conservation-can-generate-billions-of-dollars-in-value.jpg',
-        }}
-      />
-
       <Button label={'Likes: ' + count.toString()} onPress={like} />
       <Button label={'Share'} onPress={() => console.log('share')} />
       <Button label={'reSnap'} onPress={() => console.log('re snap')} />
+      <></>
     </Pressable>
   );
 };
