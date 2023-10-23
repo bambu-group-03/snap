@@ -47,7 +47,6 @@ module.exports = {
           },
         ],
         'max-params': ['error', 3], // Limit the number of parameters in a function to use object instead
-        'max-lines-per-function': ['error', 70],
         'react/destructuring-assignment': 'off', // Vscode doesn't support automatically destructuring, it's a pain to add a new variable
         'react/require-default-props': 'off', // Allow non-defined react props as undefined
         '@typescript-eslint/comma-dangle': 'off', // Avoid conflict rule between Eslint and Prettier
@@ -64,6 +63,7 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': 'off',
         'tailwindcss/no-custom-classname': 'off',
         'unused-imports/no-unused-imports': 'error',
+        'max-lines-per-function': 'off',
         'unused-imports/no-unused-vars': [
           'error',
           {

@@ -6,5 +6,6 @@ export * from './list';
 export * from './pressable';
 export * from './scroll-view';
 export * from './text';
+export * from './text-input';
 export * from './touchable-opacity';
 export * from './view';

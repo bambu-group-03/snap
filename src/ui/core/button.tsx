@@ -10,7 +10,7 @@ type Variant = {
   label: string;
   indicator: string;
 };
-type VariantName = 'defaults' | 'primary' | 'outline' | 'secondary';
+type VariantName = 'defaults' | 'primary' | 'outline' | 'secondary' | 'icon';
 type BVariant = {
   [key in VariantName]: Variant;
 };
@@ -37,11 +37,16 @@ export const buttonVariants: BVariant = {
     label: 'text-black dark:text-charcoal-100',
     indicator: 'text-black',
   },
+  icon: {
+    container: 'flex-row items-center justify-center rounded-full p-1',
+    label: 'text-black',
+    indicator: 'text-black',
+  },
 };
 
 interface Props extends TouchableOpacityProps {
   variant?: VariantName;
-  label?: string;
+  label?: string | React.ReactNode;
   loading?: boolean;
 }
 

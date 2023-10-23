@@ -7,6 +7,7 @@ import { useSnaps } from '@/api';
 import { EmptyList, FocusAwareStatusBar, Text, View } from '@/ui';
 
 import { Card } from './card';
+import Compose from './compose';
 
 export const Feed = () => {
   const { data, isLoading, isError } = useSnaps({
@@ -29,7 +30,8 @@ export const Feed = () => {
     );
   }
   return (
-    <View className="flex-1 ">
+    <>
+      <Compose />
       <FocusAwareStatusBar />
       <FlashList
         data={data}
@@ -38,6 +40,6 @@ export const Feed = () => {
         ListEmptyComponent={<EmptyList isLoading={isLoading} />}
         estimatedItemSize={300}
       />
-    </View>
+    </>
   );
 };

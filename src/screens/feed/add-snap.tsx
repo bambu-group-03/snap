@@ -22,7 +22,7 @@ export const AddSnap = () => {
   const onSubmit = (data: FormType) => {
     console.log(data);
     addSnap(
-      { ...data, user_id: 420 }, //TODO: get user id from auth
+      { ...data, user_id: '420' }, //TODO: get user id from auth
       {
         onSuccess: () => {
           showMessage({
