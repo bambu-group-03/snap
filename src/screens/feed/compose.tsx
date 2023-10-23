@@ -8,7 +8,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React from 'react';
 
-import { Image, Text, TextInput, TouchableOpacity, View } from '@/ui';
+import { Image, Input, Text, TouchableOpacity, View } from '@/ui';
 
 export default function Compose() {
   return (
@@ -23,8 +23,9 @@ export default function Compose() {
               }}
             />
           </View>
-          <View id="textee" className="ml-3 flex w-full flex-col">
-            <TextInput
+          <View id="textee" className="ml-3 w-full flex-1">
+            <Input
+              multiline
               placeholder="What's happening?"
               className="h-32 w-full resize-none text-xl outline-none"
             />
@@ -53,7 +54,7 @@ export default function Compose() {
           </View>
           <View>
             <Text className="inline rounded-full bg-blue-300 px-4 py-3 font-bold text-white">
-              Tweet
+              Publish
             </Text>
           </View>
         </View>
