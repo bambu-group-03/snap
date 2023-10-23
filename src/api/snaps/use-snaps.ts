@@ -15,7 +15,7 @@ export const useSnaps = createQuery<Response, Variables, AxiosError>({
     const response = await client.get(`${primaryKey}`, {
       params: { user_id: variables.user_id },
     });
-    console.log('response.data.tweets', response.data.tweets); // response.data is an array of posts
-    return response.data.tweets;
+    console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
+    return response.data.snaps;
   },
 });
