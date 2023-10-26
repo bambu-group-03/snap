@@ -12,10 +12,20 @@ import { Button, Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
 
 type Props = Snap & { onPress?: () => void };
 
-export const Card = ({ content, author, onPress = () => {} }: Props) => {
+export const Card = ({
+  content,
+  author,
+  created_at,
+  onPress = () => {},
+}: Props) => {
   const [likeCount, setCount] = useState(0);
   const [reSnapCount, setReSnapCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
+  const formattedDate = new Date(created_at).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
 
   return (
     <Pressable className="flex shrink-0 p-4 pb-0" onPress={onPress}>
@@ -34,7 +44,7 @@ export const Card = ({ content, author, onPress = () => {} }: Props) => {
               {author}
               <Text className="text-sm font-medium leading-5 text-gray-400 transition duration-150 ease-in-out group-hover:text-gray-300">
                 {' '}
-                @{author} . 16 April
+                @{author} . {formattedDate}
               </Text>
             </Text>
           </View>
