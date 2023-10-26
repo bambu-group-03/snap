@@ -1,22 +1,20 @@
-import {
-  faComment,
-  faHeart,
-  faRetweet,
-  faShare,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React, { useState } from 'react';
 
 import type { Snap } from '@/api';
-import { Button, Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
+import { Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
+
+import CommentButton from './comment-button';
+import HeartButton from './heart-button';
+import ResnapButton from './re-snap-button';
+import ShareButton from './share-button';
 
 type Props = {
   snap: Snap;
   onPress?: () => void;
 };
 export const Card = ({ snap, onPress = () => {} }: Props) => {
-  const [likeCount, setCount] = useState(0);
-  const [reSnapCount, setReSnapCount] = useState(0);
+  const [isRetweeted, setIsRetweeted] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
   const [commentCount, setCommentCount] = useState(0);
   const formattedDate = new Date(snap.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -55,33 +53,21 @@ export const Card = ({ snap, onPress = () => {} }: Props) => {
         <View className="mt-2 flex border-t border-gray-200 pt-2">
           <View className="w-full">
             <View className="flex flex-row items-center">
-              <View className="duration-350 flex flex-row items-center text-xs text-gray-400 transition ease-in-out hover:text-blue-400 dark:text-white dark:hover:text-blue-400">
-                <Text className="m-2">{reSnapCount}</Text>
-                <Button
-                  variant="icon"
-                  onPress={() => setReSnapCount(reSnapCount + 1)}
-                  label={<FontAwesomeIcon icon={faRetweet} />}
-                />
-              </View>
-              <View className="duration-350 flex flex-row items-center text-xs text-gray-400 transition ease-in-out hover:text-red-400 dark:text-white dark:hover:text-green-400">
-                <Text className="m-2">{likeCount}</Text>
-                <Button
-                  variant="icon"
-                  onPress={() => setCount(likeCount + 1)}
-                  label={<FontAwesomeIcon icon={faHeart} />}
-                />
-              </View>
-              <View className="duration-350 flex flex-row items-center text-xs text-gray-400 transition ease-in-out hover:text-green-600 dark:text-white dark:hover:text-red-600">
-                <Text className="m-2">{commentCount}</Text>
-                <Button
-                  variant="icon"
-                  onPress={() => setCommentCount(commentCount + 1)}
-                  label={<FontAwesomeIcon icon={faComment} />}
-                />
-              </View>
-              <View className="duration-350 flex flex-1 items-center text-xs text-gray-400 transition ease-in-out hover:text-blue-400 dark:text-white dark:hover:text-blue-400">
-                <FontAwesomeIcon icon={faShare} />
-              </View>
+              <ResnapButton
+                isResnaped={isRetweeted}
+                reSnapCount={snap.shares}
+                onPress={() => setIsRetweeted(!isRetweeted)}
+              />
+              <HeartButton
+                isLiked={isLiked}
+                likeCount={snap.likes}
+                onPress={() => setIsLiked(!isLiked)}
+              />
+              <CommentButton
+                commentCount={commentCount}
+                onPress={() => setCommentCount(commentCount + 1)}
+              />
+              <ShareButton />
             </View>
           </View>
         </View>
