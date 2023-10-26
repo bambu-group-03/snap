@@ -10,18 +10,15 @@ import React, { useState } from 'react';
 import type { Snap } from '@/api';
 import { Button, Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
 
-type Props = Snap & { onPress?: () => void };
-
-export const Card = ({
-  content,
-  author,
-  created_at,
-  onPress = () => {},
-}: Props) => {
+type Props = {
+  snap: Snap;
+  onPress?: () => void;
+};
+export const Card = ({ snap, onPress = () => {} }: Props) => {
   const [likeCount, setCount] = useState(0);
   const [reSnapCount, setReSnapCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
-  const formattedDate = new Date(created_at).toLocaleDateString('en-US', {
+  const formattedDate = new Date(snap.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
@@ -41,10 +38,10 @@ export const Card = ({
           </View>
           <View className="mx-3">
             <Text className="text-base font-medium leading-6 text-black">
-              {author}
+              {snap.author}
               <Text className="text-sm font-medium leading-5 text-gray-400 transition duration-150 ease-in-out group-hover:text-gray-300">
                 {' '}
-                @{author} . {formattedDate}
+                @{snap.author} . {formattedDate}
               </Text>
             </Text>
           </View>
@@ -53,7 +50,7 @@ export const Card = ({
 
       <View className="pl-16">
         <Text className="width-auto shrink text-base font-medium text-black">
-          {content}
+          {snap.content}
         </Text>
         <View className="mt-2 flex border-t border-gray-200 pt-2">
           <View className="w-full">
