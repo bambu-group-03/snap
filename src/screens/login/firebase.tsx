@@ -127,7 +127,13 @@ const handleAuth = async (userCred: UserCredential | null) => {
   if (userCred !== null) {
     const access_token = await userCred.user.getIdToken();
     const refresh_token = userCred.user.refreshToken;
-    signIn({ access: access_token, refresh: refresh_token });
+    signIn(
+      {
+        access: access_token,
+        refresh: refresh_token,
+      },
+      userCred.user.uid
+    );
   }
 };
 

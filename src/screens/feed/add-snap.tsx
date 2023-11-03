@@ -5,6 +5,7 @@ import { showMessage } from 'react-native-flash-message';
 import { z } from 'zod';
 
 import { useAddSnap } from '@/api';
+import { getUserState } from '@/core';
 import { Button, ControlledInput, showErrorMessage, View } from '@/ui';
 
 const schema = z.object({
@@ -18,11 +19,11 @@ export const AddSnap = () => {
     resolver: zodResolver(schema),
   });
   const { mutate: addSnap, isLoading } = useAddSnap();
-
+  const currentUser = getUserState();
   const onSubmit = (data: FormType) => {
     console.log(data);
     addSnap(
-      { ...data, user_id: '420' }, //TODO: get user id from auth
+      { ...data, user_id: currentUser?.id }, //TODO: get user id from auth
       {
         onSuccess: () => {
           showMessage({

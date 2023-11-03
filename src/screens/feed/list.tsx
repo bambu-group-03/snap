@@ -4,20 +4,22 @@ import React from 'react';
 
 import type { Snap } from '@/api';
 import { useSnaps } from '@/api';
+import { getUserState } from '@/core';
 import { EmptyList, FocusAwareStatusBar, Text, View } from '@/ui';
 
 import { Card } from './card';
 import Compose from './compose';
 
 export const Feed = () => {
+  const currentUser = getUserState();
   const { data, isLoading, isError } = useSnaps({
-    variables: { user_id: 420 },
+    variables: { user_id: currentUser?.id },
   });
   const { navigate } = useNavigation();
 
   const renderItem = React.useCallback(
     ({ item }: { item: Snap }) => (
-      <Card {...item} onPress={() => navigate('Snap', { id: item.id })} />
+      <Card snap={item} onPress={() => navigate('Snap', { id: item.id })} />
     ),
     [navigate]
   );

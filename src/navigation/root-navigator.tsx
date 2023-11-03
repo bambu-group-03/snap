@@ -1,24 +1,14 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
-import { Image } from 'react-native';
 
 import { useAuth } from '@/core';
-import { FeedNavigator } from '@/navigation/feed-navigator';
 
 import { AuthNavigator } from './auth-navigator';
 import { NavigationContainer } from './navigation-container';
+import { TabNavigator } from './tab-navigator';
 
 const Stack = createNativeStackNavigator();
-
-function LogoTitle() {
-  return (
-    <Image
-      style={{ width: 50, height: 50 }}
-      source={require('../../assets/icon.png')}
-    />
-  );
-}
 
 export const Root = () => {
   const status = useAuth.use.status();
@@ -48,11 +38,7 @@ export const Root = () => {
             //options={{ headerTitle: (props) => <LogoTitle {...props} /> }}
           />
         ) : (
-          <Stack.Screen
-            name="App"
-            component={FeedNavigator}
-            options={{ headerTitle: () => <LogoTitle /> }}
-          />
+          <Stack.Screen name="App" component={TabNavigator} />
         )}
       </Stack.Group>
     </Stack.Navigator>
