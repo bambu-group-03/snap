@@ -20,7 +20,6 @@ export const AddSnap = () => {
   });
   const { mutate: addSnap, isLoading } = useAddSnap();
   const currentUser = getUserState();
-  console.log('currentUser', currentUser);
   const onSubmit = (data: FormType) => {
     console.log(data);
     addSnap(

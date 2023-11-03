@@ -62,7 +62,6 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
     console.error(err);
   }
 
-  console.log(userCred);
   return userCred;
 };
 
