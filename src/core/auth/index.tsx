@@ -3,7 +3,7 @@ import { create } from 'zustand';
 
 import { createSelectors } from '../utils';
 import type { TokenType, UserType } from './utils';
-import { getToken, removeToken, setToken, setUser } from './utils';
+import { getToken, getUser, removeToken, setToken, setUser } from './utils';
 
 interface AuthState {
   token: TokenType | null;
@@ -23,7 +23,6 @@ const _useAuth = create<AuthState>((set, get) => ({
   user: undefined,
   signIn: async (token, userId) => {
     if (userId !== undefined) {
-      console.log(userId);
       const response = await fetch(
         `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/users/${userId}`
       );
@@ -42,7 +41,7 @@ const _useAuth = create<AuthState>((set, get) => ({
   hydrate: () => {
     try {
       const userToken = getToken();
-      const oldLoggedUser = getUserState();
+      const oldLoggedUser = getUser();
       if (userToken !== null) {
         get().signIn(userToken, oldLoggedUser?.id);
       } else {
