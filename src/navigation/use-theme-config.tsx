@@ -23,7 +23,7 @@ const LightTheme: Theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: colors.primary[400],
+    primary: '#1DA1F2', // twitter blue
     background: colors.white,
   },
 };
