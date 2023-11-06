@@ -1,14 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { FlatList } from 'react-native'; // Import FlatList
+
 import type { Snap } from '@/api';
 import { useSnaps } from '@/api';
 import { getUserState } from '@/core';
 import { EmptyList, FocusAwareStatusBar, Text, View } from '@/ui';
+
 import { Card } from './card';
 
-const INCREMENT_RENDER = 5;
-const INITIAL_RENDER = 5;
+const INCREMENT_RENDER = 10;
+const INITIAL_RENDER = 20;
 
 export const Feed = () => {
   const currentUser = getUserState();
