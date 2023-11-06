@@ -17,13 +17,14 @@ export const useSnaps = createQuery<Response, Variables, AxiosError>({
       const limit = 100;
       const offset = 0;
       const response = await client.get(
-        `${primaryKey}/${variables.user_id}/snaps?limit=${limit}&offset=${offset}`
+        `${primaryKey}/?user_id=${variables.user_id}&limit=${limit}&offset=${offset}`
+
+        //`${primaryKey}/${variables.user_id}/snaps?limit=${limit}&offset=${offset}`
       );
       console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
       return response.data.snaps;
     }catch(e){
       console.log('error', e)
     }
-    
   },
 });
