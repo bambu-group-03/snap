@@ -1,14 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
-import { FlashList } from '@shopify/flash-list';
-import React from 'react';
-
+import React, { useState, useCallback } from 'react';
+import { FlatList } from 'react-native'; // Import FlatList
 import type { Snap } from '@/api';
 import { useSnaps } from '@/api';
 import { getUserState } from '@/core';
 import { EmptyList, FocusAwareStatusBar, Text, View } from '@/ui';
-
 import { Card } from './card';
-import Compose from './compose';
+
+const INCREMENT_RENDER = 5;
+const INITIAL_RENDER = 5;
 
 export const Feed = () => {
   const currentUser = getUserState();
@@ -17,12 +17,32 @@ export const Feed = () => {
   });
   const { navigate } = useNavigation();
 
-  const renderItem = React.useCallback(
-    ({ item }: { item: Snap }) => (
-      <Card snap={item} onPress={() => navigate('Snap', { id: item.id })} />
-    ),
-    [navigate]
-  );
+  // State to track the number of items to render
+  const [renderCount, setRenderCount] = useState(INITIAL_RENDER); // Adjust the initial count as needed
+
+  // Corrected renderItem function
+  const renderItem = ({ item, index }: { item: Snap; index: number }) => {
+    // Render the item only if its index is within the current renderCount
+    console.log(`renderItem: ${index}: ${renderCount}`);
+    if (index < renderCount) {
+      return (
+        <Card snap={item} onPress={() => navigate('Snap', { id: item.id })} />
+      );
+    }
+    return null;
+  };
+
+  const handleEndReached = () => {
+    console.log(`handleEndReached before: ${renderCount}`);
+
+    // Load more items when the user reaches the end
+    if (renderCount < (data ? data.length : 0)) {
+      // Increase the render count by a suitable number
+      setRenderCount(renderCount + INCREMENT_RENDER);
+    }
+
+    console.log(`handleEndReached after: ${renderCount}`);
+  };
 
   if (isError) {
     return (
@@ -31,16 +51,23 @@ export const Feed = () => {
       </View>
     );
   }
+
   return (
     <>
-      <Compose />
       <FocusAwareStatusBar />
-      <FlashList
+      <FlatList
         data={data}
         renderItem={renderItem}
         keyExtractor={(_, index) => `item-${index}`}
         ListEmptyComponent={<EmptyList isLoading={isLoading} />}
-        estimatedItemSize={300}
+        onEndReached={handleEndReached}
+        onEndReachedThreshold={0.1}
+        // Adjust the threshold as needed
+        getItemLayout={(data, index) => ({
+          length: 100, // Adjust the item length as needed
+          offset: 100 * index,
+          index,
+        })}
       />
     </>
   );

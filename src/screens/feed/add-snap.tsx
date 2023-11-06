@@ -23,7 +23,7 @@ export const AddSnap = () => {
   const onSubmit = (data: FormType) => {
     console.log(data);
     addSnap(
-      { ...data, user_id: currentUser?.id }, //TODO: get user id from auth
+      { ...data, user_id: currentUser?.id, parent_id: '' }, //TODO: parent_id changes when re-snap
       {
         onSuccess: () => {
           showMessage({
