@@ -6,4 +6,5 @@ export type Snap = {
   likes: number;
   shares: number;
   favs: number;
+  username: string;
 };
