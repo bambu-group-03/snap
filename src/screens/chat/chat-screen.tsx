@@ -16,7 +16,6 @@ const ChatScreen = () => {
         <ChatHeader />
         <ChatBody />
       </ScrollView>
-
       <ChatInput />
     </View>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { FocusAwareStatusBar } from '@/ui';
 
-import ChatScreen from './channel-screen';
+import ChatScreen from './chat-screen';
 export const Chat = () => {
   return (
     <>
