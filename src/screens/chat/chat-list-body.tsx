@@ -21,7 +21,7 @@ const ChatListHeader = ({
               </View>
 
               <Text style={styles.unread_messages}>
-                {chat.unread_messages ? '1' : '0'}
+                {chat.unread_messages ? '•' : ''}
               </Text>
             </View>
           </TouchableOpacity>
@@ -65,11 +65,5 @@ const styles = {
   unread_messages: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333', // Change to your desired text color
-  },
-  footerText: {
-    marginTop: 16,
-    fontSize: 14,
-    color: '#666', // Change to your desired text color
   },
 };
