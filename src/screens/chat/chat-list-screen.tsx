@@ -52,7 +52,7 @@ const ChatListScreen = () => {
       <ChatListHeader />
 
       {/* List of chats */}
-      <ChatListBody chats={chats} onPress={() => navigate('ChatScreen')} />
+      <ChatListBody chats={chats} onPress={() => navigate('Snap', { id: 1 })} />
 
       {/* <ChatScreen /> */}
     </View>
