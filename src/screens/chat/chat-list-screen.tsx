@@ -1,8 +1,18 @@
-import React from 'react';
 import { View, Text, Image } from 'react-native';
+import ChatListHeader from './chat-list-header';
+import ChatListBody from './chat-list-body';
+
+export type Chat = {
+  id: number;
+  name: string;
+  email: string;
+  last_message: string;
+  imageSource: string;
+  unread_messages: boolean;
+};
 
 const ChatListScreen = () => {
-  const customers = [
+  const chats: Chat[] = [
     {
       id: 1,
       name: 'Dani Vela',
@@ -33,31 +43,11 @@ const ChatListScreen = () => {
     <View style={styles.container}>
       {/* <View style={styles.card}> */}
 
-      {/* Chats */}
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Chats</Text>
-      </View>
+      <ChatListHeader />
 
       {/* List of chats */}
-      <View style={styles.list}>
-        {customers.map((customer) => (
-          <View key={customer.id} style={styles.listItem}>
-            <View style={styles.itemContent}>
-              <Image
-                style={styles.avatar}
-                source={{ uri: customer.imageSource }}
-              />
-              <View style={styles.textContainer}>
-                <Text style={styles.name}>{customer.name}</Text>
-                <Text style={styles.last_message}>{customer.last_message}</Text>
-              </View>
-              <Text style={styles.unread_messages}>
-                {customer.unread_messages ? '1' : '0'}
-              </Text>
-            </View>
-          </View>
-        ))}
-      </View>
+
+      <ChatListBody chats={chats} />
     </View>
     // </View>
   );
@@ -83,55 +73,6 @@ const styles = {
     shadowRadius: 1.41,
     elevation: 2,
     padding: 16,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333', // Change to your desired text color
-  },
-  list: {},
-  listItem: {
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB', // Change to your desired border color
-  },
-  itemContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    marginRight: 16,
-  },
-  textContainer: {
-    flex: 1,
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333', // Change to your desired text color
-  },
-  last_message: {
-    fontSize: 14,
-    color: '#666', // Change to your desired text color
-  },
-  unread_messages: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333', // Change to your desired text color
-  },
-  footerText: {
-    marginTop: 16,
-    fontSize: 14,
-    color: '#666', // Change to your desired text color
   },
 };
 
