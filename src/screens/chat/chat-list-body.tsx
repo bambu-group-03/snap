@@ -1,16 +1,16 @@
 import { View, Text, Image, Pressable, TouchableOpacity } from 'react-native';
-import { Chat } from './chat-list-screen';
+import { ChatBase } from './chat-list-screen';
 
 const ChatListHeader = ({
   chats,
   onPress,
 }: {
-  chats: Chat[];
+  chats: ChatBase[];
   onPress: () => void;
 }) => {
   return (
     <View style={styles.list}>
-      {chats.map((chat: Chat) => (
+      {chats.map((chat: ChatBase) => (
         <View key={chat.id} style={styles.listItem}>
           <Pressable className="flex shrink-0 p-4 pb-0" onPress={onPress}>
             <TouchableOpacity className="group block shrink-0">

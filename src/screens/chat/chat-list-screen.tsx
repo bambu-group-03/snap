@@ -1,10 +1,11 @@
+import { useNavigation } from '@react-navigation/native';
 import { View, Text, Image } from 'react-native';
 import ChatListHeader from './chat-list-header';
 import ChatListBody from './chat-list-body';
 
 import ChatScreen from './chat-screen';
 
-export type Chat = {
+export type ChatBase = {
   id: number;
   name: string;
   email: string;
@@ -14,7 +15,7 @@ export type Chat = {
 };
 
 const ChatListScreen = () => {
-  const chats: Chat[] = [
+  const chats: ChatBase[] = [
     {
       id: 1,
       name: 'Dani Vela',
@@ -41,6 +42,8 @@ const ChatListScreen = () => {
     },
   ];
 
+  const { navigate } = useNavigation();
+
   return (
     <View style={styles.container}>
       {/* <View style={styles.card}> */}
@@ -49,7 +52,9 @@ const ChatListScreen = () => {
       <ChatListHeader />
 
       {/* List of chats */}
-      <ChatListBody chats={chats} onPress={() => <ChatScreen />} />
+      <ChatListBody chats={chats} onPress={() => navigate('ChatScreen')} />
+
+      {/* <ChatScreen /> */}
     </View>
   );
 };
