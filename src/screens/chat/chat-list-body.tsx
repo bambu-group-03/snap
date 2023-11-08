@@ -12,23 +12,19 @@ const ChatListHeader = ({
     <View style={styles.list}>
       {chats.map((chat: ChatBase) => (
         <View key={chat.id} style={styles.listItem}>
-          <Pressable className="flex shrink-0 p-4 pb-0" onPress={onPress}>
-            <TouchableOpacity className="group block shrink-0">
-              <View style={styles.itemContent}>
-                <Image
-                  style={styles.avatar}
-                  source={{ uri: chat.imageSource }}
-                />
-                <View style={styles.textContainer}>
-                  <Text style={styles.name}>{chat.name}</Text>
-                  <Text style={styles.last_message}>{chat.last_message}</Text>
-                </View>
-                <Text style={styles.unread_messages}>
-                  {chat.unread_messages ? '1' : '0'}
-                </Text>
+          <TouchableOpacity className="group block shrink-0" onPress={onPress}>
+            <View style={styles.itemContent}>
+              <Image style={styles.avatar} source={{ uri: chat.imageSource }} />
+              <View style={styles.textContainer}>
+                <Text style={styles.name}>{chat.name}</Text>
+                <Text style={styles.last_message}>{chat.last_message}</Text>
               </View>
-            </TouchableOpacity>
-          </Pressable>
+
+              <Text style={styles.unread_messages}>
+                {chat.unread_messages ? '1' : '0'}
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
       ))}
     </View>
