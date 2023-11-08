@@ -2,6 +2,8 @@ import { View, Text, Image } from 'react-native';
 import ChatListHeader from './chat-list-header';
 import ChatListBody from './chat-list-body';
 
+import ChatScreen from './chat-screen';
+
 export type Chat = {
   id: number;
   name: string;
@@ -43,13 +45,12 @@ const ChatListScreen = () => {
     <View style={styles.container}>
       {/* <View style={styles.card}> */}
 
+      {/* Header */}
       <ChatListHeader />
 
       {/* List of chats */}
-
-      <ChatListBody chats={chats} />
+      <ChatListBody chats={chats} onPress={() => <ChatScreen />} />
     </View>
-    // </View>
   );
 };
 
