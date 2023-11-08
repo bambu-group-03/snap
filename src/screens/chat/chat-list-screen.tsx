@@ -42,7 +42,7 @@ const ChatListScreen = () => {
     },
   ];
 
-  const { navigate } = useNavigation();
+  const navigate = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -52,8 +52,8 @@ const ChatListScreen = () => {
       <ChatListHeader />
 
       {/* List of chats */}
-      {/* <ChatListBody chats={chats} onPress={() => navigate('Snap', { id: 1 })} /> */}
-      <ChatListBody chats={chats} onPress={() => console.log('Me undieron')} />
+      <ChatListBody chats={chats} onPress={() => navigate.navigate('Feed')} />
+      {/* <ChatListBody chats={chats} onPress={() => console.log('Me undieron')} /> */}
 
       {/* <ChatScreen /> */}
     </View>
