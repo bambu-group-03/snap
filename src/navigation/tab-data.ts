@@ -1,7 +1,8 @@
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { faFeed, faMessage, faSearch } from '@fortawesome/free-solid-svg-icons';
 
-import { Chat, Search } from '@/screens';
+import { Search } from '@/screens';
+import { ChatNavigator } from '@/screens/chat/chat-navigator';
 
 import { FeedNavigator } from './feed-navigator';
 
@@ -36,9 +37,9 @@ export const tabs: TabType[] = [
     icon: faSearch,
   },
   {
-    name: 'Chat',
-    component: Chat, // React Chat component screen
-    label: 'Chat',
+    name: 'ChatNavigator',
+    component: ChatNavigator, // React Chat component screen
+    label: 'ChatNavigator',
     icon: faMessage,
   },
 ];

@@ -65,7 +65,7 @@ export const Feed = () => {
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.1}
         // Adjust the threshold as needed
-        getItemLayout={(data, index) => ({
+        getItemLayout={(_data, index) => ({
           length: 100, // Adjust the item length as needed
           offset: 100 * index,
           index,
