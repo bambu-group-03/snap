@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Button, Image, Text, View } from '@/ui';
 
 const MY_PROFILE_PHOTO =

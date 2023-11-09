@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Image, Text, View } from '@/ui';
 
 const ChatHeader = () => {
