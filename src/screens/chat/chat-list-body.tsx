@@ -1,24 +1,25 @@
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import type { ChatBase } from './chat-list-screen';
 
-const ChatListHeader = ({
-  chats,
-  onPress,
-}: {
-  chats: ChatBase[];
-  onPress: () => void;
-}) => {
+const ChatListHeader = ({ chats }: { chats: ChatBase[] }) => {
+  const { navigate } = useNavigation();
   return (
     <View style={styles.list}>
       {chats.map((chat: ChatBase) => (
         <View key={chat.id} style={styles.listItem}>
-          <TouchableOpacity className="group block shrink-0" onPress={onPress}>
+          <TouchableOpacity
+            className="group block shrink-0"
+            onPress={() => navigate('ChatScreen', { chat })}
+          >
             <View style={styles.itemContent}>
               <Image style={styles.avatar} source={{ uri: chat.imageSource }} />
               <View style={styles.textContainer}>
-                <Text style={styles.name}>{chat.name}</Text>
+                <Text style={styles.name}>
+                  {chat.firstName} {chat.lastName}
+                </Text>
                 <Text style={styles.last_message}>{chat.last_message}</Text>
               </View>
 

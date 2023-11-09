@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -7,8 +6,10 @@ import ChatListHeader from './chat-list-header';
 
 export type ChatBase = {
   id: number;
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
+  bio: string;
   last_message: string;
   imageSource: string;
   unread_messages: boolean;
@@ -18,31 +19,35 @@ const ChatListScreen = () => {
   const chats: ChatBase[] = [
     {
       id: 1,
-      name: 'Dani Vela',
+      firstName: 'Dani',
+      lastName: 'Vela',
       email: 'dani@windster.com',
+      bio: '1/4 CEO de panda.corp',
       last_message: 'Sos el rey del front',
       imageSource: 'https://avatars.githubusercontent.com/u/56934023?v=4',
       unread_messages: true,
     },
     {
       id: 2,
-      name: 'Edu Cusihuaman',
+      firstName: 'Edu',
+      lastName: 'Cusihuaman',
       email: 'edu@gmail.com',
+      bio: '1/4 CEO de panda.corp',
       last_message: 'Amigo sacamos 10 en el TP',
       imageSource: 'https://avatars.githubusercontent.com/u/43934057?v=4',
       unread_messages: false,
     },
     {
       id: 3,
-      name: 'Mafer',
+      firstName: 'Mafer',
+      lastName: '',
       email: 'mafer@gmail.com',
+      bio: '1/4 CEO de panda.corp',
       last_message: 'No me dejes en visto Luis',
       imageSource: 'https://avatars.githubusercontent.com/u/62344533?v=4',
       unread_messages: false,
     },
   ];
-
-  const { navigate } = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -51,8 +56,10 @@ const ChatListScreen = () => {
       {/* Header */}
       <ChatListHeader />
 
+      {/* navigate('Snap', { id: item.id }) */}
+
       {/* List of chats */}
-      <ChatListBody chats={chats} onPress={() => navigate('ChatScreen')} />
+      <ChatListBody chats={chats} />
       {/* <ChatListBody chats={chats} onPress={() => console.log('Me undieron')} /> */}
 
       {/* <ChatScreen /> */}

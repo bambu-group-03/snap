@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { Button, Image, Text, View } from '@/ui';
+import { ChatBase } from './chat-list-screen';
 
 const MY_PROFILE_PHOTO =
   'https://avatars.githubusercontent.com/u/40549839?s=400&u=f9968082a38e11cabaeec2033e3ffb3e18395eb6&v=4';
-const MY_FRIEND_PHOTO = 'https://avatars.githubusercontent.com/u/43934057?v=4';
 
-const ChatBody = () => {
+const ChatBody = ({ chatUser }: { chatUser: ChatBase }) => {
   return (
     <View>
       <View
@@ -36,12 +36,12 @@ const ChatBody = () => {
                   Your error message says permission denied, npm global installs
                   must be given root privileges.
                 </Text>
+                <Image
+                  source={chatUser.imageSource} //"https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144"
+                  className="order-2 h-6 w-6 rounded-full"
+                />
               </View>
             </View>
-            <Image
-              source={MY_FRIEND_PHOTO} //"https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144"
-              className="order-2 h-6 w-6 rounded-full"
-            />
           </View>
         </View>
         <View className="chat-message">
@@ -83,12 +83,13 @@ const ChatBody = () => {
                   Any updates on this issue? I'm getting the same error when
                   trying to install devtools. Thanks
                 </Text>
+
+                <Image
+                  source={chatUser.imageSource} //"https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144"
+                  className="order-2 h-6 w-6 rounded-full"
+                />
               </View>
             </View>
-            <Image
-              source={MY_FRIEND_PHOTO} //"https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144"
-              className="order-2 h-6 w-6 rounded-full"
-            />
           </View>
         </View>
         <View className="chat-message">
@@ -96,8 +97,8 @@ const ChatBody = () => {
             <View className="order-2 mx-2 flex max-w-xs flex-col items-start space-y-2 text-xs">
               <View>
                 <Text className="inline-block rounded-lg rounded-bl-none bg-gray-300 px-4 py-2 text-gray-600">
-                  Thanks for your message David. I thought I'm alone with this
-                  issue. Please, ? the issue to support it :)
+                  Thanks for your message {chatUser.firstName}. I thought I'm
+                  alone with this issue. Please, ? the issue to support it :)
                 </Text>
               </View>
             </View>
@@ -121,12 +122,12 @@ const ChatBody = () => {
                   {/* {{}}/.npm-global/ then install the package globally without */}
                   using sudo
                 </Text>
+                <Image
+                  source={chatUser.imageSource} //"https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144"
+                  className="order-2 h-6 w-6 rounded-full"
+                />
               </View>
             </View>
-            <Image
-              source={MY_FRIEND_PHOTO} //"https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144"
-              className="order-2 h-6 w-6 rounded-full"
-            />
           </View>
         </View>
         <View className="chat-message">
@@ -159,12 +160,12 @@ const ChatBody = () => {
                   yes, I have a mac. I never had issues with root permission as
                   well, but this helped me to solve the problem
                 </Text>
+                <Image
+                  source={chatUser.imageSource} //"https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144"
+                  className="order-2 h-6 w-6 rounded-full"
+                />
               </View>
             </View>
-            <Image
-              source={MY_FRIEND_PHOTO} //"https://images.unsplash.com/photo-1590031905470-a1a1feacbb0b?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144"
-              className="order-2 h-6 w-6 rounded-full"
-            />
           </View>
         </View>
         <View className="chat-message">

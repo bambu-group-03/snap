@@ -1,25 +1,28 @@
 import React from 'react';
 
 import { Image, Text, View } from '@/ui';
+import { ChatBase } from './chat-list-screen';
 
-const ChatHeader = () => {
-  const MY_PROFILE_PHOTO =
-    'https://avatars.githubusercontent.com/u/40549839?s=400&u=f9968082a38e11cabaeec2033e3ffb3e18395eb6&v=4';
+const ChatHeader = ({ chatUser }: { chatUser: ChatBase }) => {
+  // const profile_photo =
+  //   'https://avatars.githubchatUsercontent.com/u/40549839?s=400&u=f9968082a38e11cabaeec2033e3ffb3e18395eb6&v=4';
 
   return (
     <View className="flex justify-between border-b-2 border-gray-200 py-3 sm:items-center">
       <View className="relative flex items-center space-x-4">
         <View className="relative">
           <Image
-            source={MY_PROFILE_PHOTO} //{MY_PROFILE_PHOTO}//"https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144"
+            source={chatUser.imageSource} //{chatUser.imageSource}//"https://images.unsplash.com/photo-1549078642-b2ba4bda0cdb?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=3&amp;w=144&amp;h=144"
             className="h-10 w-10 rounded-full sm:h-16 sm:w-16"
           />
         </View>
         <View className="flex flex-col leading-tight">
           <View className="mt-1 flex items-center text-2xl">
-            <Text className="mr-3 text-gray-700">Luis Paredes</Text>
+            <Text className="mr-3 text-gray-700">
+              {chatUser.firstName} {chatUser.lastName}
+            </Text>
           </View>
-          <Text className="text-lg text-gray-600">1/4 CEO Panda.inc</Text>
+          <Text className="text-lg text-gray-600">{chatUser.bio}</Text>
         </View>
       </View>
       {/* <View className="flex items-center space-x-2">
