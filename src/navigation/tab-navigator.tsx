@@ -38,7 +38,7 @@ export const TabNavigator: React.FC = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarInactiveTintColor: colorScheme === 'dark' ? '#1DA1F' : '#65776',
+        tabBarInactiveTintColor: colorScheme === 'dark' ? '#1DA1F' : '#A9A9A9',
         tabBarIcon: ({ color }) => renderTabBarIcon({ color, route }),
       })}
     >
