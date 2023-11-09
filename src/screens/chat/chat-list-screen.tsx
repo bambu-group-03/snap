@@ -54,7 +54,7 @@ const ChatListScreen = () => {
       {/* <View style={styles.card}> */}
 
       {/* Header */}
-      <ChatListHeader />
+      {/* <ChatListHeader /> */}
 
       {/* navigate('Snap', { id: item.id }) */}
 
