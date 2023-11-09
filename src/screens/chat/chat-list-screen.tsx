@@ -1,9 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, Image } from 'react-native';
-import ChatListHeader from './chat-list-header';
-import ChatListBody from './chat-list-body';
+import { View } from 'react-native';
 
-import ChatScreen from './chat-screen';
+import ChatListBody from './chat-list-body';
+import ChatListHeader from './chat-list-header';
 
 export type ChatBase = {
   id: number;

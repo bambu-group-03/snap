@@ -1,5 +1,6 @@
-import { View, Text, Image, Pressable, TouchableOpacity } from 'react-native';
-import { ChatBase } from './chat-list-screen';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+
+import type { ChatBase } from './chat-list-screen';
 
 const ChatListHeader = ({
   chats,
