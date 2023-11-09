@@ -49,13 +49,6 @@ export const LoginForm = ({
       </Text>
 
       <ControlledInput
-        testID="name"
-        control={control}
-        name="name"
-        label="Name"
-      />
-
-      <ControlledInput
         testID="email-input"
         control={control}
         name="email"

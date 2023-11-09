@@ -2,9 +2,10 @@ import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
-import { useAuth } from '@/core';
 import { AddSnap, Feed, Snap } from '@/screens';
 import { Pressable, Text } from '@/ui';
+
+import { GoToLogout } from './auth-navigator';
 
 export type FeedStackParamList = {
   Feed: undefined;
@@ -14,15 +15,6 @@ export type FeedStackParamList = {
 };
 
 const Stack = createNativeStackNavigator<FeedStackParamList>();
-
-const GoToLogout = () => {
-  const signOut = useAuth.use.signOut();
-  return (
-    <Pressable onPress={() => signOut()} className="p-2">
-      <Text className="text-red-600">Logout</Text>
-    </Pressable>
-  );
-};
 
 const GoToAddSnap = () => {
   const { navigate } = useNavigation();

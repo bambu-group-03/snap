@@ -8,40 +8,52 @@ import { getToken, getUser, removeToken, setToken, setUser } from './utils';
 interface AuthState {
   token: TokenType | null;
   user: UserType | undefined;
-  status: 'idle' | 'signOut' | 'signIn';
+  status: 'idle' | 'signOut' | 'signIn' | 'signInComplete';
   signIn: (
     data: TokenType,
     userId: UserCredential['user']['uid'] | undefined
   ) => void;
   signOut: () => void;
+  signInComplete: (user: UserType) => void;
   hydrate: () => void;
 }
+
+const isUserComplete = (user: UserType): boolean => {
+  for (const key in user) {
+    if (user.hasOwnProperty(key)) {
+      const value = user[key as keyof UserType]; // Use type assertion here
+      if (value === null || value === '') {
+        return false;
+      }
+    }
+  }
+  return true;
+};
 
 const _useAuth = create<AuthState>((set, get) => ({
   status: 'idle',
   token: null,
   user: undefined,
   signIn: async (token, userId) => {
-    if (userId !== undefined) {
-      const response = await fetch(
-        `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/users/${userId}`
-      );
-      const user: UserType = await response.json();
-      await setUser(user); // store user and user in phone storage
-      set({ user });
-    }
-
+    const response = await fetch(
+      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/users/${userId}`
+    );
+    const user: UserType = await response.json();
+    await setUser(user); // store user and user in phone storage
     await setToken(token); // store token in phone storage
-    set({ status: 'signIn', token }); // store token in phone memory ram
+    const status = isUserComplete(user) ? 'signInComplete' : 'signIn';
+    set({ status, user, token }); // store token in phone memory ram
   },
   signOut: async () => {
     await removeToken();
     set({ status: 'signOut', token: null });
   },
   hydrate: () => {
+    console.log('HIDRATANDOO');
     try {
       const userToken = getToken();
       const oldLoggedUser = getUser();
+      console.log('oldLoggedUser', oldLoggedUser);
       if (userToken !== null) {
         get().signIn(userToken, oldLoggedUser?.id);
       } else {
@@ -51,6 +63,25 @@ const _useAuth = create<AuthState>((set, get) => ({
       // catch error here
       // Maybe sign_out user!
     }
+  },
+  signInComplete: async (user) => {
+    const response = await fetch(
+      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/update_user`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user),
+      }
+    );
+
+    if (response.status !== 200) {
+      console.log('error updating user, status code:', response.status);
+      return;
+    }
+    await setUser(user); // store user and user in phone storage
+    set({ user, status: 'signInComplete' });
   },
 }));
 
@@ -76,3 +107,7 @@ export const hydrateAuth = () => _useAuth.getState().hydrate();
 export const getUserState = () => _useAuth.getState().user;
 
 export const updateUserState = (user: UserType) => _useAuth.setState({ user });
+
+export const signInComplete = (user: UserType) => {
+  _useAuth.getState().signInComplete(user);
+};
