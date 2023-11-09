@@ -7,6 +7,7 @@ import { ActivityIndicator, FocusAwareStatusBar, Text, View } from '@/ui';
 
 export const Snap = () => {
   const { params } = useRoute<RouteProp<'Snap'>>();
+
   const { data, isLoading, isError } = useSnap({
     variables: { tweet_id: params.id },
   });
