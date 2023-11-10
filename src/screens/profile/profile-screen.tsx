@@ -43,6 +43,13 @@ const ProfileScreen = () => {
                       </Text>
                       <Text className="text-sm text-slate-400">Following</Text>
                     </View>
+
+                    <View className="p-3 text-center">
+                      <Text className="text-xl font-bold block uppercase tracking-wide text-slate-700">
+                        1000000000000
+                      </Text>
+                      <Text className="text-sm text-slate-400">Followers</Text>
+                    </View>
                   </View>
                 </View>
               </View>
