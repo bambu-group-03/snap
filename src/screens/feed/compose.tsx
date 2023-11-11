@@ -10,7 +10,7 @@ import React from 'react';
 
 import { Image, Input, Text, TouchableOpacity, View } from '@/ui';
 
-export default function Compose() {
+export const Compose = () => {
   return (
     <View className="my-auto w-full">
       <View className="w-full rounded-xl">
@@ -61,4 +61,6 @@ export default function Compose() {
       </View>
     </View>
   );
-}
+};
+
+export default Compose;

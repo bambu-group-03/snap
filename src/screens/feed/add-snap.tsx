@@ -3,6 +3,7 @@ import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { showMessage } from 'react-native-flash-message';
 import { z } from 'zod';
+import { Compose } from './compose';
 
 import { useAddSnap } from '@/api';
 import { getUserState } from '@/core';
@@ -40,8 +41,8 @@ export const AddSnap = () => {
     );
   };
   return (
-    <View className="flex-1 p-4 ">
-      <ControlledInput
+    <View className=" ">
+      {/* <ControlledInput
         name="content"
         label="Content"
         control={control}
@@ -53,7 +54,9 @@ export const AddSnap = () => {
         loading={isLoading}
         onPress={handleSubmit(onSubmit)}
         testID="add-post-button"
-      />
+      /> */}
+
+      <Compose></Compose>
     </View>
   );
 };
