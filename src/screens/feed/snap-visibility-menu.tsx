@@ -14,7 +14,7 @@ const DropdownMenu = ({
   handleMenuSelection,
 }: DropdownMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const options: string[] = ['Everyone can reply', 'Only followers', 'No one'];
+  const options: string[] = ['Everyone can reply', 'Only me'];
 
   const handleOptionClick = (option: string) => {
     handleMenuSelection(option);
@@ -40,7 +40,9 @@ const DropdownMenu = ({
               key={index}
               onPress={() => handleOptionClick(option)}
             >
-              <Text>{option}</Text>
+              <Text className="inline rounded-full bg-blue-100 px-4 py-3">
+                {option}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
