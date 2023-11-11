@@ -6,6 +6,7 @@ import { UserType } from '@/core/auth/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Snap } from '@/api';
+import { getUserState } from '@/core';
 
 const BASE_USER_URL =
   'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/';
@@ -14,7 +15,9 @@ const BASE_INTERACTION_URL =
   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/feed/';
 
 const ProfileScreen = () => {
-  const userID = '8nC6vZe4CobdtFbTuuviOZOOTzW2';
+  // Obtengo los datos guardados en la memoria interna del telefono
+  const currentUser = getUserState();
+  const userID = currentUser?.id;
 
   const [userData, setUserData] = useState<UserType | null>(null);
   const [userSnaps, setUserSnaps] = useState<Snap[]>([]);
