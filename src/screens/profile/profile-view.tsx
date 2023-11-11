@@ -1,7 +1,15 @@
 import { UserType } from '@/core/auth/utils';
 import { FocusAwareStatusBar, View, Image, Text, TouchableOpacity } from '@/ui';
 
-const ProfileScreenView = ({ user }: { user: UserType | undefined }) => {
+const ProfileScreenView = ({
+  user,
+  follower_count,
+  following_count,
+}: {
+  user: UserType | undefined;
+  follower_count: number;
+  following_count: number;
+}) => {
   return (
     <View>
       <View className="relative max-w-md mx-auto md:max-w-2xl min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-xl mt-3">
@@ -23,7 +31,7 @@ const ProfileScreenView = ({ user }: { user: UserType | undefined }) => {
                 <View className="p-3 text-center">
                   <TouchableOpacity onPress={() => console.log('Followers')}>
                     <Text className="text-xl font-bold block uppercase tracking-wide text-slate-700 text-center">
-                      2,454
+                      {follower_count}
                     </Text>
 
                     <Text
@@ -41,7 +49,7 @@ const ProfileScreenView = ({ user }: { user: UserType | undefined }) => {
                 <View className="p-3 text-center">
                   <TouchableOpacity onPress={() => console.log('Following')}>
                     <Text className="text-xl font-bold block uppercase tracking-wide text-slate-700 text-center">
-                      564
+                      {following_count}
                     </Text>
 
                     <Text
