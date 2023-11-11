@@ -1,4 +1,4 @@
-import { FocusAwareStatusBar } from '@/ui';
+import { FocusAwareStatusBar, View } from '@/ui';
 import { ScrollView } from 'react-native-gesture-handler';
 import ProfileScreenView from './profile-view';
 import MySnapsView from './my-snaps-view';
@@ -59,10 +59,12 @@ const ProfileScreen = () => {
   return (
     <>
       <FocusAwareStatusBar />
-      <ScrollView>
-        <ProfileScreenView user={userData} />
-      </ScrollView>
-      <MySnapsView data={userSnaps} />
+      <View>
+        <ScrollView>
+          <ProfileScreenView user={userData} />
+        </ScrollView>
+        <MySnapsView data={userSnaps} />
+      </View>
     </>
   );
 };
