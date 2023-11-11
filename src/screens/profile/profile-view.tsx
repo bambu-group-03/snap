@@ -1,7 +1,7 @@
 import { UserType } from '@/core/auth/utils';
 import { FocusAwareStatusBar, View, Image, Text } from '@/ui';
 
-const ProfileScreenView = ({ user }: { user: UserType }) => {
+const ProfileScreenView = ({ user }: { user: UserType | null }) => {
   return (
     <View>
       <View className="relative max-w-md mx-auto md:max-w-2xl mt-6 min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-xl mt-16">
@@ -10,12 +10,12 @@ const ProfileScreenView = ({ user }: { user: UserType }) => {
             <View className="w-full flex justify-center items-center text-center">
               <View className="relative">
                 <Image
-                  source={user.profile_photo_id}
+                  source={user?.profile_photo_id}
                   className="order-1 h-32 w-32 rounded-full" // Adjusted size to h-32 and w-32
                 />
               </View>
               <Text className="text-xl font-bold block tracking-wide text-slate-700 text-center">
-                @{user.username}
+                @{user?.username}
               </Text>
             </View>
             <View className="w-full text-center mt-5 border-t border-blueGray-200">
@@ -38,7 +38,7 @@ const ProfileScreenView = ({ user }: { user: UserType }) => {
           </View>
           <View className="text-center mt-2">
             <Text className="text-2xl text-slate-700 font-bold leading-normal mb-1">
-              {user.first_name} {user.last_name}
+              {user?.first_name} {user?.last_name}
             </Text>
             <View className="text-xs mt-0 mb-2 text-slate-400 font-bold uppercase">
               <Text className="fas fa-map-marker-alt mr-2 text-slate-400 opacity-75">
@@ -50,7 +50,7 @@ const ProfileScreenView = ({ user }: { user: UserType }) => {
             <View className="flex flex-wrap justify-center">
               <View className="w-full px-4">
                 <Text className="font-light leading-relaxed text-slate-600 mb-4">
-                  {user.bio_msg}
+                  {user?.bio_msg ? user?.bio_msg : 'No bio'}
                 </Text>
               </View>
             </View>
