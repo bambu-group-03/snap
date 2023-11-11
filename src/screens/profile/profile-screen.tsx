@@ -1,4 +1,4 @@
-import { FocusAwareStatusBar } from '@/ui';
+import { FocusAwareStatusBar, View } from '@/ui';
 import { ScrollView } from 'react-native-gesture-handler';
 import ProfileScreenView from './profile-view';
 import MySnapsView from './my-snaps-view';
@@ -16,23 +16,22 @@ const BASE_INTERACTION_URL =
 
 const ProfileScreen = () => {
   // Obtengo los datos guardados en la memoria interna del telefono
-  const currentUser = getUserState();
-  const userID = currentUser?.id;
+  const userData = getUserState();
 
-  const [userData, setUserData] = useState<UserType | null>(null);
   const [userSnaps, setUserSnaps] = useState<Snap[]>([]);
 
-  useEffect(() => {
-    axios
-      .get(BASE_USER_URL + 'users/' + userID)
-      .then((response) => {
-        console.log(response.data);
-        setUserData(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [userID]);
+  //const [userData, setUserData] = useState<UserType | null>(null);
+  // useEffect(() => {
+  //   axios
+  //     .get(BASE_USER_URL + 'users/' + userID)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setUserData(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, [userID]);
 
   useEffect(() => {
     const limit = 100;
@@ -41,7 +40,7 @@ const ProfileScreen = () => {
     axios
       .get(
         BASE_INTERACTION_URL +
-          userID +
+          userData?.id +
           '/snaps?limit=' +
           limit +
           '&offset=' +
@@ -55,14 +54,16 @@ const ProfileScreen = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, [userID]);
+  }, [userData]);
 
   return (
     <>
       <FocusAwareStatusBar />
-      <ScrollView>
-        <ProfileScreenView user={userData} />
-      </ScrollView>
+      <View>
+        <ScrollView>
+          <ProfileScreenView user={userData} />
+        </ScrollView>
+      </View>
       <MySnapsView data={userSnaps} />
     </>
   );

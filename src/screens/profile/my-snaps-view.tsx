@@ -57,7 +57,7 @@ const MySnapsView = ({ data }: { data: Snap[] }) => {
   if (data.length === 0) {
     return (
       <View>
-        <Text className="text-center"> No Snaps</Text>
+        <Text className="py-10 text-center"> No Snaps</Text>
       </View>
     );
   }
