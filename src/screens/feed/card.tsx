@@ -7,20 +7,26 @@ import CommentButton from './comment-button';
 import HeartButton from './heart-button';
 import ResnapButton from './re-snap-button';
 import ShareButton from './share-button';
+import axios, { AxiosInstance } from 'axios';
 
 type Props = {
   snap: Snap;
+  client: AxiosInstance;
   onPress?: () => void;
 };
-export const Card = ({ snap, onPress = () => {} }: Props) => {
-  const [isRetweeted, setIsRetweeted] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
-  const [commentCount, setCommentCount] = useState(0);
+export const Card = ({ snap, client, onPress = () => {} }: Props) => {
+  const [isRetweeted, setIsRetweeted] = useState(snap.has_shared);
+  const [isLiked, setIsLiked] = useState(snap.has_liked);
+  const [commentCount, setCommentCount] = useState(
+    snap.numberComments ? snap.numberComments : 0
+  );
   const formattedDate = new Date(snap.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
   });
+
+  console.log(snap);
 
   return (
     <Pressable className="flex shrink-0 p-4 pb-0" onPress={onPress}>
@@ -56,12 +62,61 @@ export const Card = ({ snap, onPress = () => {} }: Props) => {
               <ResnapButton
                 isResnaped={isRetweeted}
                 reSnapCount={snap.shares}
-                onPress={() => setIsRetweeted(!isRetweeted)}
+                onPress={() => {
+                  let interaction = '';
+                  let method = '';
+
+                  if (isRetweeted) {
+                    interaction = '/unshare/';
+                    method = 'DELETE';
+                    snap.shares--;
+                  } else {
+                    interaction = '/share/';
+                    method = 'POST';
+                    snap.shares++;
+                  }
+
+                  client({
+                    url: snap.author + interaction + snap.id,
+                    method: method,
+                  }).then((response) => {
+                    console.log(
+                      'response.data by ' + interaction + response.status
+                    );
+                  });
+
+                  setIsRetweeted(!isRetweeted);
+                }}
               />
               <HeartButton
                 isLiked={isLiked}
                 likeCount={snap.likes}
-                onPress={() => setIsLiked(!isLiked)}
+                onPress={async () => {
+                  let interaction = '';
+                  let method = '';
+
+                  if (isLiked) {
+                    interaction = '/unlike/';
+                    method = 'DELETE';
+                    snap.likes--;
+                  } else {
+                    interaction = '/like/';
+                    method = 'POST';
+                    snap.likes++;
+                  }
+
+                  client({
+                    url: snap.author + interaction + snap.id,
+                    method: method,
+                  }).then((response) => {
+                    console.log(
+                      'response.data by' + interaction,
+                      response.status
+                    );
+                  });
+
+                  setIsLiked(!isLiked);
+                }}
               />
               <CommentButton
                 commentCount={commentCount}

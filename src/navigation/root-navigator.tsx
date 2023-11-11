@@ -4,8 +4,9 @@ import React, { useEffect } from 'react';
 
 import { useAuth } from '@/core';
 
-import { AuthNavigator } from './auth-navigator';
+import { AuthNavigator, GoToLogout } from './auth-navigator';
 import { NavigationContainer } from './navigation-container';
+import { SignInComplete } from './signin-complete';
 import { TabNavigator } from './tab-navigator';
 
 const Stack = createNativeStackNavigator();
@@ -21,6 +22,7 @@ export const Root = () => {
     }
   }, [hideSplash, status]);
 
+  console.log('status:', status);
   return (
     <Stack.Navigator
       screenOptions={{
@@ -37,8 +39,10 @@ export const Root = () => {
             component={AuthNavigator}
             //options={{ headerTitle: (props) => <LogoTitle {...props} /> }}
           />
-        ) : (
+        ) : status === 'signInComplete' ? (
           <Stack.Screen name="App" component={TabNavigator} />
+        ) : (
+          <Stack.Screen name="signInComplete" component={SignInComplete} />
         )}
       </Stack.Group>
     </Stack.Navigator>

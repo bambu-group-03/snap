@@ -10,8 +10,7 @@ type Variables = { user_id: string | undefined }; // as react-query-kit is stron
 export const useSnaps = createQuery<Response, Variables, AxiosError>({
   primaryKey: '/api/feed', // we recommend using  endpoint base url as primaryKey
   queryFn: async ({ queryKey: [primaryKey, variables] }) => {
-    
-    try{
+    try {
       // in case if variables is needed, we can use destructuring to get it from queryKey array like this: ({ queryKey: [primaryKey, variables] })
       // primaryKey is 'posts' in this case
       const limit = 100;
@@ -23,8 +22,8 @@ export const useSnaps = createQuery<Response, Variables, AxiosError>({
       );
       console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
       return response.data.snaps;
-    }catch(e){
-      console.log('error', e)
+    } catch (e) {
+      console.log('error', e);
     }
   },
 });

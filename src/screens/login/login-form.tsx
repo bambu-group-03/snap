@@ -40,6 +40,7 @@ export const LoginForm = ({
   return (
     <View className="flex-1 justify-center p-4 ">
       <Image
+        // eslint-disable-next-line react-native/no-inline-styles
         style={{ width: 100, height: 100, alignSelf: 'center' }}
         source={require('../../../assets/icon.png')}
       />
@@ -47,13 +48,6 @@ export const LoginForm = ({
       <Text testID="form-title" variant="h1" className="pb-6 text-center">
         Welcome
       </Text>
-
-      <ControlledInput
-        testID="name"
-        control={control}
-        name="name"
-        label="Name"
-      />
 
       <ControlledInput
         testID="email-input"

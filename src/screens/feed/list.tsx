@@ -6,11 +6,15 @@ import type { Snap } from '@/api';
 import { useSnaps } from '@/api';
 import { getUserState } from '@/core';
 import { EmptyList, FocusAwareStatusBar, Text, View } from '@/ui';
+import axios from 'axios';
 
 import { Card } from './card';
 
 const INCREMENT_RENDER = 10;
 const INITIAL_RENDER = 20;
+
+const BASE_INTERACTION_URL =
+  'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
 
 export const Feed = () => {
   const currentUser = getUserState();
@@ -20,7 +24,11 @@ export const Feed = () => {
   const { navigate } = useNavigation();
 
   // State to track the number of items to render
-  const [renderCount, setRenderCount] = useState(INITIAL_RENDER); // Adjust the initial count as needed
+  const [renderCount, setRenderCount] = useState(INITIAL_RENDER);
+
+  const client = axios.create({
+    baseURL: BASE_INTERACTION_URL,
+  });
 
   // Corrected renderItem function
   const renderItem = ({ item, index }: { item: Snap; index: number }) => {
@@ -28,7 +36,11 @@ export const Feed = () => {
     console.log(`renderItem: ${index}: ${renderCount}`);
     if (index < renderCount) {
       return (
-        <Card snap={item} onPress={() => navigate('Snap', { id: item.id })} />
+        <Card
+          snap={item}
+          client={client}
+          onPress={() => navigate('Snap', { id: item.id })}
+        />
       );
     }
     return null;
@@ -65,7 +77,7 @@ export const Feed = () => {
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.1}
         // Adjust the threshold as needed
-        getItemLayout={(data, index) => ({
+        getItemLayout={(_data, index) => ({
           length: 100, // Adjust the item length as needed
           offset: 100 * index,
           index,
