@@ -4,7 +4,7 @@ import { FocusAwareStatusBar, View, Image, Text } from '@/ui';
 const ProfileScreenView = ({ user }: { user: UserType | null }) => {
   return (
     <View>
-      <View className="relative max-w-md mx-auto md:max-w-2xl mt-6 min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-xl mt-16">
+      <View className="relative max-w-md mx-auto md:max-w-2xl min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-xl mt-3">
         <View className="px-6">
           <View className="flex flex-wrap justify-center">
             <View className="w-full flex justify-center items-center text-center">
@@ -46,7 +46,7 @@ const ProfileScreenView = ({ user }: { user: UserType | null }) => {
               </Text>
             </View>
           </View>
-          <View className="mt-6 py-6 border-t border-slate-200 text-center">
+          <View className="mt-1 py-3 border-t border-slate-200 text-center">
             <View className="flex flex-wrap justify-center">
               <View className="w-full px-4">
                 <Text className="font-light leading-relaxed text-slate-600 mb-4">

@@ -54,13 +54,13 @@ const MySnapsView = ({ data }: { data: Snap[] }) => {
     console.log(`handleEndReached after: ${renderCount}`);
   };
 
-  //   if (data.length === 0) {
-  //     return (
-  //       <View>
-  //         <Text> No Snaps</Text>
-  //       </View>
-  //     );
-  //   }
+  if (data.length === 0) {
+    return (
+      <View>
+        <Text className="text-center"> No Snaps</Text>
+      </View>
+    );
+  }
 
   return (
     <>
