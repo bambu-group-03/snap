@@ -6,7 +6,7 @@ import {
   faSmile,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Image, Input, Text, TouchableOpacity, View } from '@/ui';
 import { UserType } from '@/core/auth/utils';
@@ -19,6 +19,7 @@ import { z } from 'zod';
 import { useAddSnap } from '@/api';
 import { getUserState } from '@/core';
 import { Button, ControlledInput, showErrorMessage } from '@/ui';
+import DropdownMenu from './snap-visibility-menu';
 
 const schema = z.object({
   content: z.string().max(180),
@@ -27,6 +28,12 @@ const schema = z.object({
 type FormType = z.infer<typeof schema>;
 
 export const Compose = ({ user }: { user: UserType | undefined }) => {
+  const [replyOption, setReplyOption] = useState('Everyone can reply');
+
+  const handleMenuSelection = (selectedOption: string) => {
+    setReplyOption(selectedOption);
+  };
+
   const { control, handleSubmit } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
@@ -73,11 +80,23 @@ export const Compose = ({ user }: { user: UserType | undefined }) => {
               testID="body-input"
             />
 
-            <TouchableOpacity className="-ml-4 pr-12 text-blue-400">
-              <Text className="inline rounded-full bg-blue-100 px-4 py-3">
+            {/* <TouchableOpacity className="-ml-4 pr-12 text-blue-400"> */}
+
+            {/* <Text className="inline rounded-full bg-blue-100 px-4 py-3">
                 <FontAwesomeIcon icon={faGlobe} /> Everyone can reply
+              </Text> */}
+
+            <View className="flex flex-row p-4">
+              <Text className="inline rounded-full bg-blue-100 px-4 py-3">
+                <View id="textee" className="ml-3 w-full flex-1">
+                  <DropdownMenu
+                    replyOption={replyOption}
+                    handleMenuSelection={handleMenuSelection}
+                  />
+                </View>
               </Text>
-            </TouchableOpacity>
+            </View>
+            {/* </TouchableOpacity> */}
           </View>
         </View>
         <View className="flex flex-row items-center justify-between border-t border-gray-500  p-2 text-blue-400">
