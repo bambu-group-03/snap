@@ -9,37 +9,8 @@ import { useAddSnap } from '@/api';
 import { getUserState } from '@/core';
 import { Button, ControlledInput, showErrorMessage, View } from '@/ui';
 
-const schema = z.object({
-  content: z.string().max(180),
-});
-
-type FormType = z.infer<typeof schema>;
-
 export const AddSnap = () => {
-  const { control, handleSubmit } = useForm<FormType>({
-    resolver: zodResolver(schema),
-  });
-  const { mutate: addSnap, isLoading } = useAddSnap();
-  const currentUser = getUserState();
-  const onSubmit = (data: FormType) => {
-    console.log(data);
-    addSnap(
-      { ...data, user_id: currentUser?.id, parent_id: '' }, //TODO: parent_id changes when re-snap
-      {
-        onSuccess: () => {
-          showMessage({
-            message: 'Snap added successfully',
-            type: 'success',
-          });
-          // here you can navigate to the post list and refresh the list data
-          //queryClient.invalidateQueries(useSnaps.getKey());
-        },
-        onError: () => {
-          showErrorMessage('Error adding post');
-        },
-      }
-    );
-  };
+  const userData = getUserState();
   return (
     <View className=" ">
       {/* <ControlledInput
@@ -56,7 +27,7 @@ export const AddSnap = () => {
         testID="add-post-button"
       /> */}
 
-      <Compose></Compose>
+      <Compose user={userData}></Compose>
     </View>
   );
 };
