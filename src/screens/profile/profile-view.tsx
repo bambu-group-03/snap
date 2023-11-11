@@ -18,8 +18,8 @@ const ProfileScreenView = ({ user }: { user: UserType | undefined }) => {
                 @{user?.username}
               </Text>
             </View>
-            <View className="w-full text-center mt-5 border-t border-blueGray-200">
-              <View className="flex justify-center lg:pt-4 pt-2 pb-0 flex-row ">
+            <View className="w-full text-center mt-5 ">
+              <View className="flex justify-center lg:pt-4 pb-0 flex-row ">
                 <View className="p-3 text-center">
                   <TouchableOpacity onPress={() => console.log('Followers')}>
                     <Text className="text-xl font-bold block uppercase tracking-wide text-slate-700 text-center">
@@ -77,6 +77,7 @@ const ProfileScreenView = ({ user }: { user: UserType | undefined }) => {
               </View>
             </View>
           </View>
+          <View className="border-t border-blueGray-200"></View>
         </View>
       </View>
     </View>

@@ -63,8 +63,8 @@ const ProfileScreen = () => {
         <ScrollView>
           <ProfileScreenView user={userData} />
         </ScrollView>
-        <MySnapsView data={userSnaps} />
       </View>
+      <MySnapsView data={userSnaps} />
     </>
   );
 };
