@@ -1,5 +1,5 @@
 import { UserType } from '@/core/auth/utils';
-import { FocusAwareStatusBar, View, Image, Text } from '@/ui';
+import { FocusAwareStatusBar, View, Image, Text, TouchableOpacity } from '@/ui';
 
 const ProfileScreenView = ({ user }: { user: UserType | null }) => {
   return (
@@ -21,17 +21,39 @@ const ProfileScreenView = ({ user }: { user: UserType | null }) => {
             <View className="w-full text-center mt-5 border-t border-blueGray-200">
               <View className="flex justify-center lg:pt-4 pt-2 pb-0 flex-row ">
                 <View className="p-3 text-center">
-                  <Text className="text-xl font-bold block uppercase tracking-wide text-slate-700 text-center">
-                    2,454
-                  </Text>
-                  <Text className="text-sm text-slate-400">Followers</Text>
+                  <TouchableOpacity onPress={() => console.log('Followers')}>
+                    <Text className="text-xl font-bold block uppercase tracking-wide text-slate-700 text-center">
+                      2,454
+                    </Text>
+
+                    <Text
+                      className="text-sm text-slate-400"
+                      style={{
+                        color: '#0077cc',
+                        textDecorationLine: 'underline',
+                      }}
+                    >
+                      Followers
+                    </Text>
+                  </TouchableOpacity>
                 </View>
 
                 <View className="p-3 text-center">
-                  <Text className="text-xl font-bold block uppercase tracking-wide text-slate-700 text-center">
-                    564
-                  </Text>
-                  <Text className="text-sm text-slate-400 ">Following</Text>
+                  <TouchableOpacity onPress={() => console.log('Following')}>
+                    <Text className="text-xl font-bold block uppercase tracking-wide text-slate-700 text-center">
+                      564
+                    </Text>
+
+                    <Text
+                      className="text-sm text-slate-400"
+                      style={{
+                        color: '#0077cc',
+                        textDecorationLine: 'underline',
+                      }}
+                    >
+                      Following
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
