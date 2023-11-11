@@ -1,6 +1,7 @@
 import { FocusAwareStatusBar } from '@/ui';
 import { ScrollView } from 'react-native-gesture-handler';
 import ProfileScreenView from './profile-view';
+import MySnapsView from './my-snaps-view';
 import { UserType } from '@/core/auth/utils';
 
 const MY_PROFILE_PHOTO =
@@ -25,6 +26,7 @@ const ProfileScreen = () => {
       <FocusAwareStatusBar />
       <ScrollView>
         <ProfileScreenView user={user} />
+        <MySnapsView />
       </ScrollView>
     </>
   );
