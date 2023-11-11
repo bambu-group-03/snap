@@ -1,7 +1,7 @@
 import { UserType } from '@/core/auth/utils';
 import { FocusAwareStatusBar, View, Image, Text, TouchableOpacity } from '@/ui';
 
-const ProfileScreenView = ({ user }: { user: UserType | null }) => {
+const ProfileScreenView = ({ user }: { user: UserType | undefined }) => {
   return (
     <View>
       <View className="relative max-w-md mx-auto md:max-w-2xl min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-xl mt-3">
