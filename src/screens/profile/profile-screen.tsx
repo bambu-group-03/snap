@@ -8,10 +8,10 @@ import { useEffect, useState } from 'react';
 import { Snap } from '@/api';
 import { getUserState } from '@/core';
 
-const BASE_USER_URL =
-  'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/';
-
 const BASE_INTERACTION_URL =
+  'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/interactions/';
+
+const BASE_SNAP_URL =
   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/feed/';
 
 const ProfileScreen = () => {
@@ -19,27 +19,43 @@ const ProfileScreen = () => {
   const userData = getUserState();
 
   const [userSnaps, setUserSnaps] = useState<Snap[]>([]);
+  const [userFollowerCount, setUserFollowerCount] = useState<number>(0);
+  const [userFollowingCount, setUserFollowingCount] = useState<number>(0);
 
-  //const [userData, setUserData] = useState<UserType | null>(null);
-  // useEffect(() => {
-  //   axios
-  //     .get(BASE_USER_URL + 'users/' + userID)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setUserData(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }, [userID]);
+  // Pido la cantidad de followers
+  useEffect(() => {
+    axios
+      .get(BASE_INTERACTION_URL + userData?.id + '/count_followers')
+      .then((response) => {
+        console.log(response.data);
+        setUserFollowerCount(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [userData]);
 
+  // Pido la cantidad de following
+  useEffect(() => {
+    axios
+      .get(BASE_INTERACTION_URL + userData?.id + '/count_following')
+      .then((response) => {
+        console.log(response.data);
+        setUserFollowingCount(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [userData]);
+
+  // Pido los snaps del usuario
   useEffect(() => {
     const limit = 100;
     const offset = 0;
 
     axios
       .get(
-        BASE_INTERACTION_URL +
+        BASE_SNAP_URL +
           userData?.id +
           '/snaps?limit=' +
           limit +
@@ -61,7 +77,11 @@ const ProfileScreen = () => {
       <FocusAwareStatusBar />
       <View>
         <ScrollView>
-          <ProfileScreenView user={userData} />
+          <ProfileScreenView
+            user={userData}
+            follower_count={userFollowerCount}
+            following_count={userFollowingCount}
+          />
         </ScrollView>
       </View>
       <MySnapsView data={userSnaps} />
