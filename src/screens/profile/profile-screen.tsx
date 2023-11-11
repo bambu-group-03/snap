@@ -48,8 +48,9 @@ const ProfileScreen = () => {
           offset
       )
       .then((response) => {
+        console.log('Recibi de Snaps');
         console.log(response.data);
-        setUserSnaps(response.data);
+        setUserSnaps(response.data.snaps);
       })
       .catch((error) => {
         console.error(error);
@@ -61,8 +62,8 @@ const ProfileScreen = () => {
       <FocusAwareStatusBar />
       <ScrollView>
         <ProfileScreenView user={userData} />
-        <MySnapsView snaps={userSnaps} />
       </ScrollView>
+      <MySnapsView data={userSnaps} />
     </>
   );
 };
