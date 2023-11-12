@@ -35,7 +35,7 @@ const MySnapsView = ({ data }: { data: Snap[] }) => {
         <Card
           snap={item}
           client={client}
-          onPress={() => navigate('Snap', { id: item.id })}
+          onPress={() => navigate('Snap', { snap: item })}
         />
       );
     }

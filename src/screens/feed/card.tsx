@@ -28,8 +28,6 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
     day: '2-digit',
   });
 
-  // const user: UserType = get_user(snap.author).then((user) => user);
-
   const [user, setUser] = useState<UserType>();
 
   // Pido la cantidad de followers

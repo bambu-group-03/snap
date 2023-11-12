@@ -18,6 +18,7 @@ const BASE_INTERACTION_URL =
 
 export const Feed = () => {
   const currentUser = getUserState();
+
   const { data, isLoading, isError } = useSnaps({
     variables: { user_id: currentUser?.id },
   });
@@ -39,7 +40,7 @@ export const Feed = () => {
         <Card
           snap={item}
           client={client}
-          onPress={() => navigate('Snap', { id: item.id })}
+          onPress={() => navigate('Snap', { snap: item })}
         />
       );
     }
