@@ -10,5 +10,6 @@ export type Snap = {
   shares: number;
   has_shared: boolean;
   favs: number;
-  numberComments: number;
+  num_replies: number;
+  profile_photo_url: string;
 };
