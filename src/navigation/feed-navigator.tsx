@@ -4,12 +4,13 @@ import * as React from 'react';
 
 import { AddSnap, Feed, Snap } from '@/screens';
 import { Pressable, Text } from '@/ui';
-
+import { UserType } from '@/core/auth/utils';
+import type { Snap as SnapType } from '@/api';
 import { GoToLogout } from './auth-navigator';
 
 export type FeedStackParamList = {
   Feed: undefined;
-  Snap: { id: number };
+  Snap: { snap: SnapType };
   AddSnap: undefined;
   Auth: undefined;
 };

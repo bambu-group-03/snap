@@ -1,6 +1,7 @@
 export type Snap = {
-  id: number;
+  id: string;
   username: string;
+  fullname: string;
   author: string;
   content: string;
   created_at: string;

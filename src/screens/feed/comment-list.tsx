@@ -1,13 +1,11 @@
-import { useNavigation } from '@react-navigation/native';
+import { FocusAwareStatusBar, View, Text, EmptyList } from '@/ui';
+import { Snap, userReplySnaps } from '@/api';
 import React, { useState } from 'react';
-import { FlatList } from 'react-native'; // Import FlatList
-import type { Snap } from '@/api';
-import { useSnaps } from '@/api';
-import { getUserState } from '@/core';
-import { EmptyList, FocusAwareStatusBar, Text, View } from '@/ui';
-import axios from 'axios';
-
+import { FlatList } from 'react-native';
+import { AxiosInstance } from 'axios';
+import { useNavigation } from '@react-navigation/native';
 import { Card } from './card';
+import { getUserState } from '@/core';
 
 const INCREMENT_RENDER = 10;
 const INITIAL_RENDER = 20;
@@ -15,25 +13,27 @@ const INITIAL_RENDER = 20;
 const BASE_INTERACTION_URL =
   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
 
-export const Feed = () => {
+export const Comments = ({
+  snap,
+  client,
+}: {
+  snap: Snap;
+  client: AxiosInstance;
+}) => {
   const currentUser = getUserState();
 
-  const { data, isLoading, isError } = useSnaps({
-    variables: { user_id: currentUser?.id },
+  const { data, isLoading, isError } = userReplySnaps({
+    variables: { snap_id: snap?.id, user_id: currentUser?.id },
   });
   const { navigate } = useNavigation();
 
   // State to track the number of items to render
   const [renderCount, setRenderCount] = useState(INITIAL_RENDER);
 
-  const client = axios.create({
-    baseURL: BASE_INTERACTION_URL,
-  });
-
   // Corrected renderItem function
   const renderItem = ({ item, index }: { item: Snap; index: number }) => {
-    // // Render the item only if its index is within the current renderCount
-    // console.log(`renderItem: ${index}: ${renderCount}`);
+    // Render the item only if its index is within the current renderCount
+    console.log(`renderItem: ${index}: ${renderCount}`);
     if (index < renderCount) {
       return (
         <Card
@@ -55,7 +55,7 @@ export const Feed = () => {
       setRenderCount(renderCount + INCREMENT_RENDER);
     }
 
-    // console.log(`handleEndReached after: ${renderCount}`);
+    console.log(`handleEndReached after: ${renderCount}`);
   };
 
   if (isError) {
@@ -76,9 +76,8 @@ export const Feed = () => {
         ListEmptyComponent={<EmptyList isLoading={isLoading} />}
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.1}
-        // Adjust the threshold as needed
         getItemLayout={(_data, index) => ({
-          length: 100, // Adjust the item length as needed
+          length: 100,
           offset: 100 * index,
           index,
         })}
