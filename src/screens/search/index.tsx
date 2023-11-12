@@ -56,11 +56,9 @@ export const FormForSearch: React.FC<SearchFormProps> = ({
     setIsAnyFieldFilled(anyFieldFilled);
   }, [watchedFields]);
 
-  const shouldDisableField = (fieldName: string) => {
-    // Deshabilitar el campo si otro campo está lleno (noa vacío)
-    // y este campo específico está vacío
-    const isFieldEmpty =
-      !watchedFields[fieldName] || watchedFields[fieldName].trim() === '';
+  const shouldDisableField = (fieldName: keyof FormType) => {
+    const fieldValue = watchedFields[fieldName];
+    const isFieldEmpty = !fieldValue || fieldValue.trim() === '';
     return isAnyFieldFilled && isFieldEmpty;
   };
 
