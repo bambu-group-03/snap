@@ -22,3 +22,15 @@ export const useAddSnap = createMutation<Response, Variables, AxiosError>({
       return response.data;
     }),
 });
+
+export const useAddReply = createMutation<Response, Variables, AxiosError>({
+  mutationFn: async (variables) =>
+    client({
+      url: '/api/feed/reply',
+      method: 'POST',
+      data: variables,
+    }).then((response) => {
+      console.log('response.data by useAddReply', response.data);
+      return response.data;
+    }),
+});

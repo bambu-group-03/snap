@@ -62,7 +62,7 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
           </View>
           <View className="mx-3">
             <Text className="text-base font-medium leading-6 text-black">
-              {snap.username}
+              {snap.fullname}
               <Text className="text-sm font-medium leading-5 text-gray-400 transition duration-150 ease-in-out group-hover:text-gray-300">
                 {' '}
                 @{snap.username ? snap.username : 'default'} . {formattedDate}

@@ -43,7 +43,7 @@ export const Compose = ({ user }: { user: UserType | undefined }) => {
   const onSubmit = (data: FormType) => {
     console.log(data);
     addSnap(
-      { ...data, user_id: currentUser?.id, parent_id: '' }, //TODO: parent_id changes when re-snap
+      { ...data, user_id: currentUser?.id, parent_id: '' },
       {
         onSuccess: () => {
           showMessage({
@@ -73,7 +73,7 @@ export const Compose = ({ user }: { user: UserType | undefined }) => {
           <View id="textee" className="ml-3 w-full flex-1">
             <ControlledInput
               name="content"
-              label="What's happening?"
+              placeholder="What's happening?"
               className="h-32 w-full resize-none text-xl outline-none"
               control={control}
               multiline
