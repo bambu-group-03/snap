@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { FlatList } from 'react-native'; // Import FlatList
-
+import { FlatList, RefreshControl } from 'react-native'; // Import FlatList
 import type { Snap } from '@/api';
 import { useSnaps } from '@/api';
 import { getUserState } from '@/core';
@@ -16,8 +15,14 @@ const INITIAL_RENDER = 20;
 const BASE_INTERACTION_URL =
   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
 
-const MySnapsView = ({ data }: { data: Snap[] }) => {
+const MySnapsView = () => {
+  const currentUser = getUserState();
+
   const { navigate } = useNavigation();
+
+  const { data, isLoading, isError, refetch } = useSnaps({
+    variables: { user_id: currentUser?.id },
+  });
 
   // State to track the number of items to render
   const [renderCount, setRenderCount] = useState(INITIAL_RENDER);
@@ -54,13 +59,20 @@ const MySnapsView = ({ data }: { data: Snap[] }) => {
     console.log(`handleEndReached after: ${renderCount}`);
   };
 
-  if (data.length === 0) {
+  if (isError) {
     return (
       <View>
-        <Text className="py-10 text-center"> No Snaps</Text>
+        <Text> Error Loading data </Text>
       </View>
     );
   }
+
+  const [refresh, setRefresh] = useState(false);
+
+  let onRefresh = React.useCallback(() => {
+    setRefresh(true);
+    refetch().then(() => setRefresh(false));
+  }, []);
 
   return (
     <>
@@ -72,6 +84,9 @@ const MySnapsView = ({ data }: { data: Snap[] }) => {
         // ListEmptyComponent={<EmptyList isLoading={isLoading} />}
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.1}
+        refreshControl={
+          <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+        }
         // Adjust the threshold as needed
         getItemLayout={(_data, index) => ({
           length: 100, // Adjust the item length as needed

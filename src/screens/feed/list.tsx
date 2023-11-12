@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { FlatList } from 'react-native'; // Import FlatList
+import React, { useEffect, useState } from 'react';
+import { FlatList, RefreshControl } from 'react-native'; // Import FlatList
 import type { Snap } from '@/api';
 import { useSnaps } from '@/api';
 import { getUserState } from '@/core';
@@ -8,6 +8,7 @@ import { EmptyList, FocusAwareStatusBar, Text, View } from '@/ui';
 import axios from 'axios';
 
 import { Card } from './card';
+import { set } from 'zod';
 
 const INCREMENT_RENDER = 10;
 const INITIAL_RENDER = 20;
@@ -18,9 +19,10 @@ const BASE_INTERACTION_URL =
 export const Feed = () => {
   const currentUser = getUserState();
 
-  const { data, isLoading, isError } = useSnaps({
+  const { data, isLoading, isError, refetch } = useSnaps({
     variables: { user_id: currentUser?.id },
   });
+
   const { navigate } = useNavigation();
 
   // State to track the number of items to render
@@ -66,9 +68,17 @@ export const Feed = () => {
     );
   }
 
+  const [refresh, setRefresh] = useState(false);
+
+  let onRefresh = React.useCallback(() => {
+    setRefresh(true);
+    refetch().then(() => setRefresh(false));
+  }, []);
+
   return (
-    <>
+    <View>
       <FocusAwareStatusBar />
+
       <FlatList
         data={data}
         renderItem={renderItem}
@@ -76,6 +86,9 @@ export const Feed = () => {
         ListEmptyComponent={<EmptyList isLoading={isLoading} />}
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.1}
+        refreshControl={
+          <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+        }
         // Adjust the threshold as needed
         getItemLayout={(_data, index) => ({
           length: 100, // Adjust the item length as needed
@@ -83,6 +96,6 @@ export const Feed = () => {
           index,
         })}
       />
-    </>
+    </View>
   );
 };

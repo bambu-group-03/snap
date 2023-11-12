@@ -1,7 +1,7 @@
 import { FocusAwareStatusBar, View, Text, EmptyList } from '@/ui';
 import { Snap, userReplySnaps } from '@/api';
 import React, { useState } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import { AxiosInstance } from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { Card } from './card';
@@ -22,9 +22,10 @@ export const Comments = ({
 }) => {
   const currentUser = getUserState();
 
-  const { data, isLoading, isError } = userReplySnaps({
+  const { data, isLoading, isError, refetch } = userReplySnaps({
     variables: { snap_id: snap?.id, user_id: currentUser?.id },
   });
+
   const { navigate } = useNavigation();
 
   // State to track the number of items to render
@@ -66,6 +67,13 @@ export const Comments = ({
     );
   }
 
+  const [refresh, setRefresh] = useState(false);
+
+  let onRefresh = React.useCallback(() => {
+    setRefresh(true);
+    refetch().then(() => setRefresh(false));
+  }, []);
+
   return (
     <>
       <FocusAwareStatusBar />
@@ -75,6 +83,9 @@ export const Comments = ({
         keyExtractor={(_, index) => `item-${index}`}
         ListEmptyComponent={<EmptyList isLoading={isLoading} />}
         onEndReached={handleEndReached}
+        refreshControl={
+          <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+        }
         onEndReachedThreshold={0.1}
         getItemLayout={(_data, index) => ({
           length: 100,

@@ -49,28 +49,28 @@ const ProfileScreen = () => {
   }, [userData]);
 
   // Pido los snaps del usuario
-  useEffect(() => {
-    const limit = 100;
-    const offset = 0;
+  // useEffect(() => {
+  //   const limit = 100;
+  //   const offset = 0;
 
-    axios
-      .get(
-        BASE_SNAP_URL +
-          userData?.id +
-          '/snaps?limit=' +
-          limit +
-          '&offset=' +
-          offset
-      )
-      .then((response) => {
-        console.log('Recibi de Snaps');
-        console.log(response.data);
-        setUserSnaps(response.data.snaps);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [userData]);
+  //   axios
+  //     .get(
+  //       BASE_SNAP_URL +
+  //         userData?.id +
+  //         '/snaps?limit=' +
+  //         limit +
+  //         '&offset=' +
+  //         offset
+  //     )
+  //     .then((response) => {
+  //       console.log('Recibi de Snaps');
+  //       console.log(response.data);
+  //       setUserSnaps(response.data.snaps);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, [userData]);
 
   return (
     <>
@@ -84,7 +84,7 @@ const ProfileScreen = () => {
           />
         </ScrollView>
       </View>
-      <MySnapsView data={userSnaps} />
+      <MySnapsView />
     </>
   );
 };
