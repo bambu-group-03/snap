@@ -5,6 +5,7 @@ import { FlatList } from 'react-native';
 import { AxiosInstance } from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { Card } from './card';
+import { getUserState } from '@/core';
 
 const INCREMENT_RENDER = 10;
 const INITIAL_RENDER = 20;
@@ -19,8 +20,10 @@ export const Comments = ({
   snap: Snap;
   client: AxiosInstance;
 }) => {
+  const currentUser = getUserState();
+
   const { data, isLoading, isError } = userReplySnaps({
-    variables: { snap_id: snap?.id },
+    variables: { snap_id: snap?.id, user_id: currentUser?.id },
   });
   const { navigate } = useNavigation();
 
