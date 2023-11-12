@@ -20,7 +20,7 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
   const [isRetweeted, setIsRetweeted] = useState(snap.has_shared);
   const [isLiked, setIsLiked] = useState(snap.has_liked);
   const [commentCount, setCommentCount] = useState(
-    snap.numberComments ? snap.numberComments : 0
+    snap.num_replies ? snap.num_replies : 0
   );
   const formattedDate = new Date(snap.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -138,10 +138,7 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
                   setIsLiked(!isLiked);
                 }}
               />
-              <CommentButton
-                commentCount={commentCount}
-                onPress={() => setCommentCount(commentCount + 1)}
-              />
+              <CommentButton commentCount={commentCount} onPress={() => {}} />
               <ShareButton />
             </View>
           </View>
