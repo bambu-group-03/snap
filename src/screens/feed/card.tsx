@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import type { Snap } from '@/api';
 import { Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
@@ -8,12 +8,14 @@ import HeartButton from './heart-button';
 import ResnapButton from './re-snap-button';
 import ShareButton from './share-button';
 import axios, { AxiosInstance } from 'axios';
+import { UserType } from '@/core/auth/utils';
 
 type Props = {
   snap: Snap;
   client: AxiosInstance;
   onPress?: () => void;
 };
+
 export const Card = ({ snap, client, onPress = () => {} }: Props) => {
   const [isRetweeted, setIsRetweeted] = useState(snap.has_shared);
   const [isLiked, setIsLiked] = useState(snap.has_liked);
@@ -26,6 +28,26 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
     day: '2-digit',
   });
 
+  // const user: UserType = get_user(snap.author).then((user) => user);
+
+  const [user, setUser] = useState<UserType>();
+
+  // Pido la cantidad de followers
+  useEffect(() => {
+    axios
+      .get(
+        'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/users/' +
+          snap.author
+      )
+      .then((response) => {
+        console.log(response.data);
+        setUser(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [snap]);
+
   console.log(snap);
 
   return (
@@ -36,7 +58,7 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
             <Image
               className="inline-block h-10 w-10 rounded-full"
               source={{
-                uri: 'https://avatars.githubusercontent.com/u/56934023?v=4',
+                uri: user?.profile_photo_id ? user?.profile_photo_id : '',
               }}
             />
           </View>
