@@ -28,24 +28,6 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
     day: '2-digit',
   });
 
-  const [user, setUser] = useState<UserType>();
-
-  // Pido la cantidad de followers
-  useEffect(() => {
-    axios
-      .get(
-        'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/users/' +
-          snap.author
-      )
-      .then((response) => {
-        console.log(response.data);
-        setUser(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [snap]);
-
   console.log(snap);
 
   return (
@@ -56,7 +38,7 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
             <Image
               className="inline-block h-10 w-10 rounded-full"
               source={{
-                uri: user?.profile_photo_id ? user?.profile_photo_id : '',
+                uri: snap.profile_photo_url,
               }}
             />
           </View>
@@ -89,7 +71,9 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
                   if (isRetweeted) {
                     interaction = '/unshare/';
                     method = 'DELETE';
-                    snap.shares--;
+                    if (snap.shares > 0) {
+                      snap.shares--;
+                    }
                   } else {
                     interaction = '/share/';
                     method = 'POST';
@@ -118,7 +102,9 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
                   if (isLiked) {
                     interaction = '/unlike/';
                     method = 'DELETE';
-                    snap.likes--;
+                    if (snap.likes > 0) {
+                      snap.likes--;
+                    }
                   } else {
                     interaction = '/like/';
                     method = 'POST';

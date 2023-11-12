@@ -81,7 +81,7 @@ const MySnapsView = () => {
         data={data}
         renderItem={renderItem}
         keyExtractor={(_, index) => `item-${index}`}
-        // ListEmptyComponent={<EmptyList isLoading={isLoading} />}
+        ListEmptyComponent={<EmptyList isLoading={isLoading} />}
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.1}
         refreshControl={

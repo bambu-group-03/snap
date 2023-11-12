@@ -11,4 +11,5 @@ export type Snap = {
   has_shared: boolean;
   favs: number;
   num_replies: number;
+  profile_photo_url: string;
 };
