@@ -32,8 +32,8 @@ export const Feed = () => {
 
   // Corrected renderItem function
   const renderItem = ({ item, index }: { item: Snap; index: number }) => {
-    // Render the item only if its index is within the current renderCount
-    console.log(`renderItem: ${index}: ${renderCount}`);
+    // // Render the item only if its index is within the current renderCount
+    // console.log(`renderItem: ${index}: ${renderCount}`);
     if (index < renderCount) {
       return (
         <Card
@@ -55,7 +55,7 @@ export const Feed = () => {
       setRenderCount(renderCount + INCREMENT_RENDER);
     }
 
-    console.log(`handleEndReached after: ${renderCount}`);
+    // console.log(`handleEndReached after: ${renderCount}`);
   };
 
   if (isError) {

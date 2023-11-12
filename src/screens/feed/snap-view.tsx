@@ -15,10 +15,12 @@ export const SnapView = ({ snap }: { snap: Snap }) => {
   });
 
   return (
-    <View>
-      <Card snap={snap} client={client} />
-      <CommentInput snap={snap} />
-      <Comments snap={snap} client={client}></Comments>
-    </View>
+    <>
+      <View>
+        <Card snap={snap} client={client} />
+        <CommentInput snap={snap} />
+      </View>
+      <Comments snap={snap} client={client} />
+    </>
   );
 };
