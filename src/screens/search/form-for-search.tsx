@@ -9,6 +9,7 @@ import { getUserState } from '@/core';
 import type { UserType } from '@/core/auth/utils';
 import { Button, ControlledInput, ScrollView, View } from '@/ui';
 import { FormType, SearchFormProps, schema } from './search-bar';
+import { useNavigation } from '@react-navigation/native';
 
 export const FormForSearch: React.FC<SearchFormProps> = ({
   onSearchSubmit = () => {},
@@ -16,6 +17,8 @@ export const FormForSearch: React.FC<SearchFormProps> = ({
   const { handleSubmit, control, watch } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
+
+  const { navigate } = useNavigation();
 
   const watchedFields = watch();
   const [isAnyFieldFilled, setIsAnyFieldFilled] =
