@@ -1,16 +1,15 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react';
+import type { NavigationProp } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import type { Snap } from '@/api';
 import { getUserState } from '@/core';
 import type { UserType } from '@/core/auth/utils';
-import { Button, ControlledInput, ScrollView, View } from '@/ui';
+
 import { FormForSearch } from './form-for-search';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { SearchStackParamList } from './search-navigator';
+import type { SearchStackParamList } from './search-navigator';
 
 export const schema = z.object({
   username: z
@@ -30,17 +29,13 @@ export const schema = z.object({
 export type FormType = z.infer<typeof schema>;
 
 export interface SearchFormProps {
-  onSearchSubmit?: (
-    data: FormType,
-    navigate: NavigationProp<SearchStackParamList>['navigate']
-  ) => Promise<void>;
+  onSearchSubmit?: SubmitHandler<FormType>;
 }
 
 const whenSearch = async (
   data: FormType,
   navigate: NavigationProp<SearchStackParamList>['navigate']
 ) => {
-  const [users, setUsers] = useState<UserType[]>([]);
   const currentUser = getUserState();
 
   console.log(data);
@@ -75,13 +70,10 @@ const whenSearch = async (
 
 export const SearchBar: React.FC = () => {
   const { navigate } = useNavigation<NavigationProp<SearchStackParamList>>();
-  return (
-    <FormForSearch
-      onSearchSubmit={async (data) => {
-        // Call whenSearch with data and navigate function
-        console.log('ONSEARCHSUBMIT fue ejecutada');
-        whenSearch(data, navigate);
-      }}
-    />
-  );
+
+  const handleSearchSubmit: SubmitHandler<FormType> = async (data) => {
+    console.log('ONSEARCHSUBMIT was executed');
+    await whenSearch(data, navigate);
+  };
+  return <FormForSearch onSearchSubmit={handleSearchSubmit} />;
 };

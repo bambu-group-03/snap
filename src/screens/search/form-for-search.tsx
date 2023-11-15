@@ -1,15 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
-import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
 
-import type { Snap } from '@/api';
-import { getUserState } from '@/core';
-import type { UserType } from '@/core/auth/utils';
 import { Button, ControlledInput, ScrollView, View } from '@/ui';
-import { FormType, SearchFormProps, schema } from './search-bar';
-import { useNavigation } from '@react-navigation/native';
+
+import type { FormType, SearchFormProps } from './search-bar';
+import { schema } from './search-bar';
 
 export const FormForSearch: React.FC<SearchFormProps> = ({
   onSearchSubmit = () => {},
@@ -17,8 +13,6 @@ export const FormForSearch: React.FC<SearchFormProps> = ({
   const { handleSubmit, control, watch } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
-
-  const { navigate } = useNavigation();
 
   const watchedFields = watch();
   const [isAnyFieldFilled, setIsAnyFieldFilled] =
