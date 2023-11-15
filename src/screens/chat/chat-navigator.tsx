@@ -1,7 +1,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
-import { Chat, ChatBase } from '@/screens';
+import type { ChatBase } from '@/screens';
+import { Chat } from '@/screens';
 
 import ChatScreen from './chat-screen';
 

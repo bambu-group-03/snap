@@ -1,10 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
 import type { ChatBase } from './chat-list-screen';
 
-const ChatListHeader = ({ chats }: { chats: ChatBase[] }) => {
+const ChatListBody = ({ chats }: { chats: ChatBase[] }) => {
   const { navigate } = useNavigation();
   return (
     <View style={styles.list}>
@@ -34,7 +34,7 @@ const ChatListHeader = ({ chats }: { chats: ChatBase[] }) => {
   );
 };
 
-export default ChatListHeader;
+export default ChatListBody;
 
 const styles = {
   list: {},

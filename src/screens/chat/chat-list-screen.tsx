@@ -2,7 +2,6 @@ import React from 'react';
 import { View } from 'react-native';
 
 import ChatListBody from './chat-list-body';
-import ChatListHeader from './chat-list-header';
 
 export type ChatBase = {
   id: number;
@@ -14,7 +13,12 @@ export type ChatBase = {
   imageSource: string;
   unread_messages: boolean;
 };
-
+export type Message = {
+  from: number;
+  to: number;
+  messageContent: string;
+  imageSource: string;
+};
 const ChatListScreen = () => {
   const chats: ChatBase[] = [
     {
