@@ -1,76 +1,44 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
+
+import { getUserState } from '@/core';
 
 import ChatListBody from './chat-list-body';
 
-export type ChatBase = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  bio: string;
-  last_message: string;
-  imageSource: string;
-  unread_messages: boolean;
+export type Chat = {
+  chat_id: string;
+  owner_id: string;
+  other_id: string;
+  created_at: string;
 };
-export type Message = {
-  from: number;
-  to: number;
-  messageContent: string;
-  imageSource: string;
-};
+
 const ChatListScreen = () => {
-  const chats: ChatBase[] = [
-    {
-      id: 1,
-      firstName: 'Dani',
-      lastName: 'Vela',
-      email: 'dani@windster.com',
-      bio: '1/4 CEO de panda.corp',
-      last_message: 'Sos el rey del front',
-      imageSource: 'https://avatars.githubusercontent.com/u/56934023?v=4',
-      unread_messages: true,
-    },
-    {
-      id: 2,
-      firstName: 'Edu',
-      lastName: 'Cusihuaman',
-      email: 'edu@gmail.com',
-      bio: '1/4 CEO de panda.corp',
-      last_message: 'Amigo sacamos 10 en el TP',
-      imageSource: 'https://avatars.githubusercontent.com/u/43934057?v=4',
-      unread_messages: false,
-    },
-    {
-      id: 3,
-      firstName: 'Mafer',
-      lastName: '',
-      email: 'mafer@gmail.com',
-      bio: '1/4 CEO de panda.corp',
-      last_message: 'No me dejes en visto Luis',
-      imageSource: 'https://avatars.githubusercontent.com/u/62344533?v=4',
-      unread_messages: false,
-    },
-  ];
+  const [chats, setChats] = useState<Chat[]>([]);
+  const currentUser = getUserState(); // Assume this returns the current user
+
+  useEffect(() => {
+    const fetchChats = async () => {
+      try {
+        const response = await axios.get(
+          `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/chat/get_chats_by_user/${currentUser?.id}`
+        );
+        console.log(`chats from user ${currentUser?.id}`, response.data); // Assuming this returns the chats for the current user
+        setChats(response.data);
+      } catch (error) {
+        console.error('Error fetching chats:', error);
+      }
+    };
+
+    fetchChats();
+  }, [currentUser?.id]);
 
   return (
     <View style={styles.container}>
-      {/* <View style={styles.card}> */}
-
-      {/* Header */}
-      {/* <ChatListHeader /> */}
-
-      {/* navigate('Snap', { id: item.id }) */}
-
-      {/* List of chats */}
       <ChatListBody chats={chats} />
-      {/* <ChatListBody chats={chats} onPress={() => console.log('Me undieron')} /> */}
-
-      {/* <ChatScreen /> */}
     </View>
   );
 };
-
 const styles = {
   container: {
     flex: 1,

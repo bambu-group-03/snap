@@ -1,15 +1,16 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
-import type { ChatBase } from '@/screens';
-import { Chat } from '@/screens';
+import { Chat as ChatListScreen } from '@/screens';
 
+import type { Chat } from './chat-list-screen';
 import ChatScreen from './chat-screen';
 
 export type ChatStackParamList = {
   Chats: undefined;
-  ChatScreen: {
-    chat: ChatBase;
+  ChatMessagesScreen: {
+    chat: Chat;
+    user: UserType;
   };
 };
 
@@ -18,8 +19,8 @@ const Stack = createNativeStackNavigator<ChatStackParamList>();
 export const ChatNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Chats" component={Chat} />
-      <Stack.Screen name="ChatScreen" component={ChatScreen} />
+      <Stack.Screen name="Chats" component={ChatListScreen} />
+      <Stack.Screen name="ChatMessagesScreen" component={ChatScreen} />
     </Stack.Navigator>
   );
 };
