@@ -71,7 +71,7 @@ const ProfileScreen = () => {
           />
         </ScrollView>
       </View>
-      {/* <MySnapsView /> */}
+      <MySnapsView />
     </>
   );
 };
