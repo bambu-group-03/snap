@@ -20,16 +20,15 @@ const UserList = ({ users }: { users: UserType[] }) => {
   };
 
   return (
-    <View>
+    <>
       <FocusAwareStatusBar />
 
       <FlatList
         data={users}
         renderItem={renderItem}
-        maxToRenderPerBatch={1}
         keyExtractor={(item) => item.id}
       />
-    </View>
+    </>
   );
 };
 

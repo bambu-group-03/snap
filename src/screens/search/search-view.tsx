@@ -23,10 +23,10 @@ const SearchView = () => {
       .catch((error) => {
         console.error('Request failed:', error);
       });
-  }, [users]);
+  }, []);
 
   return (
-    <View>
+    <>
       <FocusAwareStatusBar />
       <View>
         <ScrollView>
@@ -35,7 +35,7 @@ const SearchView = () => {
       </View>
 
       <UserList users={users} />
-    </View>
+    </>
   );
 };
 
