@@ -11,6 +11,7 @@ import {
 import { getUserState } from '@/core';
 import { useState } from 'react';
 import { AxiosInstance } from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileScreenView = ({
   user,
@@ -28,6 +29,10 @@ const ProfileScreenView = ({
   const userData = getUserState();
 
   const [isFollowing, setIsFollowing] = useState<boolean>(user_is_followed);
+  const [followerCount, setFollowerCount] = useState<number>(follower_count);
+  const [followingCount, setFollowingCount] = useState<number>(following_count);
+
+  const navigate = useNavigation();
 
   return (
     <View>
@@ -69,6 +74,9 @@ const ProfileScreenView = ({
                           console.log(user?.id + interaction + userData?.id);
                         });
 
+                        if (followerCount > 0) {
+                          setFollowerCount(followerCount - 1);
+                        }
                         setIsFollowing(false);
                       }}
                       testID="unfollow-button"
@@ -94,6 +102,7 @@ const ProfileScreenView = ({
                           console.log(user?.id + interaction + userData?.id);
                         });
 
+                        setFollowerCount(followerCount + 1);
                         setIsFollowing(true);
                       }}
                       testID="follow-button"
@@ -107,7 +116,7 @@ const ProfileScreenView = ({
                 <View className="p-3 text-center">
                   <TouchableOpacity onPress={() => console.log('Followers')}>
                     <Text className="text-xl font-bold block uppercase tracking-wide text-slate-700 text-center">
-                      {follower_count}
+                      {followerCount}
                     </Text>
 
                     <Text
@@ -125,7 +134,7 @@ const ProfileScreenView = ({
                 <View className="p-3 text-center">
                   <TouchableOpacity onPress={() => console.log('Following')}>
                     <Text className="text-xl font-bold block uppercase tracking-wide text-slate-700 text-center">
-                      {following_count}
+                      {followingCount}
                     </Text>
 
                     <Text
