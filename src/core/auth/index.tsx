@@ -79,7 +79,7 @@ const _useAuth = create<AuthState>((set, get) => ({
     if (response.status !== 200) {
       console.log('error updating user, status code:', response.status);
       console.log(user);
-      //return;
+      return;
     }
     await setUser(user); // store user and user in phone storage
     set({ user, status: 'signInComplete' });

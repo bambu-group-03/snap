@@ -4,11 +4,13 @@ import type { ChatStackParamList } from '@/screens/chat/chat-navigator';
 
 import type { AuthStackParamList } from './auth-navigator';
 import type { FeedStackParamList } from './feed-navigator';
+import type { SearchStackParamList } from '@/screens/search/search-navigator';
 
 // TODO: change, this must be dynamic
 export type RootStackParamList = AuthStackParamList &
   FeedStackParamList &
-  ChatStackParamList; //  & FooStackParamList & BarStackParamList
+  ChatStackParamList &
+  SearchStackParamList; //  & FooStackParamList & BarStackParamList
 // very important to type check useNavigation hook
 declare global {
   namespace ReactNavigation {
