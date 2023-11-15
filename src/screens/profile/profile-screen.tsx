@@ -1,7 +1,7 @@
 import { FocusAwareStatusBar, View } from '@/ui';
 import { ScrollView } from 'react-native-gesture-handler';
 import ProfileScreenView from './profile-view';
-import MySnapsView from './my-snaps-view';
+import ProfileSnapsView from './profile-snaps-view';
 import { UserType } from '@/core/auth/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -24,7 +24,6 @@ const ProfileScreen = () => {
     ? useRoute().params?.user
     : getUserState();
 
-  const [userSnaps, setUserSnaps] = useState<Snap[]>([]);
   const [userFollowerCount, setUserFollowerCount] = useState<number>(0);
   const [userFollowingCount, setUserFollowingCount] = useState<number>(0);
 
@@ -58,6 +57,9 @@ const ProfileScreen = () => {
     baseURL: BASE_INTERACTION_URL,
   });
 
+  console.log('El ID del usuario en este caso es' + userData?.id);
+  console.log(userData?.first_name);
+
   return (
     <>
       <FocusAwareStatusBar />
@@ -71,7 +73,7 @@ const ProfileScreen = () => {
           />
         </ScrollView>
       </View>
-      <MySnapsView />
+      <ProfileSnapsView user={userData} />
     </>
   );
 };
