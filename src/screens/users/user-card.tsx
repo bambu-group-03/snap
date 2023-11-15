@@ -2,18 +2,16 @@ import { UserType } from '@/core/auth/utils';
 import { AxiosInstance } from 'axios';
 import { Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
 
-const Card = ({
+const UserCard = ({
   user,
-  client,
   onPress = () => {},
 }: {
   user: UserType;
-  client: AxiosInstance;
   onPress?: () => void;
 }) => {
   return (
-    <Pressable className="flex shrink-0 p-4 pb-0" onPress={onPress}>
-      <TouchableOpacity className="group block shrink-0">
+    <Pressable className="flex shrink-0 p-4 pb-0 ">
+      <TouchableOpacity className="group block shrink-0" onPress={onPress}>
         <View className="flex flex-row items-center">
           <View>
             <Image
@@ -39,4 +37,4 @@ const Card = ({
   );
 };
 
-export default Card;
+export default UserCard;

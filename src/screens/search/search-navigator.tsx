@@ -1,10 +1,13 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
-import Search from './search-view';
+import SearchView from './search-view';
+import { UserType } from '@/core/auth/utils';
+import ProfileScreen from '../profile/profile-screen';
 
 export type SearchStackParamList = {
-  Search: any;
+  SearchView: any;
+  UserProfile: { user: UserType };
 };
 
 const Stack = createNativeStackNavigator<SearchStackParamList>();
@@ -12,7 +15,8 @@ const Stack = createNativeStackNavigator<SearchStackParamList>();
 export const SearchNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Search" component={Search} />
+      <Stack.Screen name="SearchView" component={SearchView} />
+      <Stack.Screen name="UserProfile" component={ProfileScreen} />
     </Stack.Navigator>
   );
 };

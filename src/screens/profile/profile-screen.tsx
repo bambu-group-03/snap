@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Snap } from '@/api';
 import { getUserState } from '@/core';
+import { RouteProp, useRoute } from '@react-navigation/native';
 
 const BASE_INTERACTION_URL =
   'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/interactions/';
@@ -16,7 +17,12 @@ const BASE_SNAP_URL =
 
 const ProfileScreen = () => {
   // Obtengo los datos guardados en la memoria interna del telefono
-  const userData = getUserState();
+
+  console.log('Ente en Profile Screen');
+
+  const userData = useRoute().params?.user
+    ? useRoute().params?.user
+    : getUserState();
 
   const [userSnaps, setUserSnaps] = useState<Snap[]>([]);
   const [userFollowerCount, setUserFollowerCount] = useState<number>(0);
@@ -65,7 +71,7 @@ const ProfileScreen = () => {
           />
         </ScrollView>
       </View>
-      <MySnapsView />
+      {/* <MySnapsView /> */}
     </>
   );
 };

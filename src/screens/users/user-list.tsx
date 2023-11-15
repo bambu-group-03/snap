@@ -5,22 +5,16 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import UserCard from './user-card';
 
-const BASE_INTERACTION_URL =
-  'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
-
 const UserList = ({ users }: { users: UserType[] }) => {
   const { navigate } = useNavigation();
-
-  const client = axios.create({
-    baseURL: BASE_INTERACTION_URL,
-  });
 
   const renderItem = ({ item }: { item: UserType }) => {
     return (
       <UserCard
         user={item}
-        client={client}
-        onPress={() => navigate('UserProfile', { user: item })}
+        onPress={() => {
+          navigate('UserProfile', { user: item });
+        }}
       />
     );
   };
@@ -32,15 +26,8 @@ const UserList = ({ users }: { users: UserType[] }) => {
       <FlatList
         data={users}
         renderItem={renderItem}
+        maxToRenderPerBatch={1}
         keyExtractor={(item) => item.id}
-        // keyExtractor={(_, index) => `item-${index}`}
-        // //onEndReached={handleEndReached}
-        // onEndReachedThreshold={0.1}
-        // getItemLayout={(_data, index) => ({
-        //   length: 100, // Adjust the item length as needed
-        //   offset: 100 * index,
-        //   index,
-        // })}
       />
     </View>
   );
