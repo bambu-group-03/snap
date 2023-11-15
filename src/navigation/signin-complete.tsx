@@ -22,6 +22,7 @@ const schema = z.object({
     .min(3, 'Username must be at least 4 characters')
     .max(20, 'Username cannot exceed 20 characters'),
   phone_number: z.string().regex(/^\d{10}$/, 'Invalid phone number format'), // Assuming 10-digit phone number
+  ubication: z.string().max(100, 'Ubication cannot exceed 100 characters'),
   bio_msg: z.string().max(500, 'Bio Message cannot exceed 500 characters'),
   profile_photo_id: z
     .string()
@@ -89,6 +90,13 @@ export const FormForSignInComplete = ({
           name="phone_number"
           label="Phone Number"
           keyboardType="numeric"
+        />
+
+        <ControlledInput
+          testID="ubication-input"
+          control={control}
+          name="ubication"
+          label="Ubication"
         />
 
         <ControlledInput

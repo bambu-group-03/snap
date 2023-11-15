@@ -1,7 +1,7 @@
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { faFeed, faMessage, faPowerOff, faSearch } from '@fortawesome/free-solid-svg-icons';
 
-import { Search } from '@/screens';
+import { SearchNavigator } from '@/screens/search/search-navigator';
 import { ProfileNavigator } from '@/screens/profile/profile-navigator';
 import { ChatNavigator } from '@/screens/chat/chat-navigator';
 
@@ -33,7 +33,7 @@ export const tabs: TabType[] = [
   },
   {
     name: 'Search',
-    component: Search, // React Search component screen
+    component: SearchNavigator, // React Search component screen
     label: 'Search',
     icon: faSearch,
   },
