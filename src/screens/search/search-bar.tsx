@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -32,6 +32,7 @@ export interface SearchFormProps {
 }
 
 const whenSearch: SearchFormProps['onSearchSubmit'] = async (data) => {
+  const [users, setUsers] = useState<UserType[]>([]);
   const currentUser = getUserState();
   console.log(data);
   if (data.username && data.username.trim() !== '') {

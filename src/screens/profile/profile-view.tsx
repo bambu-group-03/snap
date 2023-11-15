@@ -9,9 +9,10 @@ import {
 } from '@/ui';
 
 import { getUserState } from '@/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AxiosInstance } from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { set } from 'zod';
 
 const ProfileScreenView = ({
   user,
@@ -28,9 +29,20 @@ const ProfileScreenView = ({
 }) => {
   const userData = getUserState();
 
+  console.log('Num de segudores: ' + follower_count);
+  console.log('Num de seguidos: ' + following_count);
+
   const [isFollowing, setIsFollowing] = useState<boolean>(user_is_followed);
-  const [followerCount, setFollowerCount] = useState<number>(follower_count);
-  const [followingCount, setFollowingCount] = useState<number>(following_count);
+  const [followerCount, setFollowerCount] = useState(follower_count);
+  const [followingCount, setFollowingCount] = useState(following_count);
+
+  useEffect(() => {
+    setFollowerCount(follower_count);
+  }, [follower_count]);
+
+  useEffect(() => {
+    setFollowingCount(following_count);
+  }, [following_count]);
 
   const navigate = useNavigation();
 
@@ -114,7 +126,30 @@ const ProfileScreenView = ({
             <View className="w-full text-center ">
               <View className="flex justify-center lg:pt-4 pb-0 flex-row ">
                 <View className="p-3 text-center">
-                  <TouchableOpacity onPress={() => console.log('Followers')}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      console.log('Followers');
+
+                      const interaction = '/followers';
+                      const method = 'GET';
+
+                      client?.({
+                        url: user?.id + interaction,
+                        method: method,
+                      }).then((response) => {
+                        console.log(
+                          'response.data by ' +
+                            interaction +
+                            ' ' +
+                            response.status
+                        );
+
+                        navigate.navigate('Followers', {
+                          users: response.data,
+                        });
+                      });
+                    }}
+                  >
                     <Text className="text-xl font-bold block uppercase tracking-wide text-slate-700 text-center">
                       {followerCount}
                     </Text>
@@ -132,7 +167,30 @@ const ProfileScreenView = ({
                 </View>
 
                 <View className="p-3 text-center">
-                  <TouchableOpacity onPress={() => console.log('Following')}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      console.log('Following');
+
+                      const interaction = '/following';
+                      const method = 'GET';
+
+                      client?.({
+                        url: user?.id + interaction,
+                        method: method,
+                      }).then((response) => {
+                        console.log(
+                          'response.data by ' +
+                            interaction +
+                            ' ' +
+                            response.status
+                        );
+
+                        navigate.navigate('Following', {
+                          users: response.data,
+                        });
+                      });
+                    }}
+                  >
                     <Text className="text-xl font-bold block uppercase tracking-wide text-slate-700 text-center">
                       {followingCount}
                     </Text>
