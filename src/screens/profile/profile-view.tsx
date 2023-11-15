@@ -1,18 +1,11 @@
-import { UserType } from '@/core/auth/utils';
-import {
-  FocusAwareStatusBar,
-  View,
-  Image,
-  Text,
-  TouchableOpacity,
-  Button,
-} from '@/ui';
+import { useNavigation } from '@react-navigation/native';
+import type { AxiosInstance } from 'axios';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 
 import { getUserState } from '@/core';
-import { useEffect, useState } from 'react';
-import { AxiosInstance } from 'axios';
-import { useNavigation } from '@react-navigation/native';
-import { set } from 'zod';
+import type { UserType } from '@/core/auth/utils';
+import { Button, Image, Text, TouchableOpacity, View } from '@/ui';
 
 const ProfileScreenView = ({
   user,
@@ -28,11 +21,13 @@ const ProfileScreenView = ({
   client?: AxiosInstance;
 }) => {
   const userData = getUserState();
-
+  console.log(` user ${JSON.stringify(user)}`);
   console.log('Num de segudores: ' + follower_count);
   console.log('Num de seguidos: ' + following_count);
 
-  const [isFollowing, setIsFollowing] = useState<boolean>(user_is_followed);
+  const [isFollowing, setIsFollowing] = useState<boolean>(
+    user?.is_followed || false
+  );
   const [followerCount, setFollowerCount] = useState(follower_count);
   const [followingCount, setFollowingCount] = useState(following_count);
 
@@ -48,10 +43,10 @@ const ProfileScreenView = ({
 
   return (
     <View>
-      <View className="relative max-w-md mx-auto md:max-w-2xl min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-xl mt-3">
+      <View className="relative mx-auto mb-6 mt-3 w-full min-w-0 max-w-md break-words rounded-xl bg-white shadow-lg md:max-w-2xl">
         <View className="px-6">
           <View className="flex flex-wrap justify-center">
-            <View className="w-full flex justify-center items-center text-center">
+            <View className="flex w-full items-center justify-center text-center">
               <View className="relative">
                 <Image
                   source={user?.profile_photo_id}
@@ -59,22 +54,22 @@ const ProfileScreenView = ({
                 />
               </View>
 
-              <Text className="text-xl font-bold block tracking-wide text-slate-700 text-center">
+              <Text className="block text-center text-xl font-bold tracking-wide text-slate-700">
                 @{user?.username}
               </Text>
 
               {user?.username !== userData?.username ? (
-                <View className=" text-center mt-4 ">
+                <View className=" mt-4 text-center ">
                   {isFollowing === true ? (
                     <Button
                       label="UnFollow"
-                      className="inline rounded-full text-center bg-red-600 px-4 py-3 font-bold text-white"
+                      className="inline rounded-full bg-red-600 px-4 py-3 text-center font-bold text-white"
                       onPress={() => {
                         const interaction = '/unfollow/';
                         const method = 'DELETE';
 
                         client?.({
-                          url: user?.id + interaction + userData?.id,
+                          url: userData?.id + interaction + user?.id,
                           method: method,
                         }).then((response) => {
                           console.log(
@@ -83,7 +78,7 @@ const ProfileScreenView = ({
                               ' ' +
                               response.status
                           );
-                          console.log(user?.id + interaction + userData?.id);
+                          console.log(userData?.id + interaction + user?.id);
                         });
 
                         if (followerCount > 0) {
@@ -96,13 +91,13 @@ const ProfileScreenView = ({
                   ) : (
                     <Button
                       label="Follow"
-                      className="inline rounded-full text-center bg-blue-300 px-4 py-3 font-bold text-white"
+                      className="inline rounded-full bg-blue-500 px-4 py-3 text-center font-bold text-white"
                       onPress={() => {
                         const interaction = '/follow/';
                         const method = 'POST';
 
                         client?.({
-                          url: user?.id + interaction + userData?.id,
+                          url: userData?.id + interaction + user?.id,
                           method: method,
                         }).then((response) => {
                           console.log(
@@ -111,7 +106,7 @@ const ProfileScreenView = ({
                               ' ' +
                               response.status
                           );
-                          console.log(user?.id + interaction + userData?.id);
+                          console.log(userData?.id + interaction + user?.id);
                         });
 
                         setFollowerCount(followerCount + 1);
@@ -124,7 +119,7 @@ const ProfileScreenView = ({
               ) : null}
             </View>
             <View className="w-full text-center ">
-              <View className="flex justify-center lg:pt-4 pb-0 flex-row ">
+              <View className="flex flex-row justify-center pb-0 lg:pt-4 ">
                 <View className="p-3 text-center">
                   <TouchableOpacity
                     onPress={() => {
@@ -150,7 +145,7 @@ const ProfileScreenView = ({
                       });
                     }}
                   >
-                    <Text className="text-xl font-bold block uppercase tracking-wide text-slate-700 text-center">
+                    <Text className="block text-center text-xl font-bold uppercase tracking-wide text-slate-700">
                       {followerCount}
                     </Text>
 
@@ -191,7 +186,7 @@ const ProfileScreenView = ({
                       });
                     }}
                   >
-                    <Text className="text-xl font-bold block uppercase tracking-wide text-slate-700 text-center">
+                    <Text className="block text-center text-xl font-bold uppercase tracking-wide text-slate-700">
                       {followingCount}
                     </Text>
 
@@ -209,26 +204,26 @@ const ProfileScreenView = ({
               </View>
             </View>
           </View>
-          <View className="text-center mt-2">
-            <Text className="text-2xl text-slate-700 font-bold leading-normal mb-1">
+          <View className="mt-2 text-center">
+            <Text className="mb-1 text-2xl font-bold leading-normal text-slate-700">
               {user?.first_name} {user?.last_name}
             </Text>
-            <View className="text-xs mt-0 mb-2 text-slate-400 font-bold uppercase">
+            <View className="mb-2 mt-0 text-xs font-bold uppercase text-slate-400">
               <Text className="fas fa-map-marker-alt mr-2 text-slate-400 opacity-75">
                 Buenos Aires, Argentina
               </Text>
             </View>
           </View>
-          <View className="mt-1 py-3 border-t border-slate-200 text-center">
+          <View className="mt-1 border-t border-slate-200 py-3 text-center">
             <View className="flex flex-wrap justify-center">
               <View className="w-full px-4">
-                <Text className="font-light leading-relaxed text-slate-600 mb-4">
+                <Text className="mb-4 font-light leading-relaxed text-slate-600">
                   {user?.bio_msg ? user?.bio_msg : 'No bio'}
                 </Text>
               </View>
             </View>
           </View>
-          <View className="border-t border-blueGray-200"></View>
+          <View className="border-blueGray-200 border-t" />
         </View>
       </View>
     </View>

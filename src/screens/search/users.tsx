@@ -1,6 +1,8 @@
-import { UserType } from '@/core/auth/utils';
 import { useRoute } from '@react-navigation/native';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+
+import type { UserType } from '@/core/auth/utils';
+
 import UserList from '../users/user-list';
 
 const Users = () => {

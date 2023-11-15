@@ -1,5 +1,5 @@
 export * from './chat';
 export * from './feed';
 export * from './login';
-export * from './search';
 export * from './profile';
+export * from './search';

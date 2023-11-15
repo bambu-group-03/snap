@@ -1,12 +1,12 @@
 import type { RouteProp as NRouteProp } from '@react-navigation/native';
 
 import type { ChatStackParamList } from '@/screens/chat/chat-navigator';
+import type { SearchStackParamList } from '@/screens/search/search-navigator';
+import type { UserStackParamList } from '@/screens/users/user-navigate';
 
+import type { ProfileStackParamList } from '../screens/profile/profile-navigator';
 import type { AuthStackParamList } from './auth-navigator';
 import type { FeedStackParamList } from './feed-navigator';
-import type { SearchStackParamList } from '@/screens/search/search-navigator';
-import type { ProfileStackParamList } from '../screens/profile/profile-navigator';
-import type { UserStackParamList } from '@/screens/users/user-navigate';
 
 // TODO: change, this must be dynamic
 export type RootStackParamList = AuthStackParamList &

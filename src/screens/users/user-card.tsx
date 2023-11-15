@@ -1,5 +1,4 @@
-import { UserType } from '@/core/auth/utils';
-import { AxiosInstance } from 'axios';
+import type { UserType } from '@/core/auth/utils';
 import { Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
 
 const UserCard = ({

@@ -1,9 +1,10 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
-import ProfileScreen from './profile-screen';
-import { UserType } from '@/core/auth/utils';
+import type { UserType } from '@/core/auth/utils';
+
 import InteractionsScreen from './interaction-view';
+import ProfileScreen from './profile-screen';
 
 export type ProfileStackParamList = {
   UserProfile: { user: UserType };

@@ -1,6 +1,6 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
 import type { ChatBase } from './chat-list-screen';
 

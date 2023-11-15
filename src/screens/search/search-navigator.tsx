@@ -1,10 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
-import SearchView from './search-view';
-import { UserType } from '@/core/auth/utils';
-import ProfileScreen from '../profile/profile-screen';
+import type { UserType } from '@/core/auth/utils';
+
 import InteractionsScreen from '../profile/interaction-view';
+import ProfileScreen from '../profile/profile-screen';
+import SearchView from './search-view';
 import Users from './users';
 
 export type SearchStackParamList = {

@@ -1,9 +1,14 @@
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { faFeed, faMessage, faPowerOff, faSearch } from '@fortawesome/free-solid-svg-icons';
+import {
+  faFeed,
+  faMessage,
+  faPowerOff,
+  faSearch,
+} from '@fortawesome/free-solid-svg-icons';
 
-import { SearchNavigator } from '@/screens/search/search-navigator';
-import { ProfileNavigator } from '@/screens/profile/profile-navigator';
 import { ChatNavigator } from '@/screens/chat/chat-navigator';
+import { ProfileNavigator } from '@/screens/profile/profile-navigator';
+import { SearchNavigator } from '@/screens/search/search-navigator';
 
 import { FeedNavigator } from './feed-navigator';
 
@@ -48,5 +53,5 @@ export const tabs: TabType[] = [
     component: ProfileNavigator, // React Profile component screen
     label: 'Profile',
     icon: faPowerOff,
-  }
+  },
 ];

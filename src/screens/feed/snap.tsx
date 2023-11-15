@@ -1,9 +1,9 @@
 import { useRoute } from '@react-navigation/native';
 import * as React from 'react';
 
-import { useSnap } from '@/api';
 import type { RouteProp } from '@/navigation/types';
-import { ActivityIndicator, FocusAwareStatusBar, Text, View } from '@/ui';
+import { FocusAwareStatusBar, View } from '@/ui';
+
 import { SnapView } from './snap-view';
 
 export const Snap = () => {
@@ -14,7 +14,7 @@ export const Snap = () => {
   return (
     <View className="flex-1 ">
       <FocusAwareStatusBar />
-      <SnapView snap={data}></SnapView>
+      <SnapView snap={data} />
     </View>
   );
 };

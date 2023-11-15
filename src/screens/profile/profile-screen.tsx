@@ -1,13 +1,13 @@
-import { FocusAwareStatusBar, View } from '@/ui';
-import { ScrollView } from 'react-native-gesture-handler';
-import ProfileScreenView from './profile-view';
-import ProfileSnapsView from './profile-snaps-view';
-import { UserType } from '@/core/auth/utils';
+import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Snap } from '@/api';
+import { ScrollView } from 'react-native-gesture-handler';
+
 import { getUserState } from '@/core';
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { FocusAwareStatusBar, View } from '@/ui';
+
+import ProfileSnapsView from './profile-snaps-view';
+import ProfileScreenView from './profile-view';
 
 const BASE_INTERACTION_URL =
   'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/interactions/';

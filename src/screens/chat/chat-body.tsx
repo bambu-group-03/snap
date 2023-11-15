@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { Button, Image, Text, View } from '@/ui';
-import { ChatBase } from './chat-list-screen';
+
+import type { ChatBase } from './chat-list-screen';
 
 const MY_PROFILE_PHOTO =
   'https://avatars.githubusercontent.com/u/40549839?s=400&u=f9968082a38e11cabaeec2033e3ffb3e18395eb6&v=4';

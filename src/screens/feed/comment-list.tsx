@@ -1,11 +1,14 @@
-import { FocusAwareStatusBar, View, Text, EmptyList } from '@/ui';
-import { Snap, userReplySnaps } from '@/api';
+import { useNavigation } from '@react-navigation/native';
+import type { AxiosInstance } from 'axios';
 import React, { useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
-import { AxiosInstance } from 'axios';
-import { useNavigation } from '@react-navigation/native';
-import { Card } from './card';
+
+import type { Snap } from '@/api';
+import { userReplySnaps } from '@/api';
 import { getUserState } from '@/core';
+import { EmptyList, FocusAwareStatusBar, Text, View } from '@/ui';
+
+import { Card } from './card';
 
 const INCREMENT_RENDER = 10;
 const INITIAL_RENDER = 20;

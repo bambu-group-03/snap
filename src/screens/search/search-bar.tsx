@@ -37,12 +37,13 @@ const whenSearch = async (
   navigate: NavigationProp<SearchStackParamList>['navigate']
 ) => {
   const currentUser = getUserState();
+  console.log(currentUser);
 
   console.log(data);
   if (data.username && data.username.trim() !== '') {
     try {
       const response = await fetch(
-        `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/filter/${data.username}`
+        `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/filter/${currentUser?.id}/${data.username}`
       );
       const users: UserType[] = await response.json();
 

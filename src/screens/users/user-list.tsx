@@ -1,8 +1,9 @@
-import { UserType } from '@/core/auth/utils';
-import { FocusAwareStatusBar, View } from '@/ui';
-import { FlatList, RefreshControl } from 'react-native';
-import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { FlatList } from 'react-native';
+
+import type { UserType } from '@/core/auth/utils';
+import { FocusAwareStatusBar } from '@/ui';
+
 import UserCard from './user-card';
 
 const UserList = ({ users }: { users: UserType[] }) => {
