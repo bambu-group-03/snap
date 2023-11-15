@@ -19,8 +19,6 @@ const BASE_INTERACTION_URL =
 const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
   const { navigate } = useNavigation();
 
-  console.log('Le estoy pidiendo a' + user?.id + 'sus snaps'); // vxO1kxrv4VN88nCqOcTMrAUrBeS2
-
   const { data, isLoading, isError, refetch } = getSnapsFrom({
     variables: { user_id: user?.id },
   });

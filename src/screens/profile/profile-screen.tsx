@@ -18,8 +18,6 @@ const BASE_SNAP_URL =
 const ProfileScreen = () => {
   // Obtengo los datos guardados en la memoria interna del telefono
 
-  console.log('Ente en Profile Screen');
-
   const userData = useRoute().params?.user
     ? useRoute().params?.user
     : getUserState();
@@ -56,9 +54,6 @@ const ProfileScreen = () => {
   const client = axios.create({
     baseURL: BASE_INTERACTION_URL,
   });
-
-  console.log('El ID del usuario en este caso es' + userData?.id);
-  console.log(userData?.first_name);
 
   return (
     <>
