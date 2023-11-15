@@ -48,6 +48,10 @@ const ProfileScreen = () => {
       });
   }, [userData]);
 
+  const client = axios.create({
+    baseURL: BASE_INTERACTION_URL,
+  });
+
   return (
     <>
       <FocusAwareStatusBar />
@@ -57,6 +61,7 @@ const ProfileScreen = () => {
             user={userData}
             follower_count={userFollowerCount}
             following_count={userFollowingCount}
+            client={client}
           />
         </ScrollView>
       </View>

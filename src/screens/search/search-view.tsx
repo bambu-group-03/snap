@@ -1,6 +1,6 @@
 import { View, Text } from '@/ui';
 import { SearchBar } from './search-bar';
-import UserList from './user-list';
+import UserList from '../users/user-list';
 import { ScrollView } from 'react-native-gesture-handler';
 import { UserType } from '@/core/auth/utils';
 
@@ -11,8 +11,8 @@ const Search = () => {
     <>
       <ScrollView>
         <SearchBar />
-        <UserList users={users} />
       </ScrollView>
+      <UserList users={users} />
     </>
   );
 };

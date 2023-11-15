@@ -32,7 +32,7 @@ export const tabs: TabType[] = [
     icon: faFeed,
   },
   {
-    name: 'Search',
+    name: 'SearchNavigator',
     component: SearchNavigator, // React Search component screen
     label: 'Search',
     icon: faSearch,
@@ -40,13 +40,13 @@ export const tabs: TabType[] = [
   {
     name: 'ChatNavigator',
     component: ChatNavigator, // React Chat component screen
-    label: 'ChatNavigator',
+    label: 'Chat',
     icon: faMessage,
   },
   {
     name: 'ProfileNavigator',
     component: ProfileNavigator, // React Profile component screen
-    label: 'ProfileNavigator',
+    label: 'Profile',
     icon: faPowerOff,
   }
 ];

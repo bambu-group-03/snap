@@ -4,11 +4,11 @@ import * as React from 'react';
 import ProfileScreen from './profile-screen';
 import { UserType } from '@/core/auth/utils';
 
-export type ChatStackParamList = {
-  UserProfile: UserType;
+export type ProfileStackParamList = {
+  UserProfile: { user: UserType };
 };
 
-const Stack = createNativeStackNavigator<ChatStackParamList>();
+const Stack = createNativeStackNavigator<ProfileStackParamList>();
 
 export const ProfileNavigator = () => {
   return (

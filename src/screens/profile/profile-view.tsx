@@ -1,15 +1,34 @@
 import { UserType } from '@/core/auth/utils';
-import { FocusAwareStatusBar, View, Image, Text, TouchableOpacity } from '@/ui';
+import {
+  FocusAwareStatusBar,
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  Button,
+} from '@/ui';
+
+import { getUserState } from '@/core';
+import { useState } from 'react';
+import { AxiosInstance } from 'axios';
 
 const ProfileScreenView = ({
   user,
   follower_count,
   following_count,
+  user_is_followed = false,
+  client,
 }: {
   user: UserType | undefined;
   follower_count: number;
   following_count: number;
+  user_is_followed?: boolean;
+  client?: AxiosInstance;
 }) => {
+  const userData = getUserState();
+
+  const [isFollowing, setIsFollowing] = useState<boolean>(user_is_followed);
+
   return (
     <View>
       <View className="relative max-w-md mx-auto md:max-w-2xl min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-xl mt-3">
@@ -22,11 +41,68 @@ const ProfileScreenView = ({
                   className="order-1 h-32 w-32 rounded-full" // Adjusted size to h-32 and w-32
                 />
               </View>
+
               <Text className="text-xl font-bold block tracking-wide text-slate-700 text-center">
                 @{user?.username}
               </Text>
+
+              {user?.username !== userData?.username ? (
+                <View className=" text-center mt-4 ">
+                  {isFollowing === true ? (
+                    <Button
+                      label="UnFollow"
+                      className="inline rounded-full text-center bg-red-600 px-4 py-3 font-bold text-white"
+                      onPress={() => {
+                        const interaction = '/unfollow/';
+                        const method = 'DELETE';
+
+                        client?.({
+                          url: user?.id + interaction + userData?.id,
+                          method: method,
+                        }).then((response) => {
+                          console.log(
+                            'response.data by ' +
+                              interaction +
+                              ' ' +
+                              response.status
+                          );
+                          console.log(user?.id + interaction + userData?.id);
+                        });
+
+                        setIsFollowing(false);
+                      }}
+                      testID="unfollow-button"
+                    />
+                  ) : (
+                    <Button
+                      label="Follow"
+                      className="inline rounded-full text-center bg-blue-300 px-4 py-3 font-bold text-white"
+                      onPress={() => {
+                        const interaction = '/follow/';
+                        const method = 'POST';
+
+                        client?.({
+                          url: user?.id + interaction + userData?.id,
+                          method: method,
+                        }).then((response) => {
+                          console.log(
+                            'response.data by ' +
+                              interaction +
+                              ' ' +
+                              response.status
+                          );
+                          console.log(user?.id + interaction + userData?.id);
+                        });
+
+                        setIsFollowing(true);
+                      }}
+                      testID="follow-button"
+                    />
+                  )}
+                </View>
+              ) : null}
             </View>
-            <View className="w-full text-center mt-5 ">
+            <View className="w-full text-center ">
               <View className="flex justify-center lg:pt-4 pb-0 flex-row ">
                 <View className="p-3 text-center">
                   <TouchableOpacity onPress={() => console.log('Followers')}>
