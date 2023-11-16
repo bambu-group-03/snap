@@ -1,12 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { Picker } from '@react-native-picker/picker';
+import { locationOptions } from './list-of-countries';
+
 import { getUserState, signInComplete } from '@/core';
 import type { UserType } from '@/core/auth/utils';
-import { Button, ControlledInput, ScrollView, View } from '@/ui';
+import { Button, ControlledInput, ScrollView, View, Text } from '@/ui';
 
 const schema = z.object({
   first_name: z
@@ -56,9 +59,15 @@ export const SignInComplete = () => {
 export const FormForSignInComplete = ({
   onSignUpSubmit = () => {},
 }: SignUpFormProps) => {
-  const { handleSubmit, control } = useForm<FormType>({
+  const { handleSubmit, control, setValue } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
+
+  const [ubication, setSelectedUbication] = useState<string>('Argentina');
+
+  useEffect(() => {
+    setValue('ubication', ubication); // Update the value for the 'ubication' field in the controller
+  }, [ubication, setValue]);
 
   return (
     <View className="flex-1 p-4">
@@ -92,12 +101,18 @@ export const FormForSignInComplete = ({
           keyboardType="numeric"
         />
 
-        <ControlledInput
-          testID="ubication-input"
-          control={control}
-          name="ubication"
-          label="Ubication"
-        />
+        <View>
+          <Text>Ubication</Text>
+          <Picker
+            testID="ubication-input"
+            selectedValue={ubication}
+            onValueChange={(itemValue) => setSelectedUbication(itemValue)}
+          >
+            {locationOptions.map((option, index) => (
+              <Picker.Item key={index} label={option} value={option} />
+            ))}
+          </Picker>
+        </View>
 
         <ControlledInput
           testID="bio-input"
