@@ -3,7 +3,7 @@ import axios from 'axios';
 import { FlatList, Text } from 'react-native';
 
 import type { Snap } from '@/api';
-import { FocusAwareStatusBar, View } from '@/ui';
+import { EmptyList, FocusAwareStatusBar, View } from '@/ui';
 
 import { Card } from '../feed/card';
 import { useEffect, useState } from 'react';
@@ -40,6 +40,7 @@ const SnapList = () => {
         data={snaps}
         renderItem={renderSnap}
         keyExtractor={(_, index) => `item-${index}`}
+        ListEmptyComponent={<EmptyList isLoading={false} />}
       />
     </View>
   );
