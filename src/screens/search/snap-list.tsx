@@ -1,24 +1,30 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
-import * as React from 'react';
 import { FlatList, Text } from 'react-native';
 
 import type { Snap } from '@/api';
-import { FocusAwareStatusBar } from '@/ui';
+import { FocusAwareStatusBar, View } from '@/ui';
 
 import { Card } from '../feed/card';
+import { useEffect, useState } from 'react';
 
 const BASE_INTERACTION_URL =
   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
 
-const Snaps = () => {
-  const snaps: Snap[] = useRoute().params?.snaps;
+const SnapList = () => {
+  let params = useRoute().params;
+  const snaps: Snap[] = params?.snaps;
+
+  console.log(`snaps hasta ahora: ${JSON.stringify(snaps)}`);
+
   const { navigate } = useNavigation();
+
   const client = axios.create({
     baseURL: BASE_INTERACTION_URL,
   });
 
-  const renderItem = ({ item }: { item: Snap }) => {
+  const renderSnap = ({ item }: { item: Snap }) => {
+    console.log(`Entre en renderItem: ${JSON.stringify(item)}`);
     return (
       <Card
         snap={item}
@@ -32,17 +38,14 @@ const Snaps = () => {
 
   console.log(`snaps para renderizar: ${JSON.stringify(snaps)}`);
   return (
-    <>
+    <View>
       <FocusAwareStatusBar />
-      <Text>Snaps</Text>
       <FlatList
         data={snaps}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        renderItem={renderSnap}
+        keyExtractor={(_, index) => `item-${index}`}
       />
-      <Text>Snaps</Text>
-    </>
+    </View>
   );
 };
-
-export default Snaps;
+export default SnapList;

@@ -58,14 +58,14 @@ const whenSearch = async (
       `https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/filter/content?user_id=${currentUser?.id}&content=${data.content}`
     );
     const snapsFromContent: Snap[] = await responseC.json();
-    navigate('SnapList', { snaps: snapsFromContent });
+    navigate('SnapList', { snaps: snapsFromContent.snaps });
   }
   if (data.hashtag && data.hashtag.trim() !== '') {
     const responseH = await fetch(
       `https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/filter/hashtag?user_id=${currentUser?.id}&hashtag=${data.hashtag}`
     );
     const snapFromHashtags: Snap[] = await responseH.json();
-    navigate('SnapList', { snaps: snapFromHashtags });
+    navigate('SnapList', { snaps: snapFromHashtags.snaps });
   }
 };
 

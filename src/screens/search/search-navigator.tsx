@@ -7,7 +7,7 @@ import type { UserType } from '@/core/auth/utils';
 import InteractionsScreen from '../profile/interaction-view';
 import ProfileScreen from '../profile/profile-screen';
 import SearchView from './search-view';
-import Snaps from './snaps';
+import SnapList from './snap-list';
 import Users from './users';
 
 export type SearchStackParamList = {
@@ -29,7 +29,7 @@ export const SearchNavigator = () => {
       <Stack.Screen name="UserProfile" component={ProfileScreen} />
       <Stack.Screen name="Followers" component={InteractionsScreen} />
       <Stack.Screen name="Following" component={InteractionsScreen} />
-      <Stack.Screen name="SnapList" component={Snaps} />
+      <Stack.Screen name="SnapList" component={SnapList} />
     </Stack.Navigator>
   );
 };
