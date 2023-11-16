@@ -17,9 +17,11 @@ type Props = {
 
 export const Card = ({ snap, client, onPress = () => {} }: Props) => {
   const [isRetweeted, setIsRetweeted] = useState(
-    snap.has_shared && snap.shares > 0
+    snap.has_shared === true && snap.shares > 0
   );
-  const [isLiked, setIsLiked] = useState(snap.has_liked && snap.likes > 0);
+  const [isLiked, setIsLiked] = useState(
+    snap.has_liked === true && snap.likes > 0
+  );
   const [commentCount, setCommentCount] = useState(
     snap.num_replies ? snap.num_replies : 0
   );
