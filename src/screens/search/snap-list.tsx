@@ -12,10 +12,7 @@ const BASE_INTERACTION_URL =
   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
 
 const SnapList = () => {
-  let params = useRoute().params;
-  const snaps: Snap[] = params?.snaps;
-
-  console.log(`snaps hasta ahora: ${JSON.stringify(snaps)}`);
+  const snaps: Snap[] = useRoute().params?.snaps;
 
   const { navigate } = useNavigation();
 
@@ -36,7 +33,6 @@ const SnapList = () => {
     );
   };
 
-  console.log(`snaps para renderizar: ${JSON.stringify(snaps)}`);
   return (
     <View>
       <FocusAwareStatusBar />
