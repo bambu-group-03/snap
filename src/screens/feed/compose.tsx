@@ -115,7 +115,7 @@ export const Compose = ({ user }: { user: UserType | undefined }) => {
           <View>
             <Button
               label="Publish"
-              className="inline rounded-full bg-blue-300 px-4 py-3 font-bold text-white"
+              className="inline rounded-full bg-blue-500 px-4 py-3 font-bold text-white"
               loading={isLoading}
               onPress={handleSubmit(onSubmit)}
               testID="add-post-button"

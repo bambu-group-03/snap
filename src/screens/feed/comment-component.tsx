@@ -68,7 +68,7 @@ export const CommentInput = ({ snap }: { snap: Snap }) => {
         >
           <Button
             label="Publish"
-            className="inline rounded-full bg-blue-300 px-4 py-3 text-center font-bold text-white"
+            className="inline rounded-full bg-blue-500 px-4 py-3 text-center font-bold text-white"
             onPress={handleSubmit(onSubmit)}
             testID="add-post-button"
           />

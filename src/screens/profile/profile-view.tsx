@@ -210,7 +210,7 @@ const ProfileScreenView = ({
             </Text>
             <View className="mb-2 mt-0 text-xs font-bold uppercase text-slate-400">
               <Text className="fas fa-map-marker-alt mr-2 text-slate-400 opacity-75">
-                Buenos Aires, Argentina
+                userData?.ubication
               </Text>
             </View>
           </View>
