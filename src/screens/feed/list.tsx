@@ -1,14 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import React, { useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native'; // Import FlatList
+
 import type { Snap } from '@/api';
 import { useSnaps } from '@/api';
 import { getUserState } from '@/core';
 import { EmptyList, FocusAwareStatusBar, Text, View } from '@/ui';
-import axios from 'axios';
 
 import { Card } from './card';
-import { set } from 'zod';
 
 const INCREMENT_RENDER = 10;
 const INITIAL_RENDER = 20;

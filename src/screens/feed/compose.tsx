@@ -1,24 +1,22 @@
 import {
   faCalendarAlt,
-  faGlobe,
   faImage,
   faPollH,
   faSmile,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import React, { useState } from 'react';
-
-import { Image, Input, Text, TouchableOpacity, View } from '@/ui';
-import { UserType } from '@/core/auth/utils';
-
 import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { showMessage } from 'react-native-flash-message';
 import { z } from 'zod';
 
 import { useAddSnap } from '@/api';
 import { getUserState } from '@/core';
+import type { UserType } from '@/core/auth/utils';
+import { Image, Text, TouchableOpacity, View } from '@/ui';
 import { Button, ControlledInput, showErrorMessage } from '@/ui';
+
 import DropdownMenu from './snap-visibility-menu';
 
 const schema = z.object({
@@ -117,7 +115,7 @@ export const Compose = ({ user }: { user: UserType | undefined }) => {
           <View>
             <Button
               label="Publish"
-              className="inline rounded-full bg-blue-300 px-4 py-3 font-bold text-white"
+              className="inline rounded-full bg-blue-500 px-4 py-3 font-bold text-white"
               loading={isLoading}
               onPress={handleSubmit(onSubmit)}
               testID="add-post-button"

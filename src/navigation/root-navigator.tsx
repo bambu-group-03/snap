@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 
 import { useAuth } from '@/core';
 
-import { AuthNavigator, GoToLogout } from './auth-navigator';
+import { AuthNavigator } from './auth-navigator';
 import { NavigationContainer } from './navigation-container';
 import { SignInComplete } from './signin-complete';
 import { TabNavigator } from './tab-navigator';

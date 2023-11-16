@@ -30,7 +30,7 @@ interface ControlledInputProps<T extends FieldValues>
 export function ControlledInput<T extends FieldValues>(
   props: ControlledInputProps<T>
 ) {
-  const { name, control, rules, ...inputProps } = props;
+  const { name, control, rules, disabled, ...inputProps } = props;
 
   const { field, fieldState } = useController({ control, name, rules });
   return (
@@ -39,6 +39,7 @@ export function ControlledInput<T extends FieldValues>(
       autoCapitalize="none"
       onChangeText={field.onChange}
       value={field.value as string}
+      disabled={disabled} // Ensure this prop is passed to the actual input element
       {...inputProps}
       error={fieldState.error?.message}
     />

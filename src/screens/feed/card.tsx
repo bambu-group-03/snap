@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import type { AxiosInstance } from 'axios';
+import React, { useState } from 'react';
 
 import type { Snap } from '@/api';
 import { Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
@@ -7,8 +8,6 @@ import CommentButton from './comment-button';
 import HeartButton from './heart-button';
 import ResnapButton from './re-snap-button';
 import ShareButton from './share-button';
-import axios, { AxiosInstance } from 'axios';
-import { UserType } from '@/core/auth/utils';
 
 type Props = {
   snap: Snap;

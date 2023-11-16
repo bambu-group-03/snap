@@ -19,7 +19,7 @@ export interface NInputProps extends TextInputProps {
 }
 
 export const Input = React.forwardRef<TextInput, NInputProps>((props, ref) => {
-  const { label, error, ...inputProps } = props;
+  const { label, error, disabled, ...inputProps } = props;
   const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
   const [isFocussed, setIsFocussed] = React.useState(false);
@@ -41,20 +41,20 @@ export const Input = React.forwardRef<TextInput, NInputProps>((props, ref) => {
     : error
     ? 'bg-danger-50'
     : 'bg-neutral-200';
+
+  const labelColor = disabled
+    ? 'text-neutral-400'
+    : error
+    ? 'text-danger-600'
+    : isDark
+    ? 'text-charcoal-100'
+    : 'text-black';
+
   const textDirection = isRTL ? 'text-right' : 'text-left';
   return (
     <View className="mb-4">
       {label && (
-        <Text
-          variant="md"
-          className={
-            error
-              ? 'text-danger-600'
-              : isDark
-              ? 'text-charcoal-100'
-              : 'text-black'
-          }
-        >
+        <Text variant="md" className={labelColor}>
           {label}
         </Text>
       )}
@@ -65,6 +65,7 @@ export const Input = React.forwardRef<TextInput, NInputProps>((props, ref) => {
         className={`mt-0 border-[1px] px-2 py-4  ${borderColor} rounded-md ${bgColor} text-[16px] ${textDirection} dark:text-charcoal-100`}
         onBlur={onBlur}
         onFocus={onFocus}
+        editable={!disabled}
         {...inputProps}
         style={StyleSheet.flatten([
           { writingDirection: isRTL ? 'rtl' : 'ltr' },

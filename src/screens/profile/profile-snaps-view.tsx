@@ -1,11 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 import React, { useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native'; // Import FlatList
+
 import type { Snap } from '@/api';
-import { useSnaps } from '@/api';
-import { getUserState } from '@/core';
+import { getSnapsFrom } from '@/api';
+import type { UserType } from '@/core/auth/utils';
 import { EmptyList, FocusAwareStatusBar, Text, View } from '@/ui';
-import axios from 'axios';
 
 import { Card } from '../feed/card';
 
@@ -15,13 +16,11 @@ const INITIAL_RENDER = 20;
 const BASE_INTERACTION_URL =
   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
 
-const MySnapsView = () => {
-  const currentUser = getUserState();
-
+const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
   const { navigate } = useNavigation();
 
-  const { data, isLoading, isError, refetch } = useSnaps({
-    variables: { user_id: currentUser?.id },
+  const { data, isLoading, isError, refetch } = getSnapsFrom({
+    variables: { user_id: user?.id },
   });
 
   // State to track the number of items to render
@@ -98,4 +97,4 @@ const MySnapsView = () => {
   );
 };
 
-export default MySnapsView;
+export default ProfileSnapsView;
