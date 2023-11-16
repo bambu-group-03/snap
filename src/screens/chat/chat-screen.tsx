@@ -1,5 +1,6 @@
 // Displays the chat
 
+import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -8,8 +9,7 @@ import { View } from '@/ui';
 import ChatBody from './chat-body';
 import ChatHeader from './chat-header';
 import ChatInput from './chat-input';
-import { RouteProp, useRoute } from '@react-navigation/native';
-import { ChatBase } from './chat-list-screen';
+import type { ChatBase } from './chat-list-screen';
 
 // export type ChatUser = {
 //   id: number;

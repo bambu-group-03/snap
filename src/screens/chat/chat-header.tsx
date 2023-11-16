@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { Image, Text, View } from '@/ui';
-import { ChatBase } from './chat-list-screen';
+
+import type { ChatBase } from './chat-list-screen';
 
 const ChatHeader = ({ chatUser }: { chatUser: ChatBase }) => {
   // const profile_photo =

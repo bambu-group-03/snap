@@ -2,10 +2,10 @@ import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
+import type { Snap as SnapType } from '@/api';
 import { AddSnap, Feed, Snap } from '@/screens';
 import { Pressable, Text } from '@/ui';
-import { UserType } from '@/core/auth/utils';
-import type { Snap as SnapType } from '@/api';
+
 import { GoToLogout } from './auth-navigator';
 
 export type FeedStackParamList = {

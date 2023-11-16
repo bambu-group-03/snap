@@ -19,6 +19,8 @@ export type UserType = {
   phone_number: null | string;
   profile_photo_id: null | string;
   username: null | string;
+  ubication: null | string;
+  is_followed?: boolean;
 };
 
 export const getToken = () => getItem<TokenType>(TOKEN);

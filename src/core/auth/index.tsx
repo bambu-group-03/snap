@@ -36,7 +36,7 @@ const _useAuth = create<AuthState>((set, get) => ({
   user: undefined,
   signIn: async (token, userId) => {
     const response = await fetch(
-      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/users/${userId}`
+      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/${userId}/users/${userId}`
     );
     const user: UserType = await response.json();
     await setUser(user); // store user and user in phone storage
@@ -78,6 +78,7 @@ const _useAuth = create<AuthState>((set, get) => ({
 
     if (response.status !== 200) {
       console.log('error updating user, status code:', response.status);
+      console.log(user);
       return;
     }
     await setUser(user); // store user and user in phone storage

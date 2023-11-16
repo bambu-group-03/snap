@@ -3,18 +3,18 @@ import * as React from 'react';
 
 import type { UserType } from '@/core/auth/utils';
 
-import InteractionsScreen from './interaction-view';
-import ProfileScreen from './profile-screen';
+import InteractionsScreen from '../profile/interaction-view';
+import ProfileScreen from '../profile/profile-screen';
 
-export type ProfileStackParamList = {
+export type UserStackParamList = {
   UserProfile: { user: UserType };
   Followers: { users: UserType[] | undefined };
   Following: { users: UserType[] | undefined };
 };
 
-const Stack = createNativeStackNavigator<ProfileStackParamList>();
+const Stack = createNativeStackNavigator<UserStackParamList>();
 
-export const ProfileNavigator = () => {
+export const UserNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="UserProfile" component={ProfileScreen} />

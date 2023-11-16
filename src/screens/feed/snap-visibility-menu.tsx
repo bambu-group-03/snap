@@ -1,8 +1,7 @@
 import { faGlobe } from '@fortawesome/free-solid-svg-icons';
-
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import React, { useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 interface DropdownMenuProps {
   replyOption: string;

@@ -1,12 +1,13 @@
-import { showErrorMessage, Button, ControlledInput, View } from '@/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { useAddReply } from '@/api';
-import { showMessage } from 'react-native-flash-message';
-import { Snap } from '@/api';
-import { z } from 'zod';
-import { getUserState } from '@/core';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { showMessage } from 'react-native-flash-message';
+import { z } from 'zod';
+
+import type { Snap } from '@/api';
+import { useAddReply } from '@/api';
+import { getUserState } from '@/core';
+import { Button, ControlledInput, showErrorMessage, View } from '@/ui';
 
 const schema = z.object({
   content: z.string().max(180),
@@ -67,7 +68,7 @@ export const CommentInput = ({ snap }: { snap: Snap }) => {
         >
           <Button
             label="Publish"
-            className="inline rounded-full text-center bg-blue-300 px-4 py-3 font-bold text-white"
+            className="inline rounded-full bg-blue-500 px-4 py-3 text-center font-bold text-white"
             onPress={handleSubmit(onSubmit)}
             testID="add-post-button"
           />

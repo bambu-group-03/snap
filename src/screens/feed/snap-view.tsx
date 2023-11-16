@@ -1,8 +1,9 @@
-import { Snap } from '@/api';
-import { UserType } from '@/core/auth/utils';
-import { Image, Input, Text, TouchableOpacity, View } from '@/ui';
-import { Card } from '../feed/card';
 import axios from 'axios';
+
+import type { Snap } from '@/api';
+import { View } from '@/ui';
+
+import { Card } from '../feed/card';
 import { CommentInput } from './comment-component';
 import { Comments } from './comment-list';
 
