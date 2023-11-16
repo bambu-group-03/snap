@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 
 import type { UserType } from '@/core/auth/utils';
-import { FocusAwareStatusBar } from '@/ui';
+import { EmptyList, FocusAwareStatusBar } from '@/ui';
 
 import UserCard from './user-card';
 
@@ -28,6 +28,7 @@ const UserList = ({ users }: { users: UserType[] }) => {
         data={users}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
+        ListEmptyComponent={<EmptyList isLoading={false} />}
       />
     </>
   );
