@@ -1,15 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Picker } from '@react-native-picker/picker';
 import React, { useEffect, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { Picker } from '@react-native-picker/picker';
-import { locationOptions } from './list-of-countries';
-
 import { getUserState, signInComplete } from '@/core';
 import type { UserType } from '@/core/auth/utils';
-import { Button, ControlledInput, ScrollView, View, Text } from '@/ui';
+import { Button, ControlledInput, ScrollView, Text, View } from '@/ui';
+
+import { locationOptions } from './list-of-countries';
 
 const schema = z.object({
   first_name: z

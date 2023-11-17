@@ -1,6 +1,7 @@
 import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import * as React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { getUserState } from '@/core';

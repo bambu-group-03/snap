@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 import type { UserType } from '@/core/auth/utils';
 import { Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
 

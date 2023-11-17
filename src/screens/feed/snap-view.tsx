@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as React from 'react';
 
 import type { Snap } from '@/api';
 import { View } from '@/ui';
@@ -6,7 +7,6 @@ import { View } from '@/ui';
 import { Card } from '../feed/card';
 import { CommentInput } from './comment-component';
 import { Comments } from './comment-list';
-
 const BASE_INTERACTION_URL =
   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
 

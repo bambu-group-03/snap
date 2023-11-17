@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import * as React from 'react';
 import { FlatList } from 'react-native';
 
 import type { UserType } from '@/core/auth/utils';
