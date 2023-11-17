@@ -3,9 +3,9 @@ import * as React from 'react';
 import { View } from 'react-native';
 
 import type { UserType } from '@/core/auth/utils';
+import type { RouteProp } from '@/navigation/types';
 
 import UserList from '../users/user-list';
-import type { RouteProp } from '@/navigation/types';
 
 const Users = () => {
   const { params } = useRoute<RouteProp<'Users'>>();

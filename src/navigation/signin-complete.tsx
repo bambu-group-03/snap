@@ -106,7 +106,9 @@ export const FormForSignInComplete = ({
           <Picker
             testID="ubication-input"
             selectedValue={ubication}
-            onValueChange={(itemValue) => setSelectedUbication(itemValue)}
+            onValueChange={(itemValue: string) =>
+              setSelectedUbication(itemValue)
+            }
           >
             {locationOptions.map((option, index) => (
               <Picker.Item key={index} label={option} value={option} />

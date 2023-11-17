@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { showMessage } from 'react-native-flash-message';
@@ -60,13 +59,7 @@ export const CommentInput = ({ snap }: { snap: Snap }) => {
           testID="body-input"
         />
 
-        <View
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
+        <View className="flex flex-row items-center justify-center">
           <Button
             label="Publish"
             className="inline rounded-full bg-blue-500 px-4 py-3 text-center font-bold text-white"

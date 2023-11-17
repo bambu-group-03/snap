@@ -147,13 +147,7 @@ const ProfileScreenView = ({
                       {followerCount}
                     </Text>
 
-                    <Text
-                      className="text-sm text-slate-400"
-                      style={{
-                        color: '#0077cc',
-                        textDecorationLine: 'underline',
-                      }}
-                    >
+                    <Text className="text-sm text-blue-400 underline">
                       Followers
                     </Text>
                   </TouchableOpacity>
@@ -188,13 +182,7 @@ const ProfileScreenView = ({
                       {followingCount}
                     </Text>
 
-                    <Text
-                      className="text-sm text-slate-400"
-                      style={{
-                        color: '#0077cc',
-                        textDecorationLine: 'underline',
-                      }}
-                    >
+                    <Text className="text-sm text-blue-400 underline">
                       Following
                     </Text>
                   </TouchableOpacity>

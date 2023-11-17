@@ -35,7 +35,7 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
   let onRefresh = React.useCallback(() => {
     setRefresh(true);
     refetch().then(() => setRefresh(false));
-  }, []);
+  }, [refetch]);
 
   // Corrected renderItem function
   const renderItem = ({ item, index }: { item: Snap; index: number }) => {

@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import type { AxiosInstance } from 'axios';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 
 import type { Snap } from '@/api';
@@ -13,9 +13,6 @@ import { Card } from './card';
 const INCREMENT_RENDER = 10;
 const INITIAL_RENDER = 20;
 
-// const BASE_INTERACTION_URL =
-// 'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
-
 export const Comments = ({
   snap,
   client,
@@ -24,20 +21,15 @@ export const Comments = ({
   client: AxiosInstance;
 }) => {
   const currentUser = getUserState();
-
   const { data, isLoading, isError, refetch } = userReplySnaps({
     variables: { snap_id: snap?.id, user_id: currentUser?.id },
   });
 
   const { navigate } = useNavigation();
-
-  // State to track the number of items to render
   const [renderCount, setRenderCount] = useState(INITIAL_RENDER);
+  const [refresh, setRefresh] = useState(false);
 
-  // Corrected renderItem function
   const renderItem = ({ item, index }: { item: Snap; index: number }) => {
-    // Render the item only if its index is within the current renderCount
-    console.log(`renderItem: ${index}: ${renderCount}`);
     if (index < renderCount) {
       return (
         <Card
@@ -51,16 +43,15 @@ export const Comments = ({
   };
 
   const handleEndReached = () => {
-    console.log(`handleEndReached before: ${renderCount}`);
-
-    // Load more items when the user reaches the end
     if (renderCount < (data ? data.length : 0)) {
-      // Increase the render count by a suitable number
       setRenderCount(renderCount + INCREMENT_RENDER);
     }
-
-    console.log(`handleEndReached after: ${renderCount}`);
   };
+
+  const onRefresh = useCallback(() => {
+    setRefresh(true);
+    refetch().then(() => setRefresh(false));
+  }, [refetch]); // Added 'refetch' to dependency array
 
   if (isError) {
     return (
@@ -69,13 +60,6 @@ export const Comments = ({
       </View>
     );
   }
-
-  const [refresh, setRefresh] = useState(false);
-
-  let onRefresh = React.useCallback(() => {
-    setRefresh(true);
-    refetch().then(() => setRefresh(false));
-  }, []);
 
   return (
     <>
