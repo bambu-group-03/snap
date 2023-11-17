@@ -22,9 +22,9 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
   const [isLiked, setIsLiked] = useState(
     snap.has_liked === true && snap.likes > 0
   );
-  const [commentCount, setCommentCount] = useState(
-    snap.num_replies ? snap.num_replies : 0
-  );
+
+  const commentCount = snap.num_replies ? snap.num_replies : 0;
+
   const formattedDate = new Date(snap.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
     month: '2-digit',

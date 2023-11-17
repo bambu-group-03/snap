@@ -11,13 +11,11 @@ const ProfileScreenView = ({
   user,
   follower_count,
   following_count,
-  user_is_followed = false,
   client,
 }: {
   user: UserType | undefined;
   follower_count: number;
   following_count: number;
-  user_is_followed?: boolean;
   client?: AxiosInstance;
 }) => {
   const userData = getUserState();

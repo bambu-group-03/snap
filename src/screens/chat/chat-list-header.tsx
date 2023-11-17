@@ -13,14 +13,14 @@ export default ChatListHeader;
 
 const styles = {
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
+    // alignItems: 'center',
+    // marginBottom: 16,
   },
   headerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333', // Change to your desired text color
+    // fontSize: 24,
+    // fontWeight: 'bold',
+    // color: '#333', // Change to your desired text color
   },
 };

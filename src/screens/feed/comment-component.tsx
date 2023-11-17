@@ -16,16 +16,16 @@ const schema = z.object({
 type FormType = z.infer<typeof schema>;
 
 export const CommentInput = ({ snap }: { snap: Snap }) => {
-  const [replyOption, setReplyOption] = useState('Everyone can reply');
+  // const [replyOption, setReplyOption] = useState('Everyone can reply');
 
-  const handleMenuSelection = (selectedOption: string) => {
-    setReplyOption(selectedOption);
-  };
+  // const handleMenuSelection = (selectedOption: string) => {
+  //   setReplyOption(selectedOption);
+  // };
 
   const { control, handleSubmit } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
-  const { mutate: addSnap, isLoading } = useAddReply();
+  const { mutate: addSnap } = useAddReply();
   const currentUser = getUserState();
 
   const onSubmit = (data: FormType) => {

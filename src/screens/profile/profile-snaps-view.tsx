@@ -30,10 +30,18 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
     baseURL: BASE_INTERACTION_URL,
   });
 
+  const [refresh, setRefresh] = useState(false);
+
+  let onRefresh = React.useCallback(() => {
+    setRefresh(true);
+    refetch().then(() => setRefresh(false));
+  }, []);
+
   // Corrected renderItem function
   const renderItem = ({ item, index }: { item: Snap; index: number }) => {
     // Render the item only if its index is within the current renderCount
     console.log(`renderItem: ${index}: ${renderCount}`);
+
     if (index < renderCount) {
       return (
         <Card
@@ -65,13 +73,6 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
       </View>
     );
   }
-
-  const [refresh, setRefresh] = useState(false);
-
-  let onRefresh = React.useCallback(() => {
-    setRefresh(true);
-    refetch().then(() => setRefresh(false));
-  }, []);
 
   return (
     <>

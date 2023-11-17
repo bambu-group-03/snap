@@ -14,7 +14,7 @@ export type RootStackParamList = AuthStackParamList &
   ChatStackParamList &
   ProfileStackParamList &
   UserStackParamList &
-  SearchStackParamList; //  & FooStackParamList & BarStackParamList
+  SearchStackParamList;
 // very important to type check useNavigation hook
 declare global {
   namespace ReactNavigation {

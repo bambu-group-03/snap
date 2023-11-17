@@ -44,8 +44,8 @@ const styles = {
     borderBottomColor: '#E5E7EB', // Change to your desired border color
   },
   itemContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    // flexDirection: 'row',
+    // alignItems: 'center',
   },
   avatar: {
     width: 48,
@@ -57,16 +57,16 @@ const styles = {
     flex: 1,
   },
   name: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333', // Change to your desired text color
+    // fontSize: 16,
+    // fontWeight: 'bold',
+    // color: '#333', // Change to your desired text color
   },
   last_message: {
     fontSize: 14,
     color: '#666', // Change to your desired text color
   },
   unread_messages: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    // fontSize: 18,
+    // fontWeight: 'bold',
   },
 };

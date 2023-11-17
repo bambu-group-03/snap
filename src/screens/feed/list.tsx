@@ -60,6 +60,13 @@ export const Feed = () => {
     // console.log(`handleEndReached after: ${renderCount}`);
   };
 
+  const [refresh, setRefresh] = useState(false);
+
+  let onRefresh = React.useCallback(() => {
+    setRefresh(true);
+    refetch().then(() => setRefresh(false));
+  }, [refetch]);
+
   if (isError) {
     return (
       <View>
@@ -67,13 +74,6 @@ export const Feed = () => {
       </View>
     );
   }
-
-  const [refresh, setRefresh] = useState(false);
-
-  let onRefresh = React.useCallback(() => {
-    setRefresh(true);
-    refetch().then(() => setRefresh(false));
-  }, []);
 
   return (
     <View>
