@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { showMessage } from 'react-native-flash-message';
 import { z } from 'zod';
@@ -16,7 +16,7 @@ const schema = z.object({
 type FormType = z.infer<typeof schema>;
 
 export const CommentInput = ({ snap }: { snap: Snap }) => {
-  const [replyOption, setReplyOption] = useState('Everyone can reply');
+  const [replyOption, setReplyOption] = React.useState('Everyone can reply');
 
   const handleMenuSelection = (selectedOption: string) => {
     setReplyOption(selectedOption);
@@ -59,13 +59,7 @@ export const CommentInput = ({ snap }: { snap: Snap }) => {
           testID="body-input"
         />
 
-        <View
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
+        <View className="flex flex-row items-center justify-between">
           <Button
             label="Publish"
             className="inline rounded-full bg-blue-500 px-4 py-3 text-center font-bold text-white"

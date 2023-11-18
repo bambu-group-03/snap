@@ -1,12 +1,12 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
-import { FlatList, Text } from 'react-native';
+import React from 'react';
+import { FlatList } from 'react-native';
 
 import type { Snap } from '@/api';
 import { EmptyList, FocusAwareStatusBar, View } from '@/ui';
 
 import { Card } from '../feed/card';
-import { useEffect, useState } from 'react';
 
 const BASE_INTERACTION_URL =
   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
