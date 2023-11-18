@@ -25,6 +25,20 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
 
   // State to track the number of items to render
   const [renderCount, setRenderCount] = React.useState(INITIAL_RENDER);
+  const [refresh, setRefresh] = React.useState(false);
+
+  let onRefresh = React.useCallback(() => {
+    setRefresh(true);
+    refetch().then(() => setRefresh(false));
+  }, [refetch]);
+
+  if (isError) {
+    return (
+      <View>
+        <Text> Error Loading data </Text>
+      </View>
+    );
+  }
 
   const client = axios.create({
     baseURL: BASE_INTERACTION_URL,
@@ -57,21 +71,6 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
 
     console.log(`handleEndReached after: ${renderCount}`);
   };
-
-  if (isError) {
-    return (
-      <View>
-        <Text> Error Loading data </Text>
-      </View>
-    );
-  }
-
-  const [refresh, setRefresh] = React.useState(false);
-
-  let onRefresh = React.useCallback(() => {
-    setRefresh(true);
-    refetch().then(() => setRefresh(false));
-  }, [refetch]);
 
   return (
     <>

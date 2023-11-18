@@ -18,9 +18,12 @@ const BASE_INTERACTION_URL =
 const ProfileScreen = () => {
   // Obtengo los datos guardados en la memoria interna del telefono
 
-  const userData = useRoute().params?.user
-    ? useRoute().params?.user
-    : getUserState();
+  // First, get the route params unconditionally
+  const route = useRoute();
+  const routeUser = route.params?.user;
+
+  // Then, derive userData based on whether routeUser is defined
+  const userData = routeUser ? routeUser : getUserState();
 
   const [userFollowerCount, setUserFollowerCount] = React.useState<number>(0);
   const [userFollowingCount, setUserFollowingCount] = React.useState<number>(0);

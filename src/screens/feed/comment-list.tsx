@@ -34,10 +34,25 @@ export const Comments = ({
   // State to track the number of items to render
   const [renderCount, setRenderCount] = React.useState(INITIAL_RENDER);
 
+  const [refresh, setRefresh] = React.useState(false);
+
+  // The useCallback hook
+  const onRefresh = React.useCallback(() => {
+    setRefresh(true);
+    refetch().then(() => setRefresh(false));
+  }, [refetch]);
+
+  // Early return in case of error
+  if (isError) {
+    return (
+      <View>
+        <Text> Error Loading data </Text>
+      </View>
+    );
+  }
+
   // Corrected renderItem function
   const renderItem = ({ item, index }: { item: Snap; index: number }) => {
-    // Render the item only if its index is within the current renderCount
-    console.log(`renderItem: ${index}: ${renderCount}`);
     if (index < renderCount) {
       return (
         <Card
@@ -61,21 +76,6 @@ export const Comments = ({
 
     console.log(`handleEndReached after: ${renderCount}`);
   };
-
-  if (isError) {
-    return (
-      <View>
-        <Text> Error Loading data </Text>
-      </View>
-    );
-  }
-
-  const [refresh, setRefresh] = React.useState(false);
-
-  let onRefresh = React.useCallback(() => {
-    setRefresh(true);
-    refetch().then(() => setRefresh(false));
-  }, [refetch]);
 
   return (
     <>
