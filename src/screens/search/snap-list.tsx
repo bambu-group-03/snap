@@ -1,3 +1,4 @@
+import type { RouteProp } from '@react-navigation/native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import React from 'react';
@@ -7,13 +8,14 @@ import type { Snap } from '@/api';
 import { EmptyList, FocusAwareStatusBar, View } from '@/ui';
 
 import { Card } from '../feed/card';
+import type { SearchStackParamList } from './search-navigator';
 
 const BASE_INTERACTION_URL =
   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
 
 const SnapList = () => {
-  const snaps: Snap[] = useRoute().params?.snaps;
-
+  const route = useRoute<RouteProp<SearchStackParamList, 'SnapList'>>();
+  const snaps: Snap[] = route.params?.snaps;
   const { navigate } = useNavigation();
 
   const client = axios.create({

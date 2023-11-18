@@ -1,5 +1,6 @@
 // Displays the chat
 
+import type { RouteProp } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -10,6 +11,7 @@ import ChatBody from './chat-body';
 import ChatHeader from './chat-header';
 import ChatInput from './chat-input';
 import type { ChatBase } from './chat-list-screen';
+import type { ChatStackParamList } from './chat-navigator';
 
 // export type ChatUser = {
 //   id: number;
@@ -21,8 +23,8 @@ import type { ChatBase } from './chat-list-screen';
 // };
 
 const ChatScreen = () => {
-  const params: ChatBase = useRoute().params?.chat;
-
+  const route = useRoute<RouteProp<ChatStackParamList, 'ChatScreen'>>();
+  const params: ChatBase = route.params?.chat;
   return (
     <View className="p:2 flex h-screen flex-1 flex-col justify-between sm:p-6">
       <ScrollView>

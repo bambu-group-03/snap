@@ -1,3 +1,4 @@
+import type { RouteProp} from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import React from 'react';
@@ -6,6 +7,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { getUserState } from '@/core';
 import { FocusAwareStatusBar, View } from '@/ui';
 
+import type { ProfileStackParamList } from './profile-navigator';
 import ProfileSnapsView from './profile-snaps-view';
 import ProfileScreenView from './profile-view';
 
@@ -19,10 +21,9 @@ const ProfileScreen = () => {
   // Obtengo los datos guardados en la memoria interna del telefono
 
   // First, get the route params unconditionally
-  const route = useRoute();
+  const route = useRoute<RouteProp<ProfileStackParamList, 'UserProfile'>>();
   const routeUser = route.params?.user;
 
-  // Then, derive userData based on whether routeUser is defined
   const userData = routeUser ? routeUser : getUserState();
 
   const [userFollowerCount, setUserFollowerCount] = React.useState<number>(0);
