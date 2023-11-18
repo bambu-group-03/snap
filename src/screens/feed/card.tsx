@@ -2,6 +2,7 @@ import type { AxiosInstance } from 'axios';
 import React, { useEffect, useState } from 'react';
 
 import type { Snap } from '@/api';
+import { getUserState } from '@/core';
 import { Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
 
 import CommentButton from './comment-button';
@@ -16,6 +17,8 @@ type Props = {
 };
 
 export const Card = ({ snap, client, onPress = () => {} }: Props) => {
+  const currentUser = getUserState();
+
   const [isRetweeted, setIsRetweeted] = useState(
     snap.has_shared === true && snap.shares > 0
   );
@@ -90,7 +93,7 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
                   }
 
                   client({
-                    url: snap.author + interaction + snap.id,
+                    url: currentUser?.id + interaction + snap.id,
                     method: method,
                   }).then((response) => {
                     console.log(
@@ -121,7 +124,7 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
                   }
 
                   client({
-                    url: snap.author + interaction + snap.id,
+                    url: currentUser?.id + interaction + snap.id,
                     method: method,
                   }).then((response) => {
                     console.log(
