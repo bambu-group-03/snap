@@ -4,7 +4,6 @@ import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import * as z from 'zod';
 
-import type { Snap } from '@/api';
 import { getUserState } from '@/core';
 import type { UserType } from '@/core/auth/utils';
 

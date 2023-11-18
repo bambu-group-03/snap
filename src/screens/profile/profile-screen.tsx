@@ -1,4 +1,4 @@
-import type { RouteProp} from '@react-navigation/native';
+import type { RouteProp } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import React from 'react';
