@@ -6,6 +6,10 @@ import type { Snap } from './types';
 
 type Response = Snap[];
 type Variables = { user_id: string | undefined }; // as react-query-kit is strongly typed, we need to specify the type of the variables as void in case we don't need them
+type SnapVariables = {
+  snap_id: string | undefined;
+  user_id: string | undefined;
+}; // as react-query-kit is strongly typed, we need to specify the type of the variables as void in case we don't need them
 type ReplyVariable = {
   snap_id: string | undefined;
   user_id: string | undefined;
@@ -24,6 +28,21 @@ export const useSnaps = createQuery<Response, Variables, AxiosError>({
       );
       console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
       return response.data.snaps;
+    } catch (e) {
+      console.log('error', e);
+    }
+  },
+});
+
+export const getSnap = createQuery<Response, SnapVariables, AxiosError>({
+  primaryKey: '/api/feed/snap', // we recommend using  endpoint base url as primaryKey
+  queryFn: async ({ queryKey: [primaryKey, variables] }) => {
+    try {
+      const response = await client.get(
+        `${primaryKey}/${variables.snap_id}?user_id=${variables.user_id}`
+      );
+      console.log('response.data.snaps', response.data); // response.data is an array of posts
+      return response.data;
     } catch (e) {
       console.log('error', e);
     }

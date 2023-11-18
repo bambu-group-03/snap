@@ -2,6 +2,8 @@ import axios from 'axios';
 import React from 'react';
 
 import type { Snap } from '@/api';
+import { getSnap } from '@/api';
+import { getUserState } from '@/core';
 import { View } from '@/ui';
 
 import { Card } from '../feed/card';
@@ -12,15 +14,17 @@ const BASE_INTERACTION_URL =
   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
 
 export const SnapView = ({ snap }: { snap: Snap }) => {
-  const { updatedSnap, isLoading, isError, refetch } = getSnapsFrom({
-    variables: { snap_id: snap.id },
+  const currentUser = getUserState();
+
+  const [userSnap, setUserSnaps] = React.useState<any>();
+
+  const { data } = getSnap({
+    variables: { snap_id: snap.id, user_id: currentUser?.id },
   });
 
-  const [userSnap, setUserSnaps] = React.useState<Snap>();
-
   React.useEffect(() => {
-    setUserSnaps(userSnap);
-  }, [updatedSnap]);
+    setUserSnaps(data);
+  }, [data]);
 
   const client = axios.create({
     baseURL: BASE_INTERACTION_URL,
@@ -29,10 +33,10 @@ export const SnapView = ({ snap }: { snap: Snap }) => {
   return (
     <>
       <View>
-        <Card snap={userSnap} client={client} />
-        <CommentInput snap={userSnap} />
+        <Card snap={userSnap ? userSnap : snap} client={client} />
+        <CommentInput snap={userSnap ? userSnap : snap} />
       </View>
-      <Comments snap={userSnap} client={client} />
+      <Comments snap={userSnap ? userSnap : snap} client={client} />
     </>
   );
 };
