@@ -16,11 +16,14 @@ const BASE_INTERACTION_URL =
 export const SnapView = ({ snap }: { snap: Snap }) => {
   const currentUser = getUserState();
 
-  const [userSnap, setUserSnaps] = React.useState<any>();
+  const [userSnap, setUserSnaps] = React.useState<any>(snap);
 
   const { data } = getSnap({
     variables: { snap_id: snap.id, user_id: currentUser?.id },
   });
+
+  console.log('Recibi');
+  console.log(data);
 
   React.useEffect(() => {
     setUserSnaps(data);
@@ -30,13 +33,15 @@ export const SnapView = ({ snap }: { snap: Snap }) => {
     baseURL: BASE_INTERACTION_URL,
   });
 
+  const endSnap = userSnap !== undefined ? userSnap : snap;
+
   return (
     <>
       <View>
-        <Card snap={userSnap ? userSnap : snap} client={client} />
-        <CommentInput snap={userSnap ? userSnap : snap} />
+        <Card snap={endSnap} client={client} />
+        <CommentInput snap={endSnap} />
       </View>
-      <Comments snap={userSnap ? userSnap : snap} client={client} />
+      <Comments snap={endSnap} client={client} />
     </>
   );
 };
