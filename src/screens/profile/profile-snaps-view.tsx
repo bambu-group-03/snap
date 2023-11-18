@@ -23,6 +23,12 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
     variables: { user_id: user?.id },
   });
 
+  const [userSnaps, setUserSnaps] = React.useState<Snap[]>([]);
+
+  React.useEffect(() => {
+    setUserSnaps(data ? data : []);
+  }, [data]);
+
   // State to track the number of items to render
   const [renderCount, setRenderCount] = React.useState(INITIAL_RENDER);
   const [refresh, setRefresh] = React.useState(false);
@@ -76,7 +82,7 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
     <>
       <FocusAwareStatusBar />
       <FlatList
-        data={data}
+        data={userSnaps}
         renderItem={renderItem}
         keyExtractor={(_, index) => `item-${index}`}
         ListEmptyComponent={<EmptyList isLoading={isLoading} />}

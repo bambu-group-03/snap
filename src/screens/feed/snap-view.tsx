@@ -12,6 +12,16 @@ const BASE_INTERACTION_URL =
   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
 
 export const SnapView = ({ snap }: { snap: Snap }) => {
+  const { updatedSnap, isLoading, isError, refetch } = getSnapsFrom({
+    variables: { snap_id: snap.id },
+  });
+
+  const [userSnap, setUserSnaps] = React.useState<Snap>();
+
+  React.useEffect(() => {
+    setUserSnaps(userSnap);
+  }, [updatedSnap]);
+
   const client = axios.create({
     baseURL: BASE_INTERACTION_URL,
   });
@@ -19,10 +29,10 @@ export const SnapView = ({ snap }: { snap: Snap }) => {
   return (
     <>
       <View>
-        <Card snap={snap} client={client} />
-        <CommentInput snap={snap} />
+        <Card snap={userSnap} client={client} />
+        <CommentInput snap={userSnap} />
       </View>
-      <Comments snap={snap} client={client} />
+      <Comments snap={userSnap} client={client} />
     </>
   );
 };
