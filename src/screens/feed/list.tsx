@@ -23,6 +23,12 @@ export const Feed = () => {
     variables: { user_id: currentUser?.id },
   });
 
+  const [userSnaps, setUserSnaps] = React.useState<Snap[]>([]);
+
+  React.useEffect(() => {
+    setUserSnaps(data ? data : []);
+  }, [data]);
+
   const { navigate } = useNavigation();
 
   // State to track the number of items to render
@@ -81,7 +87,7 @@ export const Feed = () => {
       <FocusAwareStatusBar />
 
       <FlatList
-        data={data}
+        data={userSnaps}
         renderItem={renderItem}
         keyExtractor={(_, index) => `item-${index}`}
         ListEmptyComponent={<EmptyList isLoading={isLoading} />}

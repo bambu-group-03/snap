@@ -1,5 +1,5 @@
 import type { AxiosInstance } from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import type { Snap } from '@/api';
 import { Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
@@ -22,12 +22,20 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
   const [isLiked, setIsLiked] = useState(
     snap.has_liked === true && snap.likes > 0
   );
-  const [commentCount] = useState(snap.num_replies ? snap.num_replies : 0);
+  const [commentCount, setCommentCount] = useState(
+    snap.num_replies ? snap.num_replies : 0
+  );
   const formattedDate = new Date(snap.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
   });
+
+  useEffect(() => {
+    setIsLiked(snap.has_liked);
+    setIsRetweeted(snap.has_shared);
+    setCommentCount(snap.num_replies);
+  }, [snap]);
 
   console.log(snap);
 
