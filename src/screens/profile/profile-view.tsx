@@ -11,7 +11,7 @@ const ProfileScreenView = ({
   user,
   follower_count,
   following_count,
-  user_is_followed = false,
+  // user_is_followed = false,
   client,
 }: {
   user: UserType | undefined;

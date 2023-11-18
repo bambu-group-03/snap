@@ -12,8 +12,8 @@ import ProfileScreenView from './profile-view';
 const BASE_INTERACTION_URL =
   'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/interactions/';
 
-const BASE_SNAP_URL =
-  'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/feed/';
+// const BASE_SNAP_URL =
+//   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/feed/';
 
 const ProfileScreen = () => {
   // Obtengo los datos guardados en la memoria interna del telefono

@@ -13,8 +13,8 @@ import { Card } from './card';
 const INCREMENT_RENDER = 10;
 const INITIAL_RENDER = 20;
 
-const BASE_INTERACTION_URL =
-  'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
+// const BASE_INTERACTION_URL =
+//   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
 
 export const Comments = ({
   snap,
