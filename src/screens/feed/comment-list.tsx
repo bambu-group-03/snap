@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import type { AxiosInstance } from 'axios';
-import React, { useState } from 'react';
+import React from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 
 import type { Snap } from '@/api';
@@ -32,7 +32,7 @@ export const Comments = ({
   const { navigate } = useNavigation();
 
   // State to track the number of items to render
-  const [renderCount, setRenderCount] = useState(INITIAL_RENDER);
+  const [renderCount, setRenderCount] = React.useState(INITIAL_RENDER);
 
   // Corrected renderItem function
   const renderItem = ({ item, index }: { item: Snap; index: number }) => {
@@ -70,12 +70,12 @@ export const Comments = ({
     );
   }
 
-  const [refresh, setRefresh] = useState(false);
+  const [refresh, setRefresh] = React.useState(false);
 
   let onRefresh = React.useCallback(() => {
     setRefresh(true);
     refetch().then(() => setRefresh(false));
-  }, []);
+  }, [refetch]);
 
   return (
     <>

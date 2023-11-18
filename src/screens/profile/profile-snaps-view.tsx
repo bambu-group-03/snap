@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React from 'react';
 import { FlatList, RefreshControl } from 'react-native'; // Import FlatList
 
 import type { Snap } from '@/api';
@@ -24,7 +24,7 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
   });
 
   // State to track the number of items to render
-  const [renderCount, setRenderCount] = useState(INITIAL_RENDER);
+  const [renderCount, setRenderCount] = React.useState(INITIAL_RENDER);
 
   const client = axios.create({
     baseURL: BASE_INTERACTION_URL,
@@ -66,12 +66,12 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
     );
   }
 
-  const [refresh, setRefresh] = useState(false);
+  const [refresh, setRefresh] = React.useState(false);
 
   let onRefresh = React.useCallback(() => {
     setRefresh(true);
     refetch().then(() => setRefresh(false));
-  }, []);
+  }, [refetch]);
 
   return (
     <>

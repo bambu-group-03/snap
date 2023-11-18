@@ -73,7 +73,7 @@ export const Feed = () => {
   let onRefresh = React.useCallback(() => {
     setRefresh(true);
     refetch().then(() => setRefresh(false));
-  }, []);
+  }, [refetch]);
 
   return (
     <View>
