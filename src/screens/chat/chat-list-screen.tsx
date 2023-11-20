@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
 
 import { getUserState } from '@/core';
+import { View } from '@/ui';
 
 import ChatListBody from './chat-list-body';
 
@@ -34,32 +34,10 @@ const ChatListScreen = () => {
   }, [currentUser?.id]);
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 p-4">
       <ChatListBody chats={chats} />
     </View>
   );
-};
-const styles = {
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: 'white', // Change to your desired background color
-  },
-  card: {
-    backgroundColor: 'white', // Change to your desired background color
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#E5E7EB', // Change to your desired border color
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 2,
-    padding: 16,
-  },
 };
 
 export default ChatListScreen;

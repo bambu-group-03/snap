@@ -22,19 +22,19 @@ const getUserFromChat = async (id: string): Promise<UserType> => {
 const ChatListBody = ({ chats }: { chats: Chat[] }) => {
   const { navigate } = useNavigation();
   const [users, setUsers] = React.useState<{ [key: string]: UserType }>({});
+  console.log('users', users);
 
   React.useEffect(() => {
     const fetchUsers = async () => {
       const usersData: { [key: string]: UserType } = {};
       for (const chat of chats) {
         try {
-          const user = await getUserFromChat(chat.other_id); // Assuming owner_id is the key to fetch the user
-          usersData[chat.owner_id] = user;
+          const user = await getUserFromChat(chat.other_id);
+          usersData[chat.other_id] = user; // Store using `other_id`
         } catch (error) {
           console.error('Error fetching user for chat:', chat.chat_id, error);
         }
       }
-      console.log('usersData', usersData);
       setUsers(usersData);
     };
 
@@ -45,6 +45,7 @@ const ChatListBody = ({ chats }: { chats: Chat[] }) => {
     <View className="flex-1">
       {chats.map((chat) => {
         const user = users[chat.other_id];
+        console.log(`user for chat ${chat.chat_id}`, user);
         return (
           <View key={chat.chat_id} className="border-b border-gray-200 py-3">
             <TouchableOpacity

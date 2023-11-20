@@ -12,14 +12,15 @@ const ChatHeader = ({ chatUser }: { chatUser: UserType }) => {
       <View className="relative flex items-center space-x-4">
         <View className="relative">
           <Image
-            source={chatUser.profile_photo_id}
+            source={chatUser?.profile_photo_id || 'https://i.pravatar.cc/300'}
             className="h-10 w-10 rounded-full sm:h-16 sm:w-16"
           />
         </View>
         <View className="flex flex-col leading-tight">
           <View className="mt-1 flex items-center text-2xl">
             <Text className="mr-3 text-gray-700">
-              {chatUser.first_name} {chatUser.last_name}
+              {chatUser?.first_name || 'First Name'}{' '}
+              {chatUser?.last_name || 'Last Name'}
             </Text>
           </View>
           <Text className="text-lg text-gray-600">{chatUser.bio_msg}</Text>
