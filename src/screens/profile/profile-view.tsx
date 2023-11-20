@@ -117,6 +117,19 @@ const ProfileScreenView = ({
                   )}
                 </View>
               ) : null}
+              {user && userData && user.id !== userData.id && (
+                <Button
+                  label="Send Message"
+                  className="mt-4 rounded-full bg-blue-500 px-4 py-3 text-center font-bold text-white"
+                  onPress={() =>
+                    navigate.navigate('ChatMessagesScreen', {
+                      user,
+                      chat: undefined,
+                    })
+                  }
+                  testID="send-message-button"
+                />
+              )}
             </View>
             <View className="w-full text-center ">
               <View className="flex flex-row justify-center pb-0 lg:pt-4 ">

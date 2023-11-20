@@ -10,7 +10,7 @@ import ChatScreen from './chat-screen';
 export type ChatStackParamList = {
   Chats: undefined;
   ChatMessagesScreen: {
-    chat: Chat;
+    chat: Chat | undefined;
     user: UserType;
   };
 };

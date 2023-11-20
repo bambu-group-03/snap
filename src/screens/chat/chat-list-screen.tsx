@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { getUserState } from '@/core';
 import { View } from '@/ui';
@@ -14,28 +14,31 @@ export type Chat = {
 };
 
 const ChatListScreen = () => {
+  const currentUser = getUserState();
   const [chats, setChats] = useState<Chat[]>([]);
-  const currentUser = getUserState(); // Assume this returns the current user
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchChats = async () => {
-      try {
-        const response = await axios.get(
-          `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/chat/get_chats_by_user/${currentUser?.id}`
-        );
-        console.log(`chats from user ${currentUser?.id}`, response.data); // Assuming this returns the chats for the current user
-        setChats(response.data);
-      } catch (error) {
-        console.error('Error fetching chats:', error);
-      }
-    };
-
-    fetchChats();
+  const fetchChats = useCallback(async () => {
+    setLoading(true);
+    try {
+      // Replace with your API call to fetch chats
+      const response = await axios.get(
+        `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/chat/get_chats_by_user/${currentUser?.id}`
+      );
+      setChats(response.data);
+    } catch (error) {
+      console.error('Error fetching chats:', error);
+    }
+    setLoading(false);
   }, [currentUser?.id]);
 
+  useEffect(() => {
+    fetchChats();
+  }, [fetchChats]);
+
   return (
-    <View className="flex-1 p-4">
-      <ChatListBody chats={chats} />
+    <View className="flex-1">
+      <ChatListBody chats={chats} onRefresh={fetchChats} loading={loading} />
     </View>
   );
 };

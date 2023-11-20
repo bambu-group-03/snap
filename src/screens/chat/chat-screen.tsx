@@ -4,6 +4,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 
+import { getUserState } from '@/core';
 import { View } from '@/ui';
 
 import ChatBody from './chat-body';
@@ -19,17 +20,23 @@ export type Message = {
   chat_id: string;
   created_at: string;
 };
+
 const ChatScreen = () => {
   const route = useRoute<RouteProp<ChatStackParamList, 'ChatMessagesScreen'>>();
   const { chat, user } = route.params;
-  console.log(`other_chat_user: ${JSON.stringify(user)}`);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [chatId, setChatId] = useState(chat?.chat_id);
 
+  const [messages, setMessages] = useState<Message[]>([]);
+  console.log(messages);
   useEffect(() => {
     const fetchMessages = async () => {
+      if (!chatId) {
+        setMessages([]); // If chat is undefined, set messages to an empty array
+        return;
+      }
       try {
         const response = await axios.get(
-          `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/chat/get_messages_by_chat/${chat.chat_id}`
+          `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/chat/get_messages_by_chat/${chatId}`
         );
         setMessages(response.data);
       } catch (error) {
@@ -38,10 +45,16 @@ const ChatScreen = () => {
     };
 
     fetchMessages();
-  }, [chat]);
+    const intervalId = setInterval(fetchMessages, 5000); // Refresh every 5 seconds
+    return () => clearInterval(intervalId); // Clear interval on component unmount or chat change
+  }, [chat, chatId]);
+
   // Function to add a new message to the state
   const addNewMessage = (newMessage: Message) => {
     setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
+  const handleNewChatCreated = (newChatId: string) => {
+    setChatId(newChatId);
   };
   return (
     <View className="p:2 flex h-screen flex-1 flex-col justify-between sm:p-6">
@@ -50,9 +63,10 @@ const ChatScreen = () => {
         <ChatBody messages={messages} chatUser={user} />
       </ScrollView>
       <ChatInput
-        fromId={chat.owner_id}
+        fromId={chat?.owner_id || getUserState()!.id}
         toId={user.id}
         addNewMessage={addNewMessage}
+        onNewChatCreated={handleNewChatCreated}
       />
     </View>
   );

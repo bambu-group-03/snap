@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import * as React from 'react';
+import { RefreshControl } from 'react-native';
 
 import type { UserType } from '@/core/auth/utils';
-import { Image, Text, TouchableOpacity, View } from '@/ui';
+import { Image, ScrollView, Text, TouchableOpacity, View } from '@/ui';
 
 import type { Chat } from './chat-list-screen';
 
@@ -19,33 +20,44 @@ const getUserFromChat = async (id: string): Promise<UserType> => {
   }
 };
 
-const ChatListBody = ({ chats }: { chats: Chat[] }) => {
+const ChatListBody = ({
+  chats,
+  onRefresh,
+  loading,
+}: {
+  chats: Chat[];
+  onRefresh: () => void;
+  loading: boolean;
+}) => {
   const { navigate } = useNavigation();
   const [users, setUsers] = React.useState<{ [key: string]: UserType }>({});
-  console.log('users', users);
 
-  React.useEffect(() => {
-    const fetchUsers = async () => {
-      const usersData: { [key: string]: UserType } = {};
-      for (const chat of chats) {
-        try {
-          const user = await getUserFromChat(chat.other_id);
-          usersData[chat.other_id] = user; // Store using `other_id`
-        } catch (error) {
-          console.error('Error fetching user for chat:', chat.chat_id, error);
-        }
+  const fetchUsers = React.useCallback(async () => {
+    const usersData: { [key: string]: UserType } = {};
+    for (const chat of chats) {
+      try {
+        const user = await getUserFromChat(chat.other_id);
+        usersData[chat.other_id] = user; // Store using `other_id`
+      } catch (error) {
+        console.error('Error fetching user for chat:', chat.chat_id, error);
       }
-      setUsers(usersData);
-    };
-
-    fetchUsers();
+    }
+    setUsers(usersData);
   }, [chats]);
 
+  React.useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
   return (
-    <View className="flex-1">
+    <ScrollView
+      className="flex-1"
+      refreshControl={
+        <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+      }
+    >
       {chats.map((chat) => {
         const user = users[chat.other_id];
-        console.log(`user for chat ${chat.chat_id}`, user);
         return (
           <View key={chat.chat_id} className="border-b border-gray-200 py-3">
             <TouchableOpacity
@@ -55,7 +67,7 @@ const ChatListBody = ({ chats }: { chats: Chat[] }) => {
                 <Image
                   className="mr-4 h-12 w-12 rounded-full"
                   source={{
-                    uri: user?.profile_photo_id || 'https://i.pravatar.cc/300',
+                    uri: user?.profile_photo_id || 'https://i.pravatar.cc/100',
                   }}
                 />
                 <View className="flex-1">
@@ -70,7 +82,7 @@ const ChatListBody = ({ chats }: { chats: Chat[] }) => {
           </View>
         );
       })}
-    </View>
+    </ScrollView>
   );
 };
 

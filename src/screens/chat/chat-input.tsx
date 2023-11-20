@@ -21,12 +21,14 @@ export type ChatInputProps = {
   fromId: string;
   toId: string;
   addNewMessage: (newMessage: Message) => void;
+  onNewChatCreated?: (chatId: string) => void;
 };
 
 const ChatInput: React.FC<ChatInputProps> = ({
   fromId,
   toId,
   addNewMessage,
+  onNewChatCreated,
 }) => {
   const { control, handleSubmit, reset } = useForm<MessageType>({
     resolver: zodResolver(messageSchema),
@@ -45,7 +47,9 @@ const ChatInput: React.FC<ChatInputProps> = ({
       );
       console.log('response code', response.status);
       console.log('response', response.data);
-      // Add the new message to the chat screen, TODO: when send a message, response must return the new message
+      if (response.data.chat_id && onNewChatCreated) {
+        onNewChatCreated(response.data.chat_id);
+      }
       addNewMessage({
         ...response.data,
       });
