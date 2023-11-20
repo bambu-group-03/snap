@@ -39,14 +39,21 @@ const ChatScreen = () => {
 
     fetchMessages();
   }, [chat]);
-
+  // Function to add a new message to the state
+  const addNewMessage = (newMessage: Message) => {
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
   return (
     <View className="p:2 flex h-screen flex-1 flex-col justify-between sm:p-6">
       <ScrollView>
         <ChatHeader chatUser={user} />
         <ChatBody messages={messages} chatUser={user} />
       </ScrollView>
-      <ChatInput />
+      <ChatInput
+        fromId={chat.owner_id}
+        toId={user.id}
+        addNewMessage={addNewMessage}
+      />
     </View>
   );
 };
