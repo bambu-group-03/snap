@@ -11,7 +11,7 @@ const ProfileScreenView = ({
   user,
   follower_count,
   following_count,
-  user_is_followed = false,
+  // user_is_followed = false,
   client,
 }: {
   user: UserType | undefined;
@@ -149,13 +149,7 @@ const ProfileScreenView = ({
                       {followerCount}
                     </Text>
 
-                    <Text
-                      className="text-sm text-slate-400"
-                      style={{
-                        color: '#0077cc',
-                        textDecorationLine: 'underline',
-                      }}
-                    >
+                    <Text className="text-sm text-blue-600 underline">
                       Followers
                     </Text>
                   </TouchableOpacity>
@@ -190,13 +184,7 @@ const ProfileScreenView = ({
                       {followingCount}
                     </Text>
 
-                    <Text
-                      className="text-sm text-slate-400"
-                      style={{
-                        color: '#0077cc',
-                        textDecorationLine: 'underline',
-                      }}
-                    >
+                    <Text className="text-sm text-blue-600 underline">
                       Following
                     </Text>
                   </TouchableOpacity>

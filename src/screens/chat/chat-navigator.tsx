@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
+import type { UserType } from '@/core/auth/utils';
 import { Chat as ChatListScreen } from '@/screens';
 
 import type { Chat } from './chat-list-screen';

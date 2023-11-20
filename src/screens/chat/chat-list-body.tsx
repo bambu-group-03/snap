@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import * as React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 import type { UserType } from '@/core/auth/utils';
+import { Image, Text, TouchableOpacity, View } from '@/ui';
 
 import type { Chat } from './chat-list-screen';
 
@@ -42,24 +42,27 @@ const ChatListBody = ({ chats }: { chats: Chat[] }) => {
   }, [chats]);
 
   return (
-    <View style={styles.list}>
-      {chats.map((chat: Chat) => {
-        const user = users[chat.other_id]; // Assuming owner_id is used to map the user
+    <View className="flex-1">
+      {chats.map((chat) => {
+        const user = users[chat.other_id];
         return (
-          <View key={chat.chat_id} style={styles.listItem}>
+          <View key={chat.chat_id} className="border-b border-gray-200 py-3">
             <TouchableOpacity
               onPress={() => navigate('ChatMessagesScreen', { chat, user })}
             >
-              <View style={styles.itemContent}>
+              <View className="flex-row items-center">
                 <Image
-                  style={styles.avatar}
-                  source={{ uri: user?.profile_photo_id }}
+                  className="mr-4 h-12 w-12 rounded-full"
+                  source={{
+                    uri: user?.profile_photo_id || 'https://i.pravatar.cc/300',
+                  }}
                 />
-                <View style={styles.textContainer}>
-                  <Text style={styles.name}>
+                <View className="flex-1">
+                  <Text className="text-lg font-bold text-gray-800">
                     {user?.first_name} {user?.last_name}
                   </Text>
-                  {/* <Text style={styles.last_message}>{chat.last_message}</Text> */}
+                  {/* Uncomment if you want to display the last message */}
+                  {/* <Text className="text-base text-gray-600">{chat.last_message}</Text> */}
                 </View>
               </View>
             </TouchableOpacity>
@@ -71,38 +74,3 @@ const ChatListBody = ({ chats }: { chats: Chat[] }) => {
 };
 
 export default ChatListBody;
-
-const styles = {
-  list: {},
-  listItem: {
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB', // Change to your desired border color
-  },
-  itemContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    marginRight: 16,
-  },
-  textContainer: {
-    flex: 1,
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333', // Change to your desired text color
-  },
-  last_message: {
-    fontSize: 14,
-    color: '#666', // Change to your desired text color
-  },
-  unread_messages: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-};

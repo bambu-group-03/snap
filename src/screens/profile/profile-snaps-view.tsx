@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React from 'react';
 import { FlatList, RefreshControl } from 'react-native'; // Import FlatList
 
 import type { Snap } from '@/api';
@@ -23,8 +23,28 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
     variables: { user_id: user?.id },
   });
 
+  const [userSnaps, setUserSnaps] = React.useState<Snap[]>([]);
+
+  React.useEffect(() => {
+    setUserSnaps(data ? data : []);
+  }, [data]);
+
   // State to track the number of items to render
-  const [renderCount, setRenderCount] = useState(INITIAL_RENDER);
+  const [renderCount, setRenderCount] = React.useState(INITIAL_RENDER);
+  const [refresh, setRefresh] = React.useState(false);
+
+  let onRefresh = React.useCallback(() => {
+    setRefresh(true);
+    refetch().then(() => setRefresh(false));
+  }, [refetch]);
+
+  if (isError) {
+    return (
+      <View>
+        <Text> Error Loading data </Text>
+      </View>
+    );
+  }
 
   const client = axios.create({
     baseURL: BASE_INTERACTION_URL,
@@ -58,26 +78,11 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
     console.log(`handleEndReached after: ${renderCount}`);
   };
 
-  if (isError) {
-    return (
-      <View>
-        <Text> Error Loading data </Text>
-      </View>
-    );
-  }
-
-  const [refresh, setRefresh] = useState(false);
-
-  let onRefresh = React.useCallback(() => {
-    setRefresh(true);
-    refetch().then(() => setRefresh(false));
-  }, []);
-
   return (
     <>
       <FocusAwareStatusBar />
       <FlatList
-        data={data}
+        data={userSnaps}
         renderItem={renderItem}
         keyExtractor={(_, index) => `item-${index}`}
         ListEmptyComponent={<EmptyList isLoading={isLoading} />}

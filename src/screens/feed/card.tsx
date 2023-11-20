@@ -1,7 +1,8 @@
 import type { AxiosInstance } from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import type { Snap } from '@/api';
+import { getUserState } from '@/core';
 import { Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
 
 import CommentButton from './comment-button';
@@ -16,8 +17,14 @@ type Props = {
 };
 
 export const Card = ({ snap, client, onPress = () => {} }: Props) => {
-  const [isRetweeted, setIsRetweeted] = useState(snap.has_shared);
-  const [isLiked, setIsLiked] = useState(snap.has_liked);
+  const currentUser = getUserState();
+
+  const [isRetweeted, setIsRetweeted] = useState(
+    snap.has_shared === true && snap.shares > 0
+  );
+  const [isLiked, setIsLiked] = useState(
+    snap.has_liked === true && snap.likes > 0
+  );
   const [commentCount, setCommentCount] = useState(
     snap.num_replies ? snap.num_replies : 0
   );
@@ -26,6 +33,12 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
     month: '2-digit',
     day: '2-digit',
   });
+
+  useEffect(() => {
+    setIsLiked(snap.has_liked);
+    setIsRetweeted(snap.has_shared);
+    setCommentCount(snap.num_replies);
+  }, [snap]);
 
   console.log(snap);
 
@@ -80,7 +93,7 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
                   }
 
                   client({
-                    url: snap.author + interaction + snap.id,
+                    url: currentUser?.id + interaction + snap.id,
                     method: method,
                   }).then((response) => {
                     console.log(
@@ -111,7 +124,7 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
                   }
 
                   client({
-                    url: snap.author + interaction + snap.id,
+                    url: currentUser?.id + interaction + snap.id,
                     method: method,
                   }).then((response) => {
                     console.log(

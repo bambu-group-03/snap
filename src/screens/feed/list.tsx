@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React from 'react';
 import { FlatList, RefreshControl } from 'react-native'; // Import FlatList
 
 import type { Snap } from '@/api';
@@ -23,10 +23,32 @@ export const Feed = () => {
     variables: { user_id: currentUser?.id },
   });
 
+  const [userSnaps, setUserSnaps] = React.useState<Snap[]>([]);
+
+  React.useEffect(() => {
+    setUserSnaps(data ? data : []);
+  }, [data]);
+
   const { navigate } = useNavigation();
 
   // State to track the number of items to render
-  const [renderCount, setRenderCount] = useState(INITIAL_RENDER);
+  const [renderCount, setRenderCount] = React.useState(INITIAL_RENDER);
+  const [refresh, setRefresh] = React.useState(false);
+
+  // The useCallback hook
+  const onRefresh = React.useCallback(() => {
+    setRefresh(true);
+    refetch().then(() => setRefresh(false));
+  }, [refetch]);
+
+  // Early return in case of error
+  if (isError) {
+    return (
+      <View>
+        <Text> Error Loading data </Text>
+      </View>
+    );
+  }
 
   const client = axios.create({
     baseURL: BASE_INTERACTION_URL,
@@ -60,27 +82,12 @@ export const Feed = () => {
     // console.log(`handleEndReached after: ${renderCount}`);
   };
 
-  if (isError) {
-    return (
-      <View>
-        <Text> Error Loading data </Text>
-      </View>
-    );
-  }
-
-  const [refresh, setRefresh] = useState(false);
-
-  let onRefresh = React.useCallback(() => {
-    setRefresh(true);
-    refetch().then(() => setRefresh(false));
-  }, []);
-
   return (
     <View>
       <FocusAwareStatusBar />
 
       <FlatList
-        data={data}
+        data={userSnaps}
         renderItem={renderItem}
         keyExtractor={(_, index) => `item-${index}`}
         ListEmptyComponent={<EmptyList isLoading={isLoading} />}
@@ -89,9 +96,8 @@ export const Feed = () => {
         refreshControl={
           <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
         }
-        // Adjust the threshold as needed
         getItemLayout={(_data, index) => ({
-          length: 100, // Adjust the item length as needed
+          length: 100,
           offset: 100 * index,
           index,
         })}

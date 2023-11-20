@@ -1,32 +1,36 @@
+import type { RouteProp } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { getUserState } from '@/core';
 import { FocusAwareStatusBar, View } from '@/ui';
 
+import type { ProfileStackParamList } from './profile-navigator';
 import ProfileSnapsView from './profile-snaps-view';
 import ProfileScreenView from './profile-view';
 
 const BASE_INTERACTION_URL =
   'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/interactions/';
 
-const BASE_SNAP_URL =
-  'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/feed/';
+// const BASE_SNAP_URL =
+//   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/feed/';
 
 const ProfileScreen = () => {
   // Obtengo los datos guardados en la memoria interna del telefono
 
-  const userData = useRoute().params?.user
-    ? useRoute().params?.user
-    : getUserState();
+  // First, get the route params unconditionally
+  const route = useRoute<RouteProp<ProfileStackParamList, 'UserProfile'>>();
+  const routeUser = route.params?.user;
 
-  const [userFollowerCount, setUserFollowerCount] = useState<number>(0);
-  const [userFollowingCount, setUserFollowingCount] = useState<number>(0);
+  const userData = routeUser ? routeUser : getUserState();
+
+  const [userFollowerCount, setUserFollowerCount] = React.useState<number>(0);
+  const [userFollowingCount, setUserFollowingCount] = React.useState<number>(0);
 
   // Pido la cantidad de followers
-  useEffect(() => {
+  React.useEffect(() => {
     axios
       .get(BASE_INTERACTION_URL + userData?.id + '/count_followers')
       .then((response) => {
@@ -39,7 +43,7 @@ const ProfileScreen = () => {
   }, [userData]);
 
   // Pido la cantidad de following
-  useEffect(() => {
+  React.useEffect(() => {
     axios
       .get(BASE_INTERACTION_URL + userData?.id + '/count_following')
       .then((response) => {

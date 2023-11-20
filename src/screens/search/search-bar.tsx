@@ -4,7 +4,6 @@ import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import * as z from 'zod';
 
-import type { Snap } from '@/api';
 import { getUserState } from '@/core';
 import type { UserType } from '@/core/auth/utils';
 
@@ -57,14 +56,14 @@ const whenSearch = async (
     const responseC = await fetch(
       `https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/filter/content?user_id=${currentUser?.id}&content=${data.content}`
     );
-    const snapsFromContent: Snap[] = await responseC.json();
+    const snapsFromContent = await responseC.json();
     navigate('SnapList', { snaps: snapsFromContent.snaps });
   }
   if (data.hashtag && data.hashtag.trim() !== '') {
     const responseH = await fetch(
       `https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/filter/hashtag?user_id=${currentUser?.id}&hashtag=${data.hashtag}`
     );
-    const snapFromHashtags: Snap[] = await responseH.json();
+    const snapFromHashtags = await responseH.json();
     navigate('SnapList', { snaps: snapFromHashtags.snaps });
   }
 };

@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import type { AxiosInstance } from 'axios';
-import React, { useState } from 'react';
+import React from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 
 import type { Snap } from '@/api';
@@ -13,8 +13,8 @@ import { Card } from './card';
 const INCREMENT_RENDER = 10;
 const INITIAL_RENDER = 20;
 
-const BASE_INTERACTION_URL =
-  'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
+// const BASE_INTERACTION_URL =
+//   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
 
 export const Comments = ({
   snap,
@@ -32,12 +32,27 @@ export const Comments = ({
   const { navigate } = useNavigation();
 
   // State to track the number of items to render
-  const [renderCount, setRenderCount] = useState(INITIAL_RENDER);
+  const [renderCount, setRenderCount] = React.useState(INITIAL_RENDER);
+
+  const [refresh, setRefresh] = React.useState(false);
+
+  // The useCallback hook
+  const onRefresh = React.useCallback(() => {
+    setRefresh(true);
+    refetch().then(() => setRefresh(false));
+  }, [refetch]);
+
+  // Early return in case of error
+  if (isError) {
+    return (
+      <View>
+        <Text> Error Loading data </Text>
+      </View>
+    );
+  }
 
   // Corrected renderItem function
   const renderItem = ({ item, index }: { item: Snap; index: number }) => {
-    // Render the item only if its index is within the current renderCount
-    console.log(`renderItem: ${index}: ${renderCount}`);
     if (index < renderCount) {
       return (
         <Card
@@ -61,21 +76,6 @@ export const Comments = ({
 
     console.log(`handleEndReached after: ${renderCount}`);
   };
-
-  if (isError) {
-    return (
-      <View>
-        <Text> Error Loading data </Text>
-      </View>
-    );
-  }
-
-  const [refresh, setRefresh] = useState(false);
-
-  let onRefresh = React.useCallback(() => {
-    setRefresh(true);
-    refetch().then(() => setRefresh(false));
-  }, []);
 
   return (
     <>
