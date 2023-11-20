@@ -47,12 +47,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
       console.log('response', response.data);
       // Add the new message to the chat screen, TODO: when send a message, response must return the new message
       addNewMessage({
-        chat_id: '',
-        content: data.message,
-        msg_id: '',
-        from_id: '',
-        to_id: '',
-        created_at: '',
+        ...response.data,
       });
 
       reset(); // Reset the form after sending
