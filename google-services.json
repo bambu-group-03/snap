@@ -1,39 +1,39 @@
 {
-    "project_info": {
-      "project_number": "673926404216",
-      "project_id": "bambu-snap",
-      "storage_bucket": "bambu-snap.appspot.com"
-    },
-    "client": [
-      {
-        "client_info": {
-          "mobilesdk_app_id": "1:673926404216:android:694ffa0cf90f1fe3dc758d",
-          "android_client_info": {
-            "package_name": "com.snap.development"
-          }
-        },
-        "oauth_client": [
-          {
-            "client_id": "673926404216-tu4sgu5ir0g1mfgb55n70dl0889vl83q.apps.googleusercontent.com",
-            "client_type": 3
-          }
-        ],
-        "api_key": [
-          {
-            "current_key": "AIzaSyDXm4Xdzg0Qo0M-5Eke5m3ms652V2GAuAw"
-          }
-        ],
-        "services": {
-          "appinvite_service": {
-            "other_platform_oauth_client": [
-              {
-                "client_id": "673926404216-tu4sgu5ir0g1mfgb55n70dl0889vl83q.apps.googleusercontent.com",
-                "client_type": 3
-              }
-            ]
-          }
+  "project_info": {
+    "project_number": "673926404216",
+    "project_id": "bambu-snap",
+    "storage_bucket": "bambu-snap.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673926404216:android:694ffa0cf90f1fe3dc758d",
+        "android_client_info": {
+          "package_name": "com.snap.development"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "673926404216-tu4sgu5ir0g1mfgb55n70dl0889vl83q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXm4Xdzg0Qo0M-5Eke5m3ms652V2GAuAw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673926404216-tu4sgu5ir0g1mfgb55n70dl0889vl83q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
-    ],
-    "configuration_version": "1"
-  }
+    }
+  ],
+  "configuration_version": "1"
+}

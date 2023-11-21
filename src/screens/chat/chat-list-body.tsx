@@ -1,40 +1,89 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import axios from 'axios';
+import * as React from 'react';
+import { RefreshControl } from 'react-native';
 
-import { Image, Text, TouchableOpacity, View } from '@/ui';
+import type { UserType } from '@/core/auth/utils';
+import { Image, ScrollView, Text, TouchableOpacity, View } from '@/ui';
 
-import type { ChatBase } from './chat-list-screen';
+import type { Chat } from './chat-list-screen';
 
-const ChatListHeader = ({ chats }: { chats: ChatBase[] }) => {
+const getUserFromChat = async (id: string): Promise<UserType> => {
+  try {
+    const response = await axios.get(
+      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/users/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    throw error;
+  }
+};
+
+const ChatListBody = ({
+  chats,
+  onRefresh,
+  loading,
+}: {
+  chats: Chat[];
+  onRefresh: () => void;
+  loading: boolean;
+}) => {
   const { navigate } = useNavigation();
+  const [users, setUsers] = React.useState<{ [key: string]: UserType }>({});
+
+  const fetchUsers = React.useCallback(async () => {
+    const usersData: { [key: string]: UserType } = {};
+    for (const chat of chats) {
+      try {
+        const user = await getUserFromChat(chat.other_id);
+        usersData[chat.other_id] = user; // Store using `other_id`
+      } catch (error) {
+        console.error('Error fetching user for chat:', chat.chat_id, error);
+      }
+    }
+    setUsers(usersData);
+  }, [chats]);
+
+  React.useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
   return (
-    <View className="list">
-      {chats.map((chat: ChatBase) => (
-        <View key={chat.id} className="border-b border-gray-200 py-3">
-          <TouchableOpacity
-            className="flex-row items-center"
-            onPress={() => navigate('ChatScreen', { chat })}
-          >
-            <Image
-              className="mr-4 h-12 w-12 rounded-full"
-              source={{ uri: chat.imageSource }}
-            />
-            <View className="flex-1">
-              <Text className="text-lg font-bold text-gray-800">
-                {chat.firstName} {chat.lastName}
-              </Text>
-              <Text className="text-base text-gray-500">
-                {chat.last_message}
-              </Text>
-            </View>
-            <Text className="text-xl font-bold">
-              {chat.unread_messages ? '•' : ''}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      ))}
-    </View>
+    <ScrollView
+      className="flex-1"
+      refreshControl={
+        <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+      }
+    >
+      {chats.map((chat) => {
+        const user = users[chat.other_id];
+        return (
+          <View key={chat.chat_id} className="border-b border-gray-200 py-3">
+            <TouchableOpacity
+              onPress={() => navigate('ChatMessagesScreen', { chat, user })}
+            >
+              <View className="flex-row items-center">
+                <Image
+                  className="mr-4 h-12 w-12 rounded-full"
+                  source={{
+                    uri: user?.profile_photo_id || 'https://i.pravatar.cc/100',
+                  }}
+                />
+                <View className="flex-1">
+                  <Text className="text-lg font-bold text-gray-800">
+                    {user?.first_name} {user?.last_name}
+                  </Text>
+                  {/* Uncomment if you want to display the last message */}
+                  {/* <Text className="text-base text-gray-600">{chat.last_message}</Text> */}
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+        );
+      })}
+    </ScrollView>
   );
 };
 
-export default ChatListHeader;
+export default ChatListBody;
