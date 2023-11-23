@@ -31,7 +31,12 @@ export const CommentInput = ({ snap }: { snap: Snap }) => {
   const onSubmit = (data: FormType) => {
     console.log(data);
     addSnap(
-      { ...data, user_id: currentUser?.id, parent_id: snap.id },
+      {
+        ...data,
+        user_id: currentUser?.id,
+        parent_id: snap.id,
+        visibility: snap.visibility,
+      },
       {
         onSuccess: () => {
           showMessage({

@@ -8,6 +8,7 @@ type Variables = {
   user_id: string | undefined;
   parent_id: string | undefined;
   content: string;
+  visibility: number;
 };
 type Response = Snap;
 

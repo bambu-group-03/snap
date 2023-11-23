@@ -12,4 +12,5 @@ export type Snap = {
   favs: number;
   num_replies: number;
   profile_photo_url: string;
+  visibility: number;
 };
