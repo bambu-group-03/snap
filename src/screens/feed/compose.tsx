@@ -6,7 +6,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react';
+import { Picker } from '@react-native-picker/picker';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { showMessage } from 'react-native-flash-message';
 import { z } from 'zod';
@@ -14,42 +15,52 @@ import { z } from 'zod';
 import { useAddSnap } from '@/api';
 import { getUserState } from '@/core';
 import type { UserType } from '@/core/auth/utils';
-import { Image, Text, TouchableOpacity, View } from '@/ui';
+import { Image, TouchableOpacity, View } from '@/ui';
 import { Button, ControlledInput, showErrorMessage } from '@/ui';
 
-import DropdownMenu from './snap-visibility-menu';
+const SNAP_VISIBLE = 1;
+const SNAP_HIDDEN = 2;
 
 const schema = z.object({
   content: z.string().max(180),
+  privacy: z.number(),
 });
 
 type FormType = z.infer<typeof schema>;
 
 export const Compose = ({ user }: { user: UserType | undefined }) => {
-  const [replyOption, setReplyOption] = useState('Everyone can reply');
-
-  const handleMenuSelection = (selectedOption: string) => {
-    setReplyOption(selectedOption);
-  };
-
-  const { control, handleSubmit } = useForm<FormType>({
+  const { control, handleSubmit, setValue } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
+
   const { mutate: addSnap, isLoading } = useAddSnap();
   const currentUser = getUserState();
+
+  const privacyOptions = useMemo(() => ['Everyone can reply', 'Only me'], []);
+  const [privacy, setPrivacyOption] = useState<string>(privacyOptions[0]);
+
+  useEffect(() => {
+    setValue(
+      'privacy',
+      privacy === privacyOptions[0] ? SNAP_VISIBLE : SNAP_HIDDEN
+    );
+  }, [privacy, setValue, privacyOptions]);
 
   const onSubmit = (data: FormType) => {
     console.log(data);
     addSnap(
-      { ...data, user_id: currentUser?.id, parent_id: '' },
+      {
+        ...data,
+        user_id: currentUser?.id,
+        parent_id: '',
+        privacy: privacy === privacyOptions[0] ? SNAP_VISIBLE : SNAP_HIDDEN,
+      },
       {
         onSuccess: () => {
           showMessage({
             message: 'Snap added successfully',
             type: 'success',
           });
-          // here you can navigate to the post list and refresh the list data
-          //queryClient.invalidateQueries(useSnaps.getKey());
         },
         onError: () => {
           showErrorMessage('Error adding post');
@@ -78,23 +89,20 @@ export const Compose = ({ user }: { user: UserType | undefined }) => {
               testID="body-input"
             />
 
-            {/* <TouchableOpacity className="-ml-4 pr-12 text-blue-400"> */}
-
-            {/* <Text className="inline rounded-full bg-blue-100 px-4 py-3">
-                <FontAwesomeIcon icon={faGlobe} /> Everyone can reply
-              </Text> */}
-
-            <View className="flex flex-row p-4">
-              <Text className="inline rounded-full bg-blue-100 px-4 py-3">
-                <View id="textee" className="ml-3 w-full flex-1">
-                  <DropdownMenu
-                    replyOption={replyOption}
-                    handleMenuSelection={handleMenuSelection}
-                  />
-                </View>
-              </Text>
+            <View className="flex p-4">
+              <Picker
+                testID="privacy-input"
+                selectedValue={privacy}
+                className="inline rounded-full bg-blue-100 px-4 py-3"
+                onValueChange={(itemValue) => {
+                  setPrivacyOption(itemValue);
+                }}
+              >
+                {privacyOptions.map((option, index) => (
+                  <Picker.Item key={index} label={option} value={option} />
+                ))}
+              </Picker>
             </View>
-            {/* </TouchableOpacity> */}
           </View>
         </View>
         <View className="flex flex-row items-center justify-between border-t border-gray-500  p-2 text-blue-400">
