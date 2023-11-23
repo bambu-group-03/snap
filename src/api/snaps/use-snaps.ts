@@ -82,3 +82,37 @@ export const userReplySnaps = createQuery<Response, ReplyVariable, AxiosError>({
     }
   },
 });
+
+export const useMentions = createQuery<Response, Variables, AxiosError>({
+  primaryKey: '/api/interactions/mentions',
+  queryFn: async ({ queryKey: [primaryKey, variables] }) => {
+    try {
+      const limit = 100;
+      const offset = 0;
+      const response = await client.get(
+        `${primaryKey}/?user_id=${variables.user_id}&limit=${limit}&offset=${offset}`
+      );
+      console.log('response.data.mentions', response.data.mentions); // response.data is an array of posts
+      return response.data.mentions;
+    } catch (e) {
+      console.log('error', e);
+    }
+  },
+});
+
+export const useNotifications = createQuery<Response, Variables, AxiosError>({
+  primaryKey: '/api/interactions/notifications',
+  queryFn: async ({ queryKey: [primaryKey, variables] }) => {
+    try {
+      const limit = 100;
+      const offset = 0;
+      const response = await client.get(
+        `${primaryKey}/?user_id=${variables.user_id}&limit=${limit}&offset=${offset}`
+      );
+      console.log('response.data.notifications', response.data.notifications); // response.data is an array of posts
+      return response.data.notifications;
+    } catch (e) {
+      console.log('error', e);
+    }
+  },
+});

@@ -1,6 +1,7 @@
 import type { RouteProp as NRouteProp } from '@react-navigation/native';
 
 import type { ChatStackParamList } from '@/screens/chat/chat-navigator';
+import type { NotificationStackParamList } from '@/screens/notifications/notification-navigator';
 import type { SearchStackParamList } from '@/screens/search/search-navigator';
 import type { UserStackParamList } from '@/screens/users/user-navigate';
 
@@ -14,6 +15,7 @@ export type RootStackParamList = AuthStackParamList &
   ChatStackParamList &
   ProfileStackParamList &
   UserStackParamList &
+  NotificationStackParamList &
   SearchStackParamList; //  & FooStackParamList & BarStackParamList
 // very important to type check useNavigation hook
 declare global {
