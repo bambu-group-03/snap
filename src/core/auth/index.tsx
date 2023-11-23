@@ -77,10 +77,34 @@ const _useAuth = create<AuthState>((set, get) => ({
     );
 
     if (response.status !== 200) {
+      // Log complete_signup_error
+      await fetch(
+        'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/complete_signup_error',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: user.email, message: null }),
+        }
+      );
       console.log('error updating user, status code:', response.status);
       console.log(user);
       return;
     }
+
+    // Log complete_signup_successful
+    await fetch(
+      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/complete_signup_successful`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: user.email, message: null }),
+      }
+    );
+
     await setUser(user); // store user and user in phone storage
     set({ user, status: 'signInComplete' });
   },

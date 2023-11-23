@@ -58,7 +58,27 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
 
   try {
     userCred = await signInWithEmailAndPassword(auth, email, password);
+    await fetch(
+      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/loging_successful`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email, message: null }),
+      }
+    );
   } catch (err) {
+    await fetch(
+      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/loging_error`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email, message: null }),
+      }
+    );
     console.error(err);
   }
 
@@ -87,10 +107,32 @@ const registerIntoDb = async (name = 'ANONIM', email: string, id: string) => {
       },
       body: JSON.stringify(datos),
     });
+
+    // Log signup_successful
+    await fetch(
+      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/signup_successful`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email, message: null }),
+      }
+    );
   } catch (err) {
+    // Log signup_error
+    await fetch(
+      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/signup_error`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email, message: null }),
+      }
+    );
     console.error(err);
   }
-
   return res;
 };
 
