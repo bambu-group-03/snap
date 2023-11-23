@@ -2,11 +2,13 @@ import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import {
   faFeed,
   faMessage,
+  faPersonDigging,
   faPowerOff,
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { ChatNavigator } from '@/screens/chat/chat-navigator';
+import { NotificationNavigator } from '@/screens/notifications/notification-navigator';
 import { ProfileNavigator } from '@/screens/profile/profile-navigator';
 import { SearchNavigator } from '@/screens/search/search-navigator';
 
@@ -47,6 +49,12 @@ export const tabs: TabType[] = [
     component: ChatNavigator, // React Chat component screen
     label: 'Chat',
     icon: faMessage,
+  },
+  {
+    name: 'NotificationsNavigator',
+    component: NotificationNavigator, // React Profile component screen
+    label: 'Notifications',
+    icon: faPersonDigging,
   },
   {
     name: 'ProfileNavigator',
