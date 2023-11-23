@@ -28,6 +28,8 @@ export const CommentInput = ({ snap }: { snap: Snap }) => {
   const { mutate: addSnap } = useAddReply();
   const currentUser = getUserState();
 
+  const SNAP_VISIBLE = 1;
+
   const onSubmit = (data: FormType) => {
     console.log(data);
     addSnap(
@@ -35,7 +37,7 @@ export const CommentInput = ({ snap }: { snap: Snap }) => {
         ...data,
         user_id: currentUser?.id,
         parent_id: snap.id,
-        visibility: snap.visibility,
+        privacy: SNAP_VISIBLE,
       },
       {
         onSuccess: () => {

@@ -7,7 +7,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Picker } from '@react-native-picker/picker';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { showMessage } from 'react-native-flash-message';
 import { z } from 'zod';
@@ -23,7 +23,7 @@ const SNAP_HIDDEN = 2;
 
 const schema = z.object({
   content: z.string().max(180),
-  privacy: z.string().max(100),
+  privacy: z.number(),
 });
 
 type FormType = z.infer<typeof schema>;
@@ -36,13 +36,15 @@ export const Compose = ({ user }: { user: UserType | undefined }) => {
   const { mutate: addSnap, isLoading } = useAddSnap();
   const currentUser = getUserState();
 
-  const [privacy, setPrivacyOption] = useState<string>('');
-
-  const privacyOptions = ['Everyone can reply', 'Only me'];
+  const privacyOptions = useMemo(() => ['Everyone can reply', 'Only me'], []);
+  const [privacy, setPrivacyOption] = useState<string>(privacyOptions[0]);
 
   useEffect(() => {
-    setValue('privacy', privacy); // Update the value for the 'ubication' field in the controller
-  }, [privacy, setValue]);
+    setValue(
+      'privacy',
+      privacy === privacyOptions[0] ? SNAP_VISIBLE : SNAP_HIDDEN
+    );
+  }, [privacy, setValue, privacyOptions]);
 
   const onSubmit = (data: FormType) => {
     console.log(data);
@@ -51,7 +53,7 @@ export const Compose = ({ user }: { user: UserType | undefined }) => {
         ...data,
         user_id: currentUser?.id,
         parent_id: '',
-        visibility: privacy === privacyOptions[0] ? SNAP_VISIBLE : SNAP_HIDDEN,
+        privacy: privacy === privacyOptions[0] ? SNAP_VISIBLE : SNAP_HIDDEN,
       },
       {
         onSuccess: () => {
@@ -59,8 +61,6 @@ export const Compose = ({ user }: { user: UserType | undefined }) => {
             message: 'Snap added successfully',
             type: 'success',
           });
-          // here you can navigate to the post list and refresh the list data
-          //queryClient.invalidateQueries(useSnaps.getKey());
         },
         onError: () => {
           showErrorMessage('Error adding post');
