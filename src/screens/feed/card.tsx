@@ -48,7 +48,7 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
     setCommentCount(snap.num_replies);
   }, [snap]);
 
-  console.log(snap);
+  // console.log(snap);
 
   return (
     <Pressable className="flex shrink-0 p-4  pb-0" onPress={onPress}>

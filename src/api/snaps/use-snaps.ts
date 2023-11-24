@@ -27,7 +27,7 @@ export const useSnaps = createQuery<Response, Variables, AxiosError>({
       const response = await client.get(
         `${primaryKey}/?user_id=${variables.user_id}&limit=${limit}&offset=${offset}`
       );
-      console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
+      // console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
       return response.data.snaps;
     } catch (e) {
       console.log('error', e);
@@ -42,7 +42,7 @@ export const getSnap = createQuery<Response, SnapVariables, AxiosError>({
       const response = await client.get(
         `${primaryKey}/${variables.snap_id}?user_id=${variables.user_id}`
       );
-      console.log('response.data.snaps', response.data); // response.data is an array of posts
+      // console.log('response.data.snaps', response.data); // response.data is an array of posts
       return response.data;
     } catch (e) {
       console.log('error', e);
@@ -61,7 +61,7 @@ export const getSnapsFrom = createQuery<Response, Variables, AxiosError>({
       const response = await client.get(
         `${primaryKey}/${variables.user_id}/snaps?limit=${limit}&offset=${offset}`
       );
-      console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
+      // console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
       return response.data.snaps;
     } catch (e) {
       console.log('error', e);
@@ -76,7 +76,7 @@ export const userReplySnaps = createQuery<Response, ReplyVariable, AxiosError>({
       const response = await client.get(
         `${primaryKey}/get_replies?snap_id=${replyVariables.snap_id}&user_id=${replyVariables.user_id}`
       );
-      console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
+      // console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
       return response.data.snaps;
     } catch (e) {
       console.log('error', e);
@@ -91,7 +91,7 @@ export const useMentions = createQuery<Response, Variables, Error>({
       // const limit = 100;
       // const offset = 0;
       const response = await client.get(`${primaryKey}/${variables.user_id}`);
-      console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
+      // console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
       return response.data.snaps;
     } catch (e) {
       console.log('error', e);
@@ -108,7 +108,7 @@ export const useNotifications = createQuery<Response, Variables, AxiosError>({
           'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net',
       });
       const response = await client.get(`${primaryKey}/${variables.user_id}`);
-      console.log('response.data.notifications', response.data); // response.data is an array of posts
+      // console.log('response.data.notifications', response.data); // response.data is an array of posts
       return response.data;
     } catch (e) {
       console.log('error', e);
