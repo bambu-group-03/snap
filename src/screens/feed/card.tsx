@@ -1,9 +1,16 @@
+import {
+  faComment,
+  faGlobeAmericas,
+  faRetweet,
+  faUserGroup,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import type { AxiosInstance } from 'axios';
 import React, { useEffect, useState } from 'react';
 
 import type { Snap } from '@/api';
 import { getUserState } from '@/core';
-import { Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
+import { Button, Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
 
 import CommentButton from './comment-button';
 import HeartButton from './heart-button';
@@ -14,6 +21,8 @@ type Props = {
   client: AxiosInstance;
   onPress?: () => void;
 };
+
+const SNAP_VISIBLE = 1;
 
 export const Card = ({ snap, client, onPress = () => {} }: Props) => {
   const currentUser = getUserState();
@@ -42,8 +51,27 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
   console.log(snap);
 
   return (
-    <Pressable className="flex shrink-0 p-4 pb-0" onPress={onPress}>
+    <Pressable className="flex shrink-0 p-4  pb-0" onPress={onPress}>
       <TouchableOpacity className="group block shrink-0">
+        {snap.parent_id ? (
+          <View className="flex items-start justify-end pr-2">
+            {snap.parent_id ? (
+              <View className="ml-auto">
+                <FontAwesomeIcon icon={faComment} color={'#006AFF'} />
+              </View>
+            ) : null}
+          </View>
+        ) : null}
+
+        {snap.is_shared_by.length > 0 ? (
+          <View className="flex flex-row items-center">
+            <FontAwesomeIcon icon={faRetweet} color={'green'} />
+            <Text className="font-small pl-2 text-base leading-6 text-black">
+              shared by @{snap.is_shared_by[0]}
+            </Text>
+          </View>
+        ) : null}
+
         <View className="flex flex-row items-center">
           <View>
             <Image
@@ -137,6 +165,24 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
               />
               <CommentButton commentCount={commentCount} onPress={() => {}} />
               {/* <ShareButton /> */}
+
+              {snap.privacy === SNAP_VISIBLE ? (
+                <View className="duration-350 flex flex-1 items-center text-xs text-gray-400 transition ease-in-out hover:text-blue-400 dark:text-white dark:hover:text-blue-400">
+                  <Button
+                    variant="icon"
+                    label={
+                      <FontAwesomeIcon icon={faGlobeAmericas} color="gray" />
+                    }
+                  />
+                </View>
+              ) : (
+                <View className="duration-350 flex flex-1 items-center text-xs text-gray-400 transition ease-in-out hover:text-blue-400 dark:text-white dark:hover:text-blue-400">
+                  <Button
+                    variant="icon"
+                    label={<FontAwesomeIcon icon={faUserGroup} color="gray" />}
+                  />
+                </View>
+              )}
             </View>
           </View>
         </View>

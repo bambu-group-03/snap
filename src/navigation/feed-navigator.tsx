@@ -1,10 +1,12 @@
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
 import type { Snap as SnapType } from '@/api';
 import { AddSnap, Feed, Snap } from '@/screens';
-import { Pressable, Text } from '@/ui';
+import { Pressable, View } from '@/ui';
 
 import { GoToLogout } from './auth-navigator';
 
@@ -21,7 +23,9 @@ const GoToAddSnap = () => {
   const { navigate } = useNavigation();
   return (
     <Pressable onPress={() => navigate('AddSnap')} className="p-2">
-      <Text className="text-primary-300">Snap</Text>
+      <View className="ml-auto pr-5">
+        <FontAwesomeIcon icon={faPencil} />
+      </View>
     </Pressable>
   );
 };
@@ -31,7 +35,6 @@ export const FeedNavigator = () => {
     <Stack.Navigator>
       <Stack.Group
         screenOptions={{
-          // eslint-disable-next-line react/no-unstable-nested-components
           headerRight: () => (
             <>
               <GoToAddSnap />
