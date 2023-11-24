@@ -45,6 +45,10 @@ const ProfileScreenView = ({
     setFollowingCount(following_count);
   }, [following_count]);
 
+  useEffect(() => {
+    setIsFollowing(user?.is_followed || false);
+  }, [user]);
+
   const navigate = useNavigation();
 
   return (
