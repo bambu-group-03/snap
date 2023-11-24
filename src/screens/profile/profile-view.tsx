@@ -71,10 +71,10 @@ const ProfileScreenView = ({
 
             <View className="flex flex-row justify-center pb-0 lg:pt-4 ">
               {user?.username !== userData?.username ? (
-                <View className=" mr-8 mt-4 text-center">
+                <View className=" mr-4 mt-4 text-center">
                   {isFollowing === true ? (
                     <TouchableOpacity
-                      className="inline rounded-full bg-red-600 px-4 py-3 text-center font-bold text-white"
+                      className="inline rounded-full bg-red-300 px-4 py-3 text-center font-bold text-white"
                       onPress={() => {
                         const interaction = '/unfollow/';
                         const method = 'DELETE';
@@ -103,7 +103,7 @@ const ProfileScreenView = ({
                     </TouchableOpacity>
                   ) : (
                     <TouchableOpacity
-                      className="inline rounded-full bg-blue-500 px-4 py-3
+                      className="inline rounded-full bg-blue-300 px-4 py-3
                         text-center font-bold text-white"
                       onPress={() => {
                         const interaction = '/follow/';
