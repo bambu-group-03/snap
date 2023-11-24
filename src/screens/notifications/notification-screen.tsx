@@ -10,9 +10,9 @@ const NotionficationScreen = () => {
     <>
       <FocusAwareStatusBar />
       <Text className="text-center text-2xl font-bold">Notifications</Text>
-      <View className="mt-1  py-3 text-center">
-        <NotificationView />
-      </View>
+
+      <NotificationView />
+
       <View className="mt-1 border-t border-slate-200 py-3 text-center">
         <Text className="text-center text-2xl font-bold">Mentions</Text>
         <MentionScreen />

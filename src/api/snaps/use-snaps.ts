@@ -1,4 +1,5 @@
 import type { AxiosError } from 'axios';
+import axios from 'axios';
 import { createQuery } from 'react-query-kit';
 
 import { client } from '../common';
@@ -83,7 +84,7 @@ export const userReplySnaps = createQuery<Response, ReplyVariable, AxiosError>({
   },
 });
 
-export const useMentions = createQuery<Response, Variables, AxiosError>({
+export const useMentions = createQuery<Response, Variables, Error>({
   primaryKey: '/api/interactions/mentions',
   queryFn: async ({ queryKey: [primaryKey, variables] }) => {
     try {
@@ -99,16 +100,16 @@ export const useMentions = createQuery<Response, Variables, AxiosError>({
 });
 
 export const useNotifications = createQuery<Response, Variables, AxiosError>({
-  primaryKey: '/api/interactions/notifications',
+  primaryKey: '/api/notification',
   queryFn: async ({ queryKey: [primaryKey, variables] }) => {
     try {
-      const limit = 100;
-      const offset = 0;
-      const response = await client.get(
-        `${primaryKey}/?user_id=${variables.user_id}&limit=${limit}&offset=${offset}`
-      );
-      console.log('response.data.notifications', response.data.notifications); // response.data is an array of posts
-      return response.data.notifications;
+      const client = axios.create({
+        baseURL:
+          'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net',
+      });
+      const response = await client.get(`${primaryKey}/${variables.user_id}`);
+      console.log('response.data.notifications', response.data); // response.data is an array of posts
+      return response.data;
     } catch (e) {
       console.log('error', e);
     }

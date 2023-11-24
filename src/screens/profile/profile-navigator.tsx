@@ -12,6 +12,10 @@ export type ProfileStackParamList = {
   Followers: { users: UserType[] | undefined };
   Following: { users: UserType[] | undefined };
   EditProfileScreen: { user: UserType | undefined };
+  // ChatMessagesScreen: {
+  //   chat: Chat | undefined;
+  //   user: UserType;
+  // };
 };
 
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
@@ -23,6 +27,7 @@ export const ProfileNavigator = () => {
       <Stack.Screen name="Followers" component={InteractionsScreen} />
       <Stack.Screen name="Following" component={InteractionsScreen} />
       <Stack.Screen name="EditProfileScreen" component={SignInComplete} />
+      {/* <Stack.Screen name="ChatMessagesScreen" component={ChatScreen} /> */}
     </Stack.Navigator>
   );
 };
