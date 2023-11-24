@@ -12,16 +12,13 @@ import type { ProfileStackParamList } from './profile-navigator';
 import ProfileSnapsView from './profile-snaps-view';
 import ProfileScreenView from './profile-view';
 
-const BASE_INTERACTION_URL =
+const BASE_URL =
   'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api';
 
-// const BASE_SNAP_URL =
-//   'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/feed/';
+const BASE_INTERACTION_URL =
+  'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/interactions/';
 
 const ProfileScreen = () => {
-  // Obtengo los datos guardados en la memoria interna del telefono
-
-  // First, get the route params unconditionally
   const route = useRoute<RouteProp<ProfileStackParamList, 'UserProfile'>>();
   const routeUser = route.params?.user;
 
@@ -33,13 +30,7 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     axios
-      .get(
-        BASE_INTERACTION_URL +
-          '/auth/' +
-          getUserState()?.id +
-          '/users/' +
-          user?.id
-      )
+      .get(BASE_URL + '/auth/' + getUserState()?.id + '/users/' + user?.id)
       .then((response) => {
         console.log(response.data);
         setUserUpdatedInfo(response.data);
@@ -52,9 +43,7 @@ const ProfileScreen = () => {
   // Pido la cantidad de followers
   useEffect(() => {
     axios
-      .get(
-        BASE_INTERACTION_URL + '/interactions/' + user?.id + '/count_followers'
-      )
+      .get(BASE_URL + '/interactions/' + user?.id + '/count_followers')
       .then((response) => {
         console.log(response.data);
         setUserFollowerCount(response.data);
@@ -67,9 +56,7 @@ const ProfileScreen = () => {
   // Pido la cantidad de following
   useEffect(() => {
     axios
-      .get(
-        BASE_INTERACTION_URL + '/interactions/' + user?.id + '/count_following'
-      )
+      .get(BASE_URL + '/interactions/' + user?.id + '/count_following')
       .then((response) => {
         console.log(response.data);
         setUserFollowingCount(response.data);
