@@ -22,10 +22,10 @@ const ChatBody: React.FC<ChatBodyProps> = ({ chatUser, messages }) => {
         className="scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch flex flex-col space-y-4 overflow-y-auto p-3"
       >
         {messages.map((message, index) => (
-          <View key={index} className="chat-message">
+          <View key={index} className="chat-message ">
             <View
-              className={`flex items-end ${
-                isCurrentUser(message) ? 'justify-end' : ''
+              className={`items- flex${
+                isCurrentUser(message) ? 'end' : 'start'
               }`}
             >
               <View
@@ -57,7 +57,6 @@ const ChatBody: React.FC<ChatBodyProps> = ({ chatUser, messages }) => {
           </View>
         ))}
       </View>
-      {/* Additional UI elements can be added here if necessary */}
     </View>
   );
 };
