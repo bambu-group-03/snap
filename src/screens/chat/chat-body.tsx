@@ -24,9 +24,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({ chatUser, messages }) => {
         {messages.map((message, index) => (
           <View key={index} className="chat-message ">
             <View
-              className={`items- flex${
-                isCurrentUser(message) ? 'end' : 'start'
-              }`}
+              className={`items-${isCurrentUser(message) ? 'end' : 'start'}`}
             >
               <View
                 className={`order-${
