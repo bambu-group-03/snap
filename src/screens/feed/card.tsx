@@ -8,7 +8,6 @@ import { Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
 import CommentButton from './comment-button';
 import HeartButton from './heart-button';
 import ResnapButton from './re-snap-button';
-import ShareButton from './share-button';
 
 type Props = {
   snap: Snap;
@@ -137,7 +136,7 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
                 }}
               />
               <CommentButton commentCount={commentCount} onPress={() => {}} />
-              <ShareButton />
+              {/* <ShareButton /> */}
             </View>
           </View>
         </View>

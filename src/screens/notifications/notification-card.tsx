@@ -18,7 +18,7 @@ export default function NotificationCard({
           source={{
             uri: notification?.user?.profile_photo_id
               ? notification?.user?.profile_photo_id
-              : '',
+              : 'https://i1.wp.com/www.kickassfacts.com/wp-content/uploads/2016/11/panda-bear.jpg',
           }}
         />
         <View style={{ marginLeft: 9 }}>
