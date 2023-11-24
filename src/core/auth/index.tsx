@@ -41,6 +41,14 @@ const _useAuth = create<AuthState>((set, get) => ({
     const user: UserType = await response.json();
     await setUser(user); // store user and user in phone storage
     await setToken(token); // store token in phone storage
+
+    if (user.blocked) {
+      await removeToken();
+      console.error('TAS BLOQUEAO PA');
+      set({ status: 'signOut', token: null });
+      return;
+    }
+
     const status = isUserComplete(user) ? 'signInComplete' : 'signIn';
     set({ status, user, token }); // store token in phone memory ram
   },

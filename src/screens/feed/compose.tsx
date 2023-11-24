@@ -36,7 +36,10 @@ export const Compose = ({ user }: { user: UserType | undefined }) => {
   const { mutate: addSnap, isLoading } = useAddSnap();
   const currentUser = getUserState();
 
-  const privacyOptions = useMemo(() => ['Everyone can reply', 'Only me'], []);
+  const privacyOptions = useMemo(
+    () => ['Everyone can see', 'Only Followers'],
+    []
+  );
   const [privacy, setPrivacyOption] = useState<string>(privacyOptions[0]);
 
   useEffect(() => {
