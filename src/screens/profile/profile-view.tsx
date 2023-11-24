@@ -1,3 +1,9 @@
+import {
+  faMessage,
+  faUserPlus,
+  faUserTimes,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { useNavigation } from '@react-navigation/native';
 import type { AxiosInstance } from 'axios';
 import * as React from 'react';
@@ -53,16 +59,17 @@ const ProfileScreenView = ({
                   className="order-1 h-32 w-32 rounded-full" // Adjusted size to h-32 and w-32
                 />
               </View>
+            </View>
 
-              <Text className="block text-center text-xl font-bold tracking-wide text-slate-700">
-                @{user?.username}
-              </Text>
+            <Text className="block text-center text-xl font-bold tracking-wide text-slate-700">
+              @{user?.username}
+            </Text>
 
+            <View className="flex flex-row justify-center pb-0 lg:pt-4 ">
               {user?.username !== userData?.username ? (
-                <View className=" mt-4 text-center ">
+                <View className=" mr-8 mt-4 text-center">
                   {isFollowing === true ? (
-                    <Button
-                      label="UnFollow"
+                    <TouchableOpacity
                       className="inline rounded-full bg-red-600 px-4 py-3 text-center font-bold text-white"
                       onPress={() => {
                         const interaction = '/unfollow/';
@@ -87,11 +94,13 @@ const ProfileScreenView = ({
                         setIsFollowing(false);
                       }}
                       testID="unfollow-button"
-                    />
+                    >
+                      <FontAwesomeIcon icon={faUserTimes} />
+                    </TouchableOpacity>
                   ) : (
-                    <Button
-                      label="Follow"
-                      className="inline rounded-full bg-blue-500 px-4 py-3 text-center font-bold text-white"
+                    <TouchableOpacity
+                      className="inline rounded-full bg-blue-500 px-4 py-3
+                        text-center font-bold text-white"
                       onPress={() => {
                         const interaction = '/follow/';
                         const method = 'POST';
@@ -113,13 +122,15 @@ const ProfileScreenView = ({
                         setIsFollowing(true);
                       }}
                       testID="follow-button"
-                    />
+                    >
+                      <FontAwesomeIcon icon={faUserPlus} />
+                    </TouchableOpacity>
                   )}
                 </View>
               ) : null}
-              {user && userData && user.id !== userData.id && (
-                <Button
-                  label="Send Message"
+
+              {user && userData && user.id !== userData.id ? (
+                <TouchableOpacity
                   className="mt-4 rounded-full bg-blue-500 px-4 py-3 text-center font-bold text-white"
                   onPress={() =>
                     navigate.navigate('ChatMessagesScreen', {
@@ -128,8 +139,10 @@ const ProfileScreenView = ({
                     })
                   }
                   testID="send-message-button"
-                />
-              )}
+                >
+                  <FontAwesomeIcon icon={faMessage} />
+                </TouchableOpacity>
+              ) : null}
             </View>
             <View className="w-full text-center ">
               <View className="flex flex-row justify-center pb-0 lg:pt-4 ">
@@ -204,15 +217,19 @@ const ProfileScreenView = ({
                 </View>
               </View>
 
-              <View className="flex flex-row justify-center pb-0 lg:pt-4 ">
-                <Button
-                  label="Edit"
-                  className="mt-4 rounded-full bg-blue-400 px-4 py-2 text-center font-bold text-white shadow hover:bg-blue-500"
-                  onPress={() => {
-                    navigate.navigate('EditProfileScreen', { user: userData });
-                  }}
-                />
-              </View>
+              {user?.id === userData?.id ? (
+                <View className="flex flex-row justify-center pb-0 lg:pt-4 ">
+                  <Button
+                    label="Edit"
+                    className="mt-4 rounded-full bg-blue-400 px-4 py-2 text-center font-bold text-white shadow hover:bg-blue-500"
+                    onPress={() => {
+                      navigate.navigate('EditProfileScreen', {
+                        user: userData,
+                      });
+                    }}
+                  />
+                </View>
+              ) : null}
             </View>
           </View>
           <View className="mt-2 text-center">
