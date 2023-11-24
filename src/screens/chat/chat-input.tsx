@@ -1,4 +1,4 @@
-import { faShare } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
@@ -66,15 +66,15 @@ const ChatInput: React.FC<ChatInputProps> = ({
         <ControlledInput
           control={control}
           name="message"
-          placeholder="Write your message!"
+          placeholder="Write your message"
           className="bg-gray-20 w-full rounded-md py-3 pl-12 text-gray-600 placeholder:text-gray-600 focus:outline-none focus:placeholder:text-gray-400"
         />
 
-        <View className="flex">
+        <View className="flex py-2 pr-4">
           <Button
             variant="icon"
             onPress={handleSubmit(onSendMessage)}
-            label={<FontAwesomeIcon icon={faShare} color="red" />}
+            label={<FontAwesomeIcon icon={faPaperPlane} color="blue" />}
           />
         </View>
       </View>

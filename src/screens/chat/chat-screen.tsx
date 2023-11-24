@@ -10,6 +10,7 @@ import { View } from '@/ui';
 import ChatBody from './chat-body';
 import ChatHeader from './chat-header';
 import ChatInput from './chat-input';
+import type { Chat } from './chat-list-screen';
 import type { ChatStackParamList } from './chat-navigator';
 
 export type Message = {
@@ -28,12 +29,40 @@ const ChatScreen = () => {
 
   const [messages, setMessages] = useState<Message[]>([]);
   console.log(messages);
+
+  if (!chatId) {
+    try {
+      axios
+        .get(
+          `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/chat/get_chats_by_user/${chat?.owner_id}`
+        )
+        .then((response) => {
+          return response.data;
+        })
+        .then((response) => {
+          response.find((chat_rev: Chat) => {
+            if (
+              chat_rev.owner_id === chat?.owner_id &&
+              chat_rev.other_id === chat?.other_id
+            ) {
+              setChatId(chat_rev.chat_id);
+            }
+          });
+        });
+    } catch (error) {
+      console.error('Error fetching userChat:', error);
+    }
+  }
+
+  useEffect(() => {}, []);
+
   useEffect(() => {
     const fetchMessages = async () => {
       if (!chatId) {
-        setMessages([]); // If chat is undefined, set messages to an empty array
+        setMessages([]);
         return;
       }
+
       try {
         const response = await axios.get(
           `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/chat/get_messages_by_chat/${chatId}`
