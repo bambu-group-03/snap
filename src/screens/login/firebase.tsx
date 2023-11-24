@@ -9,11 +9,10 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
-  signOut,
 } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
-import { signIn } from '@/core/auth';
+import { signIn, useAuth } from '@/core/auth';
 
 // Poner datos de nosotros aca
 // const firebaseConfig = {
@@ -37,6 +36,23 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+
+auth.onIdTokenChanged(async (user) => {
+  if (user) {
+    // User is signed in, check token expiration
+    const token = await user.getIdTokenResult();
+    const expirationTime = new Date(token.expirationTime).getTime();
+    const currentTime = new Date().getTime();
+
+    if (currentTime >= expirationTime) {
+      // Token has expired, log out the user
+      logout();
+    }
+  } else {
+    // User is signed out
+    // Handle the case where the user is not logged in if necessary
+  }
+});
 const db = getFirestore(app);
 
 const googleProvider = new GoogleAuthProvider();
@@ -120,7 +136,7 @@ const sendPasswordReset = async (email: string) => {
 };
 
 const logout = () => {
-  signOut(auth);
+  useAuth.getState().signOut();
 };
 
 const handleAuth = async (userCred: UserCredential | null) => {
