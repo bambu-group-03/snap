@@ -1,9 +1,11 @@
+import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
 import { useAuth } from '@/core';
 import { Login } from '@/screens';
-import { Pressable, Text } from '@/ui';
+import { Pressable, View } from '@/ui';
 
 export const GoToLogout = () => {
   const status = useAuth.use.status();
@@ -13,7 +15,9 @@ export const GoToLogout = () => {
   const signOut = useAuth.use.signOut();
   return (
     <Pressable onPress={() => signOut()} className="p-2">
-      <Text className="text-red-600">Logout</Text>
+      <View className="ml-auto">
+        <FontAwesomeIcon icon={faRightFromBracket} />
+      </View>
     </Pressable>
   );
 };

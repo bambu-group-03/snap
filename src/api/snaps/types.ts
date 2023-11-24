@@ -1,5 +1,6 @@
 export type Snap = {
   id: string;
+  parent_id: string;
   username: string;
   fullname: string;
   author: string;
@@ -13,4 +14,6 @@ export type Snap = {
   num_replies: number;
   profile_photo_url: string;
   visibility: number;
+  privacy: number;
+  is_shared_by: string[];
 };
