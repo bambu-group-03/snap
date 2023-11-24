@@ -66,7 +66,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
         <ControlledInput
           control={control}
           name="message"
-          placeholder="Write your message!"
+          placeholder="Write your message"
           className="bg-gray-20 w-full rounded-md py-3 pl-12 text-gray-600 placeholder:text-gray-600 focus:outline-none focus:placeholder:text-gray-400"
         />
 
