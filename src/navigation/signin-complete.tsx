@@ -49,7 +49,6 @@ const whenSignInComplete: SignUpFormProps['onSignUpSubmit'] = (data) => {
     signInComplete(updatedUser);
   } else {
     console.error('Error: Current user data is undefined');
-    // Handle the case where user data is undefined, such as showing an error message or redirecting the user.
   }
 };
 export const SignInComplete = () => {
@@ -69,6 +68,8 @@ export const FormForSignInComplete = ({
     setValue('ubication', ubication); // Update the value for the 'ubication' field in the controller
   }, [ubication, setValue]);
 
+  const user = getUserState();
+
   return (
     <View className="flex-1 p-4">
       <ScrollView className="flex-1 p-4">
@@ -77,6 +78,7 @@ export const FormForSignInComplete = ({
           control={control}
           name="first_name"
           label="First Name"
+          defaultValue={user?.first_name ? user.first_name : ''}
         />
 
         <ControlledInput
@@ -84,6 +86,7 @@ export const FormForSignInComplete = ({
           control={control}
           name="last_name"
           label="Last Name"
+          defaultValue={user?.last_name ? user.last_name : ''}
         />
 
         <ControlledInput
@@ -91,6 +94,7 @@ export const FormForSignInComplete = ({
           control={control}
           name="username"
           label="Username"
+          defaultValue={user?.username ? user.username : ''}
         />
 
         <ControlledInput
@@ -99,6 +103,7 @@ export const FormForSignInComplete = ({
           name="phone_number"
           label="Phone Number"
           keyboardType="numeric"
+          defaultValue={user?.phone_number ? user.phone_number : ''}
         />
 
         <View>
@@ -119,6 +124,7 @@ export const FormForSignInComplete = ({
           control={control}
           name="bio_msg"
           label="Bio Message"
+          defaultValue={user?.bio_msg ? user.bio_msg : ''}
         />
 
         <ControlledInput
@@ -126,6 +132,7 @@ export const FormForSignInComplete = ({
           control={control}
           name="profile_photo_id"
           label="Profile Photo ID"
+          defaultValue={user?.profile_photo_id ? user.profile_photo_id : ''}
         />
       </ScrollView>
 

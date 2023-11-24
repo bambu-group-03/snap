@@ -203,6 +203,16 @@ const ProfileScreenView = ({
                   </TouchableOpacity>
                 </View>
               </View>
+
+              <View className="flex flex-row justify-center pb-0 lg:pt-4 ">
+                <Button
+                  label="Edit"
+                  className="mt-4 rounded-full bg-blue-400 px-4 py-2 text-center font-bold text-white shadow hover:bg-blue-500"
+                  onPress={() => {
+                    navigate.navigate('EditProfileScreen', { user: userData });
+                  }}
+                />
+              </View>
             </View>
           </View>
           <View className="mt-2 text-center">
