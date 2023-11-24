@@ -139,7 +139,12 @@ const ProfileScreenView = ({
                   onPress={() =>
                     navigate.navigate('ChatMessagesScreen', {
                       user,
-                      chat: undefined,
+                      chat: {
+                        chat_id: '',
+                        owner_id: userData?.id,
+                        other_id: user?.id,
+                        created_at: '',
+                      },
                     })
                   }
                   testID="send-message-button"
