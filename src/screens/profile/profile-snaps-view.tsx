@@ -53,7 +53,7 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
   // Corrected renderItem function
   const renderItem = ({ item, index }: { item: Snap; index: number }) => {
     // Render the item only if its index is within the current renderCount
-    console.log(`renderItem: ${index}: ${renderCount}`);
+    // console.log(`renderItem: ${index}: ${renderCount}`);
     if (index < renderCount) {
       return (
         <Card

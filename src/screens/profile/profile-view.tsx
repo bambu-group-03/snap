@@ -45,6 +45,10 @@ const ProfileScreenView = ({
     setFollowingCount(following_count);
   }, [following_count]);
 
+  useEffect(() => {
+    setIsFollowing(user?.is_followed || false);
+  }, [user]);
+
   const navigate = useNavigation();
 
   return (
@@ -129,7 +133,7 @@ const ProfileScreenView = ({
                 </View>
               ) : null}
 
-              {user && userData && user.id !== userData.id ? (
+              {user && userData && user.id !== userData.id && isFollowing ? (
                 <TouchableOpacity
                   className="mt-4 rounded-full bg-blue-500 px-4 py-3 text-center font-bold text-white"
                   onPress={() =>

@@ -23,7 +23,7 @@ const SnapList = () => {
   });
 
   const renderSnap = ({ item }: { item: Snap }) => {
-    console.log(`Entre en renderItem: ${JSON.stringify(item)}`);
+    // console.log(`Entre en renderItem: ${JSON.stringify(item)}`);
     return (
       <Card
         snap={item}
