@@ -8,11 +8,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { ChatNavigator } from '@/screens/chat/chat-navigator';
+import { NotificationTest } from '@/screens/feed/notification';
 import { NotificationNavigator } from '@/screens/notifications/notification-navigator';
 import { ProfileNavigator } from '@/screens/profile/profile-navigator';
 import { SearchNavigator } from '@/screens/search/search-navigator';
-
-import { FeedNavigator } from './feed-navigator';
 
 /**
  * Type representing a single tab in the TabNavigator.
@@ -34,7 +33,7 @@ export type TabType = {
 export const tabs: TabType[] = [
   {
     name: 'FeedNavigator',
-    component: FeedNavigator, // Stack.Navigator configuration, has inside screens
+    component: NotificationTest, // Stack.Navigator configuration, has inside screens
     label: 'Feed',
     icon: faPaw,
   },
