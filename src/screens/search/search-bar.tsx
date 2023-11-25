@@ -2,34 +2,13 @@ import type { NavigationProp } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
-import * as z from 'zod';
 
 import { getUserState } from '@/core';
 import type { UserType } from '@/core/auth/utils';
 
+import type { FormType } from './form-for-search';
 import { FormForSearch } from './form-for-search';
 import type { SearchStackParamList } from './search-navigator';
-
-export const schema = z.object({
-  username: z
-    .string()
-    .max(50, 'First Name cannot exceed 50 characters')
-    .optional(),
-  content: z
-    .string()
-    .max(50, 'Last Name cannot exceed 50 characters')
-    .optional(),
-  hashtag: z
-    .string()
-    .max(50, 'Last Name cannot exceed 50 characters')
-    .optional(),
-});
-
-export type FormType = z.infer<typeof schema>;
-
-export interface SearchFormProps {
-  onSearchSubmit?: SubmitHandler<FormType>;
-}
 
 const whenSearch = async (
   data: FormType,

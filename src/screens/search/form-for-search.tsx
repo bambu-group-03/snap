@@ -1,11 +1,31 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
+import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
 import { Button, ControlledInput, ScrollView, View } from '@/ui';
 
-import type { FormType, SearchFormProps } from './search-bar';
-import { schema } from './search-bar';
+export const schema = z.object({
+  username: z
+    .string()
+    .max(50, 'First Name cannot exceed 50 characters')
+    .optional(),
+  content: z
+    .string()
+    .max(50, 'Last Name cannot exceed 50 characters')
+    .optional(),
+  hashtag: z
+    .string()
+    .max(50, 'Last Name cannot exceed 50 characters')
+    .optional(),
+});
+
+export type FormType = z.infer<typeof schema>;
+
+export interface SearchFormProps {
+  onSearchSubmit?: SubmitHandler<FormType>;
+}
 
 export const FormForSearch: React.FC<SearchFormProps> = ({
   onSearchSubmit = () => {},
