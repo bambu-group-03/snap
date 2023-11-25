@@ -4,15 +4,15 @@ import { initializeApp } from 'firebase/app';
 import type { UserCredential } from 'firebase/auth';
 import {
   createUserWithEmailAndPassword,
-  getAuth,
-  GoogleAuthProvider,
+  getReactNativePersistence,
+  initializeAuth,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
-  signInWithPopup,
 } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 import { signIn, useAuth } from '@/core/auth';
+import { MMKVPersistence } from '@/core/storage';
 
 // Poner datos de nosotros aca
 // const firebaseConfig = {
@@ -35,7 +35,9 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(MMKVPersistence),
+});
 
 auth.onIdTokenChanged(async (user) => {
   if (user) {
@@ -54,20 +56,6 @@ auth.onIdTokenChanged(async (user) => {
   }
 });
 const db = getFirestore(app);
-
-const googleProvider = new GoogleAuthProvider();
-
-const signInWithGoogle = async () => {
-  let userCred: UserCredential | null = null;
-
-  try {
-    userCred = await signInWithPopup(auth, googleProvider);
-  } catch (err) {
-    console.error(err);
-  }
-
-  return userCred;
-};
 
 const logInWithEmailAndPassword = async (email: string, password: string) => {
   let userCred: UserCredential | null = null;
@@ -204,5 +192,4 @@ export {
   registerIntoDb,
   registerWithEmailAndPassword,
   sendPasswordReset,
-  signInWithGoogle,
 };
