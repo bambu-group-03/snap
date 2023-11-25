@@ -3,7 +3,14 @@ import { create } from 'zustand';
 
 import { createSelectors } from '../utils';
 import type { TokenType, UserType } from './utils';
-import { getToken, getUser, removeToken, setToken, setUser } from './utils';
+import {
+  getToken,
+  getUser,
+  registerForPushNotificationsAsync,
+  removeToken,
+  setToken,
+  setUser,
+} from './utils';
 
 interface AuthState {
   token: TokenType | null;
@@ -51,6 +58,11 @@ const _useAuth = create<AuthState>((set, get) => ({
 
     const status = isUserComplete(user) ? 'signInComplete' : 'signIn';
     set({ status, user, token }); // store token in phone memory ram
+
+    // Register for push notifications after successful sign-in
+    const expoPushToken = await registerForPushNotificationsAsync();
+    console.log('EXPO PUSH TOKEN', expoPushToken);
+    // Optionally, send the expoPushToken to your backend for future notifications
   },
   signOut: async () => {
     await removeToken();
