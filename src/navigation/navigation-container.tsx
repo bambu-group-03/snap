@@ -4,19 +4,18 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useThemeConfig } from './use-theme-config';
 
-export const NavigationContainer = ({
-  children,
-  ref,
-}: {
-  children: React.ReactNode;
-  ref: React.RefObject<any>;
-}) => {
-  const theme = useThemeConfig();
-  return (
-    <SafeAreaProvider>
-      <RNNavigationContainer theme={theme} ref={ref}>
-        {children}
-      </RNNavigationContainer>
-    </SafeAreaProvider>
-  );
-};
+export const NavigationContainer = React.forwardRef(
+  (
+    { children }: { children: React.ReactNode },
+    ref: React.Ref<any> // Cambiar a un tipo más genérico
+  ) => {
+    const theme = useThemeConfig();
+    return (
+      <SafeAreaProvider>
+        <RNNavigationContainer theme={theme} ref={ref}>
+          {children}
+        </RNNavigationContainer>
+      </SafeAreaProvider>
+    );
+  }
+);
