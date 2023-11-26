@@ -1,5 +1,6 @@
 // https://blog.logrocket.com/user-authentication-firebase-react-apps/
 
+import axios from 'axios';
 import { initializeApp } from 'firebase/app';
 import type { UserCredential } from 'firebase/auth';
 import {
@@ -13,17 +14,6 @@ import { getFirestore } from 'firebase/firestore';
 
 import { signIn, useAuth } from '@/core/auth';
 import { MMKVPersistence } from '@/core/storage';
-
-// Poner datos de nosotros aca
-// const firebaseConfig = {
-//   apiKey: 'AIzaSyDIXJ5YT7hoNbBFqK3TBcV41-TzIO-7n7w',
-//   authDomain: 'fir-auth-6edd8.firebaseapp.com',
-//   projectId: 'fir-auth-6edd8',
-//   storageBucket: 'fir-auth-6edd8.appspot.com',
-//   messagingSenderId: '904760319835',
-//   appId: '1:904760319835:web:44fd0d957f114b4e51447e',
-//   measurementId: 'G-Q4TYKH9GG7',
-// };
 
 const firebaseConfig = {
   apiKey: 'AIzaSyApY18BS1qvXcpV0sMF6klszr5AwFSxKt4',
@@ -62,26 +52,14 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
 
   try {
     userCred = await signInWithEmailAndPassword(auth, email, password);
-    await fetch(
+    await axios.post(
       `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/loging_successful`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: email, message: null }),
-      }
+      { email: email, message: null }
     );
   } catch (err) {
-    await fetch(
+    await axios.post(
       `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/loging_error`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: email, message: null }),
-      }
+      { email: email, message: null }
     );
     console.error(err);
   }
@@ -104,36 +82,18 @@ const registerIntoDb = async (name = 'ANONIM', email: string, id: string) => {
   };
 
   try {
-    res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(datos),
-    });
+    res = await axios.post(url, datos);
 
     // Log signup_successful
-    await fetch(
+    await axios.post(
       `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/signup_successful`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: email, message: null }),
-      }
+      { email: email, message: null }
     );
   } catch (err) {
     // Log signup_error
-    await fetch(
+    await axios.post(
       `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/signup_error`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: email, message: null }),
-      }
+      { email: email, message: null }
     );
     console.error(err);
   }

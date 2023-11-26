@@ -1,10 +1,10 @@
 import type { NavigationProp } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 
 import { getUserState } from '@/core';
-import type { UserType } from '@/core/auth/utils';
 
 import type { FormType } from './form-for-search';
 import { FormForSearch } from './form-for-search';
@@ -20,30 +20,33 @@ const whenSearch = async (
   console.log(data);
   if (data.username && data.username.trim() !== '') {
     try {
-      const response = await fetch(
+      const { data: users } = await axios.get(
         `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/filter/${currentUser?.id}/${data.username}`
       );
-      const users: UserType[] = await response.json();
-
-      console.log(`LLEGA ACA: ${JSON.stringify(users)}`);
       navigate('Users', { users });
     } catch (error) {
-      console.log(error);
+      console.error('Error searching by username:', error);
     }
   }
   if (data.content && data.content.trim() !== '') {
-    const responseC = await fetch(
-      `https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/filter/content?user_id=${currentUser?.id}&content=${data.content}`
-    );
-    const snapsFromContent = await responseC.json();
-    navigate('SnapList', { snaps: snapsFromContent.snaps });
+    try {
+      const { data: snapsFromContent } = await axios.get(
+        `https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/filter/content?user_id=${currentUser?.id}&content=${data.content}`
+      );
+      navigate('SnapList', { snaps: snapsFromContent.snaps });
+    } catch (error) {
+      console.error('Error searching by content:', error);
+    }
   }
   if (data.hashtag && data.hashtag.trim() !== '') {
-    const responseH = await fetch(
-      `https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/filter/hashtag?user_id=${currentUser?.id}&hashtag=${data.hashtag}`
-    );
-    const snapFromHashtags = await responseH.json();
-    navigate('SnapList', { snaps: snapFromHashtags.snaps });
+    try {
+      const { data: snapsFromHashtags } = await axios.get(
+        `https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/filter/hashtag?user_id=${currentUser?.id}&hashtag=${data.hashtag}`
+      );
+      navigate('SnapList', { snaps: snapsFromHashtags.snaps });
+    } catch (error) {
+      console.error('Error searching by hashtag:', error);
+    }
   }
 };
 

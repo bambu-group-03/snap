@@ -1,3 +1,4 @@
+import axios from 'axios';
 import type * as Notifications from 'expo-notifications';
 import { useEffect, useState } from 'react';
 import React from 'react';
@@ -7,21 +8,27 @@ import { Button, Text, View } from '@/ui';
 
 // Can use this function below or use Expo's Push Notification Tool from: https://expo.dev/notifications
 async function sendPushNotification(expoPushToken: string) {
-  await fetch('https://exp.host/--/api/v2/push/send', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Accept-encoding': 'gzip, deflate',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      to: expoPushToken,
-      sound: 'default',
-      title: 'Original Title',
-      body: 'And here is the body!',
-      data: { someData: 'goes here' },
-    }),
-  });
+  try {
+    await axios.post(
+      'https://exp.host/--/api/v2/push/send',
+      {
+        to: expoPushToken,
+        sound: 'default',
+        title: 'Original Title',
+        body: 'And here is the body!',
+        data: { someData: 'goes here' },
+      },
+      {
+        headers: {
+          Accept: 'application/json',
+          'Accept-encoding': 'gzip, deflate',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+  } catch (error) {
+    console.error('Error sending push notification:', error);
+  }
 }
 
 export const NotificationTest = () => {

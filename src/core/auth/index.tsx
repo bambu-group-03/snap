@@ -1,3 +1,4 @@
+import axios from 'axios';
 import type { UserCredential } from 'firebase/auth';
 import { create } from 'zustand';
 
@@ -42,10 +43,9 @@ const _useAuth = create<AuthState>((set, get) => ({
   token: null,
   user: undefined,
   signIn: async (token, userId) => {
-    const response = await fetch(
+    const { data: user } = await axios.get<UserType>(
       `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/${userId}/users/${userId}`
     );
-    const user: UserType = await response.json();
     await setUser(user); // store user and user in phone storage
     await setToken(token); // store token in phone storage
 
@@ -85,28 +85,16 @@ const _useAuth = create<AuthState>((set, get) => ({
     }
   },
   signInComplete: async (user) => {
-    const response = await fetch(
+    const response = await axios.put(
       `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/update_user`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(user),
-      }
+      user
     );
 
     if (response.status !== 200) {
       // Log complete_signup_error
-      await fetch(
+      await axios.post(
         'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/complete_signup_error',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email: user.email, message: null }),
-        }
+        { email: user.email, message: null }
       );
       console.log('error updating user, status code:', response.status);
       console.log(user);
@@ -114,15 +102,9 @@ const _useAuth = create<AuthState>((set, get) => ({
     }
 
     // Log complete_signup_successful
-    await fetch(
-      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/complete_signup_successful`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: user.email, message: null }),
-      }
+    await axios.post(
+      'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/complete_signup_successful',
+      { email: user.email, message: null }
     );
 
     await setUser(user); // store user and user in phone storage
