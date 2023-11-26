@@ -64,9 +64,9 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
         ) : null}
 
         {snap.is_shared_by.length > 0 ? (
-          <View className="flex flex-row items-center">
+          <View className="flex flex-row items-center pl-12">
             <FontAwesomeIcon icon={faRetweet} color={'green'} />
-            <Text className="font-small pl-2 text-base leading-6 text-black">
+            <Text className="pl-2 text-sm leading-6 text-gray-400">
               shared by @{snap.is_shared_by[0]}
             </Text>
           </View>
@@ -82,9 +82,9 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
             />
           </View>
           <View className="mx-3">
-            <Text className="text-base font-medium leading-6 text-black">
+            <Text className="text-base leading-6 text-black">
               {snap.fullname}
-              <Text className="text-sm font-medium leading-5 text-gray-400 transition duration-150 ease-in-out group-hover:text-gray-300">
+              <Text className="text-sm leading-5 text-gray-400">
                 {' '}
                 @{snap.username ? snap.username : 'default'} . {formattedDate}
               </Text>
@@ -97,7 +97,7 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
         <Text className="width-auto shrink text-base font-medium text-black">
           {snap.content}
         </Text>
-        <View className="mt-2 flex border-t border-gray-200 pt-2">
+        <View className="mt-2 flex border-t border-gray-200">
           <View className="w-full">
             <View className="flex flex-row items-center">
               <ResnapButton
