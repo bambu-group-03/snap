@@ -66,6 +66,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         ],
       },
     ],
+    [
+      'expo-notifications',
+      {
+        icon: './assets/favicon.png',
+        color: '#ffffff',
+      },
+    ],
   ],
   extra: {
     ...ClientEnv,

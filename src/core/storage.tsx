@@ -14,3 +14,16 @@ export async function setItem<T>(key: string, value: T) {
 export async function removeItem(key: string) {
   storage.delete(key);
 }
+// Custom MMKV storage adapter for Firebase Auth
+export const MMKVPersistence = {
+  async setItem(key: string, value: string): Promise<void> {
+    storage.set(key, value);
+  },
+  async getItem(key: string): Promise<string | null> {
+    const value = storage.getString(key);
+    return value !== undefined ? value : null;
+  },
+  async removeItem(key: string): Promise<void> {
+    storage.delete(key);
+  },
+};

@@ -8,6 +8,7 @@ import type { UserStackParamList } from '@/screens/users/user-navigate';
 import type { ProfileStackParamList } from '../screens/profile/profile-navigator';
 import type { AuthStackParamList } from './auth-navigator';
 import type { FeedStackParamList } from './feed-navigator';
+import type { NotificationReceivedStackParamList } from './notification-handlers';
 
 // TODO: change, this must be dynamic
 export type RootStackParamList = AuthStackParamList &
@@ -16,8 +17,9 @@ export type RootStackParamList = AuthStackParamList &
   ProfileStackParamList &
   UserStackParamList &
   NotificationStackParamList &
-  SearchStackParamList; //  & FooStackParamList & BarStackParamList
-// very important to type check useNavigation hook
+  NotificationReceivedStackParamList &
+  SearchStackParamList;
+
 declare global {
   namespace ReactNavigation {
     interface RootParamList extends RootStackParamList {}
