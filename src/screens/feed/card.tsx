@@ -5,11 +5,13 @@ import {
   faUserGroup,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 
 import type { Snap } from '@/api';
 import { client } from '@/api/common';
 import { getUserState } from '@/core';
+import type { UserType } from '@/core/auth/utils';
 import { Button, Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
 
 import CommentButton from './comment-button';
@@ -50,8 +52,16 @@ const CardHeader = ({
   snap: Snap;
   formattedDate: string;
 }) => {
+  const navigate = useNavigation();
+  const handlePress = async () => {
+    const { data: user } = await client.identity.get<UserType>(
+      `/api/auth/users/${snap.author}`
+    );
+
+    navigate.navigate('UserProfile', { user });
+  };
   return (
-    <TouchableOpacity className="group block shrink-0">
+    <TouchableOpacity className="group block shrink-0" onPress={handlePress}>
       <CardSharedInfo snap={snap} />
       <View className="flex flex-row items-center">
         <Image

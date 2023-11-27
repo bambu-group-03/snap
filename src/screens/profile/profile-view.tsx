@@ -40,7 +40,7 @@ const ProfileScreenView = ({
   }, [user]);
 
   return (
-    <View className="mx-auto mb-6 mt-3 w-full px-6">
+    <View className="mx-auto mb-2 mt-3 w-full px-6">
       <ProfileHeader user={user} />
       <FollowActions
         user={user}

@@ -10,20 +10,20 @@ type ProfileBioProps = {
 export const ProfileBio = ({ user }: ProfileBioProps) => {
   return (
     <>
-      <View className="mt-2 text-center">
+      <View className="text-center">
         <Text className="mb-1 text-2xl font-bold leading-normal text-slate-700">
           {user?.first_name} {user?.last_name}
         </Text>
-        <View className="mb-2 mt-0 text-xs font-bold uppercase text-slate-400">
-          <Text className="fas fa-map-marker-alt mr-2 text-slate-400 opacity-75">
+        <View className="mb-2 text-xs font-bold uppercase text-slate-400">
+          <Text className="fas fa-map-marker-alt mr-2 text-sm text-slate-400 opacity-75">
             {user?.ubication}
           </Text>
         </View>
       </View>
-      <View className="mt-1 border-t border-slate-200 py-3 text-center">
+      <View className="border-t border-slate-200 pt-3 text-center">
         <View className="flex flex-wrap justify-center">
-          <View className="w-full px-4">
-            <Text className="mb-4 font-light leading-relaxed text-slate-600">
+          <View className="w-full px-1">
+            <Text className="mb-4 text-sm font-light leading-relaxed text-slate-600">
               {user?.bio_msg || 'No bio'}
             </Text>
           </View>

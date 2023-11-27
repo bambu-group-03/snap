@@ -14,7 +14,7 @@ export const ProfileHeader = ({ user }: ProfileHeaderProps) => {
         <View className="relative">
           <Image
             source={user?.profile_photo_id}
-            className="order-1 h-32 w-32 rounded-full" // Adjusted size to h-32 and w-32
+            className="order-1 h-28 w-28 rounded-full" // Adjusted size to h-32 and w-32
           />
         </View>
       </View>
