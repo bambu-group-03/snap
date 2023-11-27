@@ -10,7 +10,7 @@ import { FocusAwareStatusBar, View } from '@/ui';
 
 import type { ProfileStackParamList } from './profile-navigator';
 import ProfileSnapsView from './profile-snaps-view';
-import ProfileScreenView from './profile-view';
+import ProfileScreenView from './view/profile-view';
 
 const ProfileScreen = () => {
   const route = useRoute<RouteProp<ProfileStackParamList, 'UserProfile'>>();
@@ -69,7 +69,6 @@ const ProfileScreen = () => {
             user={userUpdatedInfo}
             follower_count={userFollowerCount}
             following_count={userFollowingCount}
-            client={client.identity}
           />
         </ScrollView>
       </View>

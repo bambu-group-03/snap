@@ -5,10 +5,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { useNavigation } from '@react-navigation/native';
-import type { AxiosInstance } from 'axios';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
+import { client } from '@/api/common';
 import { getUserState } from '@/core';
 import type { UserType } from '@/core/auth/utils';
 import { Button, Image, Text, TouchableOpacity, View } from '@/ui';
@@ -17,14 +17,12 @@ const ProfileScreenView = ({
   user,
   follower_count,
   following_count,
-  // user_is_followed = false,
-  client,
-}: {
+}: // user_is_followed = false,
+{
   user: UserType | undefined;
   follower_count: number;
   following_count: number;
   user_is_followed?: boolean;
-  client?: AxiosInstance;
 }) => {
   const userData = getUserState();
   console.log(` user ${JSON.stringify(user)}`);
@@ -52,10 +50,11 @@ const ProfileScreenView = ({
   const navigate = useNavigation();
 
   return (
-    <View>
-      <View className="relative mx-auto mb-6 mt-3 w-full min-w-0 max-w-md break-words rounded-xl bg-white shadow-lg md:max-w-2xl">
-        <View className="px-6">
-          <View className="flex flex-wrap justify-center">
+    <View className="relative mx-auto mb-6 mt-3 w-full min-w-0 max-w-md break-words rounded-xl bg-white shadow-lg">
+      <View className="px-6">
+        <View className="flex flex-wrap justify-center">
+          {/* ProfileHeader START */}
+          <>
             <View className="flex w-full items-center justify-center text-center">
               <View className="relative">
                 <Image
@@ -64,12 +63,15 @@ const ProfileScreenView = ({
                 />
               </View>
             </View>
-
             <Text className="block text-center text-xl font-bold tracking-wide text-slate-700">
               @{user?.username}
             </Text>
-
+          </>
+          {/* ProfileHeader END */}
+          {/* START FollowActions */}
+          <>
             <View className="flex flex-row justify-center pb-0 lg:pt-4 ">
+              {/* START FOLLOW BUTTONS */}
               {user?.username !== userData?.username ? (
                 <View className=" mr-4 mt-4 text-center">
                   {isFollowing === true ? (
@@ -79,22 +81,24 @@ const ProfileScreenView = ({
                         const interaction = '/unfollow/';
                         const method = 'DELETE';
 
-                        client?.({
-                          url:
-                            '/api/interactions/' +
-                            userData?.id +
-                            interaction +
-                            user?.id,
-                          method: method,
-                        }).then((response) => {
-                          console.log(
-                            'response.data by ' +
+                        client
+                          .identity({
+                            url:
+                              '/api/interactions/' +
+                              userData?.id +
                               interaction +
-                              ' ' +
-                              response.status
-                          );
-                          console.log(userData?.id + interaction + user?.id);
-                        });
+                              user?.id,
+                            method: method,
+                          })
+                          .then((response) => {
+                            console.log(
+                              'response.data by ' +
+                                interaction +
+                                ' ' +
+                                response.status
+                            );
+                            console.log(userData?.id + interaction + user?.id);
+                          });
 
                         if (followerCount > 0) {
                           setFollowerCount(followerCount - 1);
@@ -113,22 +117,24 @@ const ProfileScreenView = ({
                         const interaction = '/follow/';
                         const method = 'POST';
 
-                        client?.({
-                          url:
-                            '/api/interactions/' +
-                            userData?.id +
-                            interaction +
-                            user?.id,
-                          method: method,
-                        }).then((response) => {
-                          console.log(
-                            'response.data by ' +
+                        client
+                          .identity({
+                            url:
+                              '/api/interactions/' +
+                              userData?.id +
                               interaction +
-                              ' ' +
-                              response.status
-                          );
-                          console.log(userData?.id + interaction + user?.id);
-                        });
+                              user?.id,
+                            method: method,
+                          })
+                          .then((response) => {
+                            console.log(
+                              'response.data by ' +
+                                interaction +
+                                ' ' +
+                                response.status
+                            );
+                            console.log(userData?.id + interaction + user?.id);
+                          });
 
                         setFollowerCount(followerCount + 1);
                         setIsFollowing(true);
@@ -140,7 +146,9 @@ const ProfileScreenView = ({
                   )}
                 </View>
               ) : null}
+              {/* END FOLLOW BUTTONS */}
 
+              {/* START CHAT BUTTON */}
               {user && userData && user.id !== userData.id && isFollowing ? (
                 <TouchableOpacity
                   className="mt-4 rounded-full bg-blue-500 px-4 py-3 text-center font-bold text-white"
@@ -160,21 +168,27 @@ const ProfileScreenView = ({
                   <FontAwesomeIcon icon={faMessage} />
                 </TouchableOpacity>
               ) : null}
+              {/*  END CHAT BUTTON */}
             </View>
-            <View className="w-full text-center ">
-              <View className="flex flex-row justify-center pb-0 lg:pt-4 ">
-                <View className="p-3 text-center">
-                  <TouchableOpacity
-                    onPress={() => {
-                      console.log('Followers');
+          </>
+          {/* END FollowActions */}
+          {/* START ProfileStats */}
+          <>
+            <View className="flex flex-row justify-center pb-0 lg:pt-4 ">
+              <View className="p-3 text-center">
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log('Followers');
 
-                      const interaction = '/followers';
-                      const method = 'GET';
+                    const interaction = '/followers';
+                    const method = 'GET';
 
-                      client?.({
+                    client
+                      .identity({
                         url: '/api/interactions/' + user?.id + interaction,
                         method: method,
-                      }).then((response) => {
+                      })
+                      .then((response) => {
                         console.log(
                           'response.data by ' +
                             interaction +
@@ -186,30 +200,32 @@ const ProfileScreenView = ({
                           users: response.data,
                         });
                       });
-                    }}
-                  >
-                    <Text className="block text-center text-xl font-bold uppercase tracking-wide text-slate-700">
-                      {followerCount}
-                    </Text>
+                  }}
+                >
+                  <Text className="block text-center text-xl font-bold uppercase tracking-wide text-slate-700">
+                    {followerCount}
+                  </Text>
 
-                    <Text className="text-sm text-blue-600 underline">
-                      Followers
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+                  <Text className="text-sm text-blue-600 underline">
+                    Followers
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
-                <View className="p-3 text-center">
-                  <TouchableOpacity
-                    onPress={() => {
-                      console.log('Following');
+              <View className="p-3 text-center">
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log('Following');
 
-                      const interaction = '/following';
-                      const method = 'GET';
+                    const interaction = '/following';
+                    const method = 'GET';
 
-                      client?.({
+                    client
+                      .identity({
                         url: '/api/interactions/' + user?.id + interaction,
                         method: method,
-                      }).then((response) => {
+                      })
+                      .then((response) => {
                         console.log(
                           'response.data by ' +
                             interaction +
@@ -221,34 +237,39 @@ const ProfileScreenView = ({
                           users: response.data,
                         });
                       });
-                    }}
-                  >
-                    <Text className="block text-center text-xl font-bold uppercase tracking-wide text-slate-700">
-                      {followingCount}
-                    </Text>
+                  }}
+                >
+                  <Text className="block text-center text-xl font-bold uppercase tracking-wide text-slate-700">
+                    {followingCount}
+                  </Text>
 
-                    <Text className="text-sm text-blue-600 underline">
-                      Following
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+                  <Text className="text-sm text-blue-600 underline">
+                    Following
+                  </Text>
+                </TouchableOpacity>
               </View>
-
-              {user?.id === userData?.id ? (
-                <View className="flex flex-row justify-center pb-0 lg:pt-4 ">
-                  <Button
-                    label="Edit"
-                    className="mt-4 rounded-full bg-blue-400 px-4 py-2 text-center font-bold text-white shadow hover:bg-blue-500"
-                    onPress={() => {
-                      navigate.navigate('EditProfileScreen', {
-                        user: userData,
-                      });
-                    }}
-                  />
-                </View>
-              ) : null}
             </View>
-          </View>
+          </>
+          {/* END ProfileStats */}
+
+          {/* START EDIT BUTTON */}
+          {user?.id === userData?.id ? (
+            <View className="flex flex-row justify-center pb-0 lg:pt-4 ">
+              <Button
+                label="Edit"
+                className="mt-4 rounded-full bg-blue-400 px-4 py-2 text-center font-bold text-white shadow hover:bg-blue-500"
+                onPress={() => {
+                  navigate.navigate('EditProfileScreen', {
+                    user: userData,
+                  });
+                }}
+              />
+            </View>
+          ) : null}
+          {/* END EDIT BUTTON */}
+        </View>
+        {/* START PROFILE BIO*/}
+        <>
           <View className="mt-2 text-center">
             <Text className="mb-1 text-2xl font-bold leading-normal text-slate-700">
               {user?.first_name} {user?.last_name}
@@ -269,7 +290,8 @@ const ProfileScreenView = ({
             </View>
           </View>
           <View className="border-blueGray-200 border-t" />
-        </View>
+        </>
+        {/* END PROFILE BIO*/}
       </View>
     </View>
   );
