@@ -80,7 +80,11 @@ const ProfileScreenView = ({
                         const method = 'DELETE';
 
                         client?.({
-                          url: userData?.id + interaction + user?.id,
+                          url:
+                            '/api/interactions/' +
+                            userData?.id +
+                            interaction +
+                            user?.id,
                           method: method,
                         }).then((response) => {
                           console.log(
@@ -110,7 +114,11 @@ const ProfileScreenView = ({
                         const method = 'POST';
 
                         client?.({
-                          url: userData?.id + interaction + user?.id,
+                          url:
+                            '/api/interactions/' +
+                            userData?.id +
+                            interaction +
+                            user?.id,
                           method: method,
                         }).then((response) => {
                           console.log(
@@ -164,7 +172,7 @@ const ProfileScreenView = ({
                       const method = 'GET';
 
                       client?.({
-                        url: user?.id + interaction,
+                        url: '/api/interactions/' + user?.id + interaction,
                         method: method,
                       }).then((response) => {
                         console.log(
@@ -199,7 +207,7 @@ const ProfileScreenView = ({
                       const method = 'GET';
 
                       client?.({
-                        url: user?.id + interaction,
+                        url: '/api/interactions/' + user?.id + interaction,
                         method: method,
                       }).then((response) => {
                         console.log(

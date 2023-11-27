@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import type { AxiosInstance } from 'axios';
 import React from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 
@@ -13,13 +12,7 @@ import { Card } from './card';
 const INCREMENT_RENDER = 10;
 const INITIAL_RENDER = 20;
 
-export const Comments = ({
-  snap,
-  client,
-}: {
-  snap: Snap;
-  client: AxiosInstance;
-}) => {
+export const Comments = ({ snap }: { snap: Snap }) => {
   const currentUser = getUserState();
 
   const { data, isLoading, isError, refetch } = userReplySnaps({
@@ -52,11 +45,7 @@ export const Comments = ({
   const renderItem = ({ item, index }: { item: Snap; index: number }) => {
     if (index < renderCount) {
       return (
-        <Card
-          snap={item}
-          client={client}
-          onPress={() => navigate('Snap', { snap: item })}
-        />
+        <Card snap={item} onPress={() => navigate('Snap', { snap: item })} />
       );
     }
     return null;

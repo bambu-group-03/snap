@@ -1,9 +1,9 @@
 import type { RouteProp } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
-import axios from 'axios';
 import React, { useEffect } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 
+import { client } from '@/api';
 import { getUserState } from '@/core';
 import type { UserType } from '@/core/auth/utils';
 import { FocusAwareStatusBar, View } from '@/ui';
@@ -11,12 +11,6 @@ import { FocusAwareStatusBar, View } from '@/ui';
 import type { ProfileStackParamList } from './profile-navigator';
 import ProfileSnapsView from './profile-snaps-view';
 import ProfileScreenView from './profile-view';
-
-const BASE_URL =
-  'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api';
-
-const BASE_INTERACTION_URL =
-  'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/interactions/';
 
 const ProfileScreen = () => {
   const route = useRoute<RouteProp<ProfileStackParamList, 'UserProfile'>>();
@@ -29,8 +23,8 @@ const ProfileScreen = () => {
   const [userUpdatedInfo, setUserUpdatedInfo] = React.useState<UserType>();
 
   useEffect(() => {
-    axios
-      .get(BASE_URL + '/auth/' + getUserState()?.id + '/users/' + user?.id)
+    client.identity
+      .get('/api/auth/' + getUserState()?.id + '/users/' + user?.id)
       .then((response) => {
         console.log(response.data);
         setUserUpdatedInfo(response.data);
@@ -42,8 +36,8 @@ const ProfileScreen = () => {
 
   // Pido la cantidad de followers
   useEffect(() => {
-    axios
-      .get(BASE_URL + '/interactions/' + user?.id + '/count_followers')
+    client.identity
+      .get('/api/interactions/' + user?.id + '/count_followers')
       .then((response) => {
         console.log(response.data);
         setUserFollowerCount(response.data);
@@ -55,8 +49,8 @@ const ProfileScreen = () => {
 
   // Pido la cantidad de following
   useEffect(() => {
-    axios
-      .get(BASE_URL + '/interactions/' + user?.id + '/count_following')
+    client.identity
+      .get('/api/interactions/' + user?.id + '/count_following')
       .then((response) => {
         console.log(response.data);
         setUserFollowingCount(response.data);
@@ -65,10 +59,6 @@ const ProfileScreen = () => {
         console.error(error);
       });
   }, [user]);
-
-  const client = axios.create({
-    baseURL: BASE_INTERACTION_URL,
-  });
 
   return (
     <>
@@ -79,7 +69,7 @@ const ProfileScreen = () => {
             user={userUpdatedInfo}
             follower_count={userFollowerCount}
             following_count={userFollowingCount}
-            client={client}
+            client={client.identity}
           />
         </ScrollView>
       </View>

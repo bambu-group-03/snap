@@ -5,10 +5,10 @@ import {
   faUserGroup,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import type { AxiosInstance } from 'axios';
 import React, { useEffect, useState } from 'react';
 
 import type { Snap } from '@/api';
+import { client } from '@/api/common';
 import { getUserState } from '@/core';
 import { Button, Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
 
@@ -18,13 +18,12 @@ import ResnapButton from './re-snap-button';
 
 type Props = {
   snap: Snap;
-  client: AxiosInstance;
   onPress?: () => void;
 };
 
 const SNAP_VISIBLE = 1;
 
-export const Card = ({ snap, client, onPress = () => {} }: Props) => {
+export const Card = ({ snap, onPress = () => {} }: Props) => {
   const currentUser = getUserState();
 
   const [isRetweeted, setIsRetweeted] = useState(
@@ -119,14 +118,20 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
                     snap.shares++;
                   }
 
-                  client({
-                    url: currentUser?.id + interaction + snap.id,
-                    method: method,
-                  }).then((response) => {
-                    console.log(
-                      'response.data by ' + interaction + response.status
-                    );
-                  });
+                  client
+                    .content({
+                      url:
+                        '/api/interactions/' +
+                        currentUser?.id +
+                        interaction +
+                        snap.id,
+                      method: method,
+                    })
+                    .then((response) => {
+                      console.log(
+                        'response.data by ' + interaction + response.status
+                      );
+                    });
 
                   setIsRetweeted(!isRetweeted);
                 }}
@@ -150,15 +155,21 @@ export const Card = ({ snap, client, onPress = () => {} }: Props) => {
                     snap.likes++;
                   }
 
-                  client({
-                    url: currentUser?.id + interaction + snap.id,
-                    method: method,
-                  }).then((response) => {
-                    console.log(
-                      'response.data by' + interaction,
-                      response.status
-                    );
-                  });
+                  client
+                    .content({
+                      url:
+                        '/api/interactions/' +
+                        currentUser?.id +
+                        interaction +
+                        snap.id,
+                      method: method,
+                    })
+                    .then((response) => {
+                      console.log(
+                        'response.data by' + interaction,
+                        response.status
+                      );
+                    });
 
                   setIsLiked(!isLiked);
                 }}

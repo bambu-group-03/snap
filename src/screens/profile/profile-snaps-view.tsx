@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
 import React from 'react';
 import { FlatList, RefreshControl } from 'react-native'; // Import FlatList
 
@@ -12,9 +11,6 @@ import { Card } from '../feed/card';
 
 const INCREMENT_RENDER = 10;
 const INITIAL_RENDER = 20;
-
-const BASE_INTERACTION_URL =
-  'https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/interactions/';
 
 const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
   const { navigate } = useNavigation();
@@ -46,21 +42,13 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
     );
   }
 
-  const client = axios.create({
-    baseURL: BASE_INTERACTION_URL,
-  });
-
   // Corrected renderItem function
   const renderItem = ({ item, index }: { item: Snap; index: number }) => {
     // Render the item only if its index is within the current renderCount
     // console.log(`renderItem: ${index}: ${renderCount}`);
     if (index < renderCount) {
       return (
-        <Card
-          snap={item}
-          client={client}
-          onPress={() => navigate('Snap', { snap: item })}
-        />
+        <Card snap={item} onPress={() => navigate('Snap', { snap: item })} />
       );
     }
     return null;
