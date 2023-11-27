@@ -52,20 +52,17 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
   }
 
   return (
-    <View>
-      <FocusAwareStatusBar />
-      <FlatList
-        data={data?.pages.flatMap((page) => page.snaps) || []}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        onEndReached={loadMoreItems}
-        onEndReachedThreshold={0.8} // Load more items earlier
-        refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
-        }
-        ListFooterComponent={isFetchingNextPage ? <LoadingIndicator /> : null}
-      />
-    </View>
+    <FlatList
+      data={data?.pages.flatMap((page) => page.snaps) || []}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id}
+      onEndReached={loadMoreItems}
+      onEndReachedThreshold={0.8} // Load more items earlier
+      refreshControl={
+        <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+      }
+      ListFooterComponent={isFetchingNextPage ? <LoadingIndicator /> : null}
+    />
   );
 };
 

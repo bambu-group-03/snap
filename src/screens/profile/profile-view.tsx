@@ -4,11 +4,11 @@ import { getUserState } from '@/core/auth';
 import type { UserType } from '@/core/auth/utils';
 import { View } from '@/ui';
 
-import EditProfileButton from './edit-button';
-import { FollowActions } from './follow-actions';
-import { ProfileBio } from './profile-bio';
-import { ProfileStats } from './profile-stats';
-import { ProfileHeader } from './profle-header';
+import EditProfileButton from './components/edit-profile-button';
+import { FollowActions } from './components/follow-actions';
+import { ProfileBio } from './components/profile-bio';
+import { ProfileStats } from './components/profile-stats';
+import { ProfileHeader } from './components/profle-header';
 
 const ProfileScreenView = ({
   user,

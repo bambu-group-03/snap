@@ -6,7 +6,7 @@ import { client } from '@/api/common';
 import type { UserType } from '@/core/auth/utils';
 import { TouchableOpacity, View } from '@/ui';
 
-import { ChatProfileButton } from './chat-button';
+import { ChatProfileButton } from './chat-profile-button';
 
 type FollowActionsProps = {
   user: UserType | undefined;
