@@ -1,3 +1,4 @@
+import { useInfiniteQuery } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
 import { createQuery } from 'react-query-kit';
 
@@ -14,25 +15,55 @@ type ReplyVariable = {
   snap_id: string | undefined;
   user_id: string | undefined;
 };
+interface SnapsResponse {
+  snaps: Snap[];
+}
 
-export const useSnaps = createQuery<Response, Variables, AxiosError>({
-  primaryKey: '/api/feed', // we recommend using  endpoint base url as primaryKey
-  queryFn: async ({ queryKey: [primaryKey, variables] }) => {
-    try {
-      // in case if variables is needed, we can use destructuring to get it from queryKey array like this: ({ queryKey: [primaryKey, variables] })
-      // primaryKey is 'posts' in this case
-      const limit = 100;
-      const offset = 0;
-      const response = await client.content.get(
-        `${primaryKey}/?user_id=${variables.user_id}&limit=${limit}&offset=${offset}`
+interface SnapsVariables {
+  userId: string | undefined;
+  limit: number;
+  offset: number;
+}
+
+export const useSnaps = (variables: SnapsVariables) => {
+  return useInfiniteQuery<SnapsResponse, AxiosError, SnapsResponse>(
+    ['snaps', variables.userId],
+    async ({ pageParam = 0 }) => {
+      const { data } = await client.content.get<SnapsResponse>(
+        `/api/feed/?user_id=${variables.userId}&limit=${variables.limit}&offset=${pageParam}`
       );
-      // console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
-      return response.data.snaps;
-    } catch (e) {
-      console.log('error', e);
+      return data;
+    },
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        if (lastPage.snaps.length === 0) {
+          return undefined; // no more pages
+        }
+        return allPages.length * variables.limit; // Calculate the next offset
+      },
     }
-  },
-});
+  );
+};
+
+export const useSnapsFrom = (variables: SnapsVariables) => {
+  return useInfiniteQuery<SnapsResponse, AxiosError, SnapsResponse>(
+    ['snaps', variables.userId],
+    async ({ pageParam = 0 }) => {
+      const { data } = await client.content.get<SnapsResponse>(
+        `/api/feed/${variables.userId}/snaps?limit=${variables.limit}&offset=${pageParam}`
+      );
+      return data;
+    },
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        if (lastPage.snaps.length === 0) {
+          return undefined; // no more pages
+        }
+        return allPages.length * variables.limit; // Calculate the next offset
+      },
+    }
+  );
+};
 
 export const getSnap = createQuery<Response, SnapVariables, AxiosError>({
   primaryKey: '/api/feed/snap', // we recommend using  endpoint base url as primaryKey
@@ -43,25 +74,6 @@ export const getSnap = createQuery<Response, SnapVariables, AxiosError>({
       );
       // console.log('response.data.snaps', response.data); // response.data is an array of posts
       return response.data;
-    } catch (e) {
-      console.log('error', e);
-    }
-  },
-});
-
-export const getSnapsFrom = createQuery<Response, Variables, AxiosError>({
-  primaryKey: '/api/feed', // we recommend using  endpoint base url as primaryKey
-  queryFn: async ({ queryKey: [primaryKey, variables] }) => {
-    try {
-      // in case if variables is needed, we can use destructuring to get it from queryKey array like this: ({ queryKey: [primaryKey, variables] })
-      // primaryKey is 'posts' in this case
-      const limit = 100;
-      const offset = 0;
-      const response = await client.content.get(
-        `${primaryKey}/${variables.user_id}/snaps?limit=${limit}&offset=${offset}`
-      );
-      // console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
-      return response.data.snaps;
     } catch (e) {
       console.log('error', e);
     }
