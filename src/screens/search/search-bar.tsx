@@ -1,9 +1,9 @@
 import type { NavigationProp } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 
+import { client } from '@/api/common';
 import { getUserState } from '@/core';
 
 import type { FormType } from './form-for-search';
@@ -20,8 +20,8 @@ const whenSearch = async (
   console.log(data);
   if (data.username && data.username.trim() !== '') {
     try {
-      const { data: users } = await axios.get(
-        `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/filter/${currentUser?.id}/${data.username}`
+      const { data: users } = await client.content.get(
+        `/api/filter/${currentUser?.id}/${data.username}`
       );
       navigate('Users', { users });
     } catch (error) {
@@ -30,8 +30,8 @@ const whenSearch = async (
   }
   if (data.content && data.content.trim() !== '') {
     try {
-      const { data: snapsFromContent } = await axios.get(
-        `https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/filter/content?user_id=${currentUser?.id}&content=${data.content}`
+      const { data: snapsFromContent } = await client.content.get(
+        `/api/filter/content?user_id=${currentUser?.id}&content=${data.content}`
       );
       navigate('SnapList', { snaps: snapsFromContent.snaps });
     } catch (error) {
@@ -40,8 +40,8 @@ const whenSearch = async (
   }
   if (data.hashtag && data.hashtag.trim() !== '') {
     try {
-      const { data: snapsFromHashtags } = await axios.get(
-        `https://api-content-discovery-luiscusihuaman.cloud.okteto.net/api/filter/hashtag?user_id=${currentUser?.id}&hashtag=${data.hashtag}`
+      const { data: snapsFromHashtags } = await client.content.get(
+        `/api/filter/hashtag?user_id=${currentUser?.id}&hashtag=${data.hashtag}`
       );
       navigate('SnapList', { snaps: snapsFromHashtags.snaps });
     } catch (error) {

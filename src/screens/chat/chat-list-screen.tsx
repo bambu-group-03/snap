@@ -1,6 +1,6 @@
-import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { client } from '@/api/common';
 import { getUserState } from '@/core';
 import { View } from '@/ui';
 
@@ -22,8 +22,8 @@ const ChatListScreen = () => {
     setLoading(true);
     try {
       // Replace with your API call to fetch chats
-      const response = await axios.get(
-        `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/chat/get_chats_by_user/${currentUser?.id}`
+      const response = await client.identity.get(
+        `/api/chat/get_chats_by_user/${currentUser?.id}`
       );
       setChats(response.data);
     } catch (error) {

@@ -1,9 +1,9 @@
 import type { RouteProp } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 
+import { client } from '@/api/common';
 import { getUserState } from '@/core';
 import { View } from '@/ui';
 
@@ -32,10 +32,8 @@ const ChatScreen = () => {
 
   if (!chatId) {
     try {
-      axios
-        .get(
-          `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/chat/get_chats_by_user/${chat?.owner_id}`
-        )
+      client.identity
+        .get(`/api/chat/get_chats_by_user/${chat?.owner_id}`)
         .then((response) => {
           return response.data;
         })
@@ -64,8 +62,8 @@ const ChatScreen = () => {
       }
 
       try {
-        const response = await axios.get(
-          `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/chat/get_messages_by_chat/${chatId}`
+        const response = await client.identity.get(
+          `api/chat/get_messages_by_chat/${chatId}`
         );
         setMessages(response.data);
       } catch (error) {

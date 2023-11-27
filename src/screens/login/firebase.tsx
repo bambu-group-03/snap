@@ -1,6 +1,5 @@
 // https://blog.logrocket.com/user-authentication-firebase-react-apps/
 
-import axios from 'axios';
 import { initializeApp } from 'firebase/app';
 import type { UserCredential } from 'firebase/auth';
 import {
@@ -12,6 +11,7 @@ import {
 } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
+import { client } from '@/api/common';
 import { signIn, useAuth } from '@/core/auth';
 import { MMKVPersistence } from '@/core/storage';
 
@@ -52,15 +52,15 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
 
   try {
     userCred = await signInWithEmailAndPassword(auth, email, password);
-    await axios.post(
-      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/loging_successful`,
-      { email: email, message: null }
-    );
+    await client.identity.post(`/api/logger/loging_successful`, {
+      email: email,
+      message: null,
+    });
   } catch (err) {
-    await axios.post(
-      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/loging_error`,
-      { email: email, message: null }
-    );
+    await client.identity.post(`/api/logger/loging_error`, {
+      email: email,
+      message: null,
+    });
     console.error(err);
   }
 
@@ -72,8 +72,6 @@ const registerIntoDb = async (name = 'ANONIM', email: string, id: string) => {
   let res = null;
 
   // 'http://10.0.2.2:8000/api/auth/register'
-  const url =
-    'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/register'; // Reemplaza con tu URL
 
   const datos = {
     id: id,
@@ -82,19 +80,19 @@ const registerIntoDb = async (name = 'ANONIM', email: string, id: string) => {
   };
 
   try {
-    res = await axios.post(url, datos);
+    res = await client.identity.post('/api/auth/register', datos);
 
     // Log signup_successful
-    await axios.post(
-      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/signup_successful`,
-      { email: email, message: null }
-    );
+    await client.identity.post(`/api/logger/signup_successful`, {
+      email: email,
+      message: null,
+    });
   } catch (err) {
     // Log signup_error
-    await axios.post(
-      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/signup_error`,
-      { email: email, message: null }
-    );
+    await client.identity.post(`/api/logger/signup_error`, {
+      email: email,
+      message: null,
+    });
     console.error(err);
   }
   return res;

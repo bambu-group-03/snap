@@ -10,7 +10,7 @@ type Response = Snap;
 export const useSnap = createQuery<Response, Variables, AxiosError>({
   primaryKey: '/api/feed/snap',
   queryFn: ({ queryKey: [primaryKey, variables] }) => {
-    return client
+    return client.content
       .get(`${primaryKey}/${variables.tweet_id}`)
       .then((response) => response.data);
   },

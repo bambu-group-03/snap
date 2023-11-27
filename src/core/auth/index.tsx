@@ -1,6 +1,7 @@
-import axios from 'axios';
 import type { UserCredential } from 'firebase/auth';
 import { create } from 'zustand';
+
+import { client } from '@/api/common';
 
 import { createSelectors } from '../utils';
 import type { TokenType, UserType } from './utils';
@@ -43,8 +44,8 @@ const _useAuth = create<AuthState>((set, get) => ({
   token: null,
   user: undefined,
   signIn: async (token, userId) => {
-    const { data: user } = await axios.get<UserType>(
-      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/${userId}/users/${userId}`
+    const { data: user } = await client.identity.get<UserType>(
+      `/api/auth/${userId}/users/${userId}`
     );
     await setUser(user); // store user and user in phone storage
     await setToken(token); // store token in phone storage
@@ -85,27 +86,24 @@ const _useAuth = create<AuthState>((set, get) => ({
     }
   },
   signInComplete: async (user) => {
-    const response = await axios.put(
-      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/update_user`,
-      user
-    );
+    const response = await client.identity.put(`/api/auth/update_user`, user);
 
     if (response.status !== 200) {
       // Log complete_signup_error
-      await axios.post(
-        'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/complete_signup_error',
-        { email: user.email, message: null }
-      );
+      await client.identity.post('/api/logger/complete_signup_error', {
+        email: user.email,
+        message: null,
+      });
       console.log('error updating user, status code:', response.status);
       console.log(user);
       return;
     }
 
     // Log complete_signup_successful
-    await axios.post(
-      'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/complete_signup_successful',
-      { email: user.email, message: null }
-    );
+    await client.identity.post('/api/logger/complete_signup_successful', {
+      email: user.email,
+      message: null,
+    });
 
     await setUser(user); // store user and user in phone storage
     set({ user, status: 'signInComplete' });

@@ -1,5 +1,4 @@
 import type { AxiosError } from 'axios';
-import axios from 'axios';
 import { createQuery } from 'react-query-kit';
 
 import { client } from '../common';
@@ -24,7 +23,7 @@ export const useSnaps = createQuery<Response, Variables, AxiosError>({
       // primaryKey is 'posts' in this case
       const limit = 100;
       const offset = 0;
-      const response = await client.get(
+      const response = await client.content.get(
         `${primaryKey}/?user_id=${variables.user_id}&limit=${limit}&offset=${offset}`
       );
       // console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
@@ -39,7 +38,7 @@ export const getSnap = createQuery<Response, SnapVariables, AxiosError>({
   primaryKey: '/api/feed/snap', // we recommend using  endpoint base url as primaryKey
   queryFn: async ({ queryKey: [primaryKey, variables] }) => {
     try {
-      const response = await client.get(
+      const response = await client.content.get(
         `${primaryKey}/${variables.snap_id}?user_id=${variables.user_id}`
       );
       // console.log('response.data.snaps', response.data); // response.data is an array of posts
@@ -58,7 +57,7 @@ export const getSnapsFrom = createQuery<Response, Variables, AxiosError>({
       // primaryKey is 'posts' in this case
       const limit = 100;
       const offset = 0;
-      const response = await client.get(
+      const response = await client.content.get(
         `${primaryKey}/${variables.user_id}/snaps?limit=${limit}&offset=${offset}`
       );
       // console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
@@ -73,7 +72,7 @@ export const userReplySnaps = createQuery<Response, ReplyVariable, AxiosError>({
   primaryKey: '/api/feed', // we recommend using  endpoint base url as primaryKey
   queryFn: async ({ queryKey: [primaryKey, replyVariables] }) => {
     try {
-      const response = await client.get(
+      const response = await client.content.get(
         `${primaryKey}/get_replies?snap_id=${replyVariables.snap_id}&user_id=${replyVariables.user_id}`
       );
       // console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
@@ -90,7 +89,9 @@ export const useMentions = createQuery<Response, Variables, Error>({
     try {
       // const limit = 100;
       // const offset = 0;
-      const response = await client.get(`${primaryKey}/${variables.user_id}`);
+      const response = await client.content.get(
+        `${primaryKey}/${variables.user_id}`
+      );
       // console.log('response.data.snaps', response.data.snaps); // response.data is an array of posts
       return response.data.snaps;
     } catch (e) {
@@ -103,11 +104,9 @@ export const useNotifications = createQuery<Response, Variables, AxiosError>({
   primaryKey: '/api/notification',
   queryFn: async ({ queryKey: [primaryKey, variables] }) => {
     try {
-      const client = axios.create({
-        baseURL:
-          'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net',
-      });
-      const response = await client.get(`${primaryKey}/${variables.user_id}`);
+      const response = await client.identity.get(
+        `${primaryKey}/${variables.user_id}`
+      );
       // console.log('response.data.notifications', response.data); // response.data is an array of posts
       return response.data;
     } catch (e) {
