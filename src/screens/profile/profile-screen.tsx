@@ -13,33 +13,43 @@ import ProfileScreenView from './profile-view';
 
 const ProfileScreen = () => {
   const route = useRoute<RouteProp<ProfileStackParamList, 'UserProfile'>>();
+  const currentUser = getUserState();
   const [user, setUser] = useState<UserType | undefined>(undefined);
   const [followerCount, setFollowerCount] = useState<number>(0);
   const [followingCount, setFollowingCount] = useState<number>(0);
 
-  const fetchProfileData = useCallback(async (userId: string) => {
-    try {
-      const [userInfoResponse, followerResponse, followingResponse] =
-        await Promise.all([
-          client.identity.get(`/api/auth/${userId}/users/${userId}`),
-          client.identity.get(`/api/interactions/${userId}/count_followers`),
-          client.identity.get(`/api/interactions/${userId}/count_following`),
-        ]);
+  const fetchProfileData = useCallback(
+    async (viewedUserId: string, currentUserId: string) => {
+      try {
+        const [userInfoResponse, followerResponse, followingResponse] =
+          await Promise.all([
+            client.identity.get(
+              `/api/auth/${currentUserId}/users/${viewedUserId}`
+            ), // Adjust this endpoint as needed
+            client.identity.get(
+              `/api/interactions/${viewedUserId}/count_followers`
+            ),
+            client.identity.get(
+              `/api/interactions/${viewedUserId}/count_following`
+            ),
+          ]);
 
-      setUser(userInfoResponse.data);
-      setFollowerCount(followerResponse.data);
-      setFollowingCount(followingResponse.data);
-    } catch (error) {
-      console.error('Error fetching profile data:', error);
-    }
-  }, []);
+        setUser(userInfoResponse.data);
+        setFollowerCount(followerResponse.data);
+        setFollowingCount(followingResponse.data);
+      } catch (error) {
+        console.error('Error fetching profile data:', error);
+      }
+    },
+    []
+  );
 
   useEffect(() => {
-    const userId = route.params?.user?.id || getUserState()?.id;
-    if (userId) {
-      fetchProfileData(userId);
+    const viewedUserId = route.params?.user?.id || currentUser?.id;
+    if (viewedUserId && currentUser) {
+      fetchProfileData(viewedUserId, currentUser.id);
     }
-  }, [route.params?.user, fetchProfileData]);
+  }, [route.params?.user, currentUser, fetchProfileData]);
 
   return (
     <>
