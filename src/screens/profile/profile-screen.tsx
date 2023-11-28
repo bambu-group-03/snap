@@ -13,9 +13,7 @@ import ProfileScreenView from './profile-view';
 
 const ProfileScreen = () => {
   const route = useRoute<RouteProp<ProfileStackParamList, 'UserProfile'>>();
-  const [user, setUser] = useState<UserType | undefined>(
-    route.params?.user || getUserState()
-  );
+  const [user, setUser] = useState<UserType | undefined>(undefined);
   const [followerCount, setFollowerCount] = useState<number>(0);
   const [followingCount, setFollowingCount] = useState<number>(0);
 
