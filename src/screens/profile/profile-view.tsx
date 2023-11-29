@@ -9,6 +9,7 @@ import { FollowActions } from './components/follow-actions';
 import { ProfileBio } from './components/profile-bio';
 import { ProfileStats } from './components/profile-stats';
 import { ProfileHeader } from './components/profle-header';
+import StadisticsButton from './components/stadistics-button';
 
 const ProfileScreenView = ({
   user,
@@ -56,6 +57,7 @@ const ProfileScreenView = ({
         followingCount={followingCount}
       />
       <EditProfileButton user={user} currentUser={currentUser} />
+      <StadisticsButton user={user} currentUser={currentUser} />
       <ProfileBio user={user} />
     </View>
   );

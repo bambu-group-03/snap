@@ -9,20 +9,20 @@ type EditProfileButtonProps = {
   currentUser: UserType | undefined;
 };
 
-export const EditProfileButton = ({
+export const StadisticsButton = ({
   user,
   currentUser,
 }: EditProfileButtonProps) => {
-  const navigation = useNavigation();
+  const { navigate } = useNavigation();
 
   if (user?.id === currentUser?.id) {
     return (
-      <View className="flex flex-row justify-center">
+      <View className="mb-2 flex flex-row justify-center">
         <Button
-          label="Edit"
-          className="mt-4 rounded-full bg-blue-400 px-4 py-2 text-center font-bold text-white shadow hover:bg-blue-500"
+          label="Stadistics"
+          className="mt-4 rounded-full bg-violet-400 px-4 py-2 text-center font-bold text-white shadow"
           onPress={() => {
-            navigation.navigate('EditProfileScreen', { user: currentUser });
+            navigate('StadisticsScreen');
           }}
         />
       </View>
@@ -32,4 +32,4 @@ export const EditProfileButton = ({
   return null;
 };
 
-export default EditProfileButton;
+export default StadisticsButton;

@@ -33,7 +33,7 @@ export const ProfileStats = ({
   };
 
   return (
-    <View className="flex flex-row justify-center pb-0 lg:pt-4">
+    <View className="flex flex-row justify-center">
       <View className="p-3 text-center">
         <TouchableOpacity onPress={handleNavigateFollowers}>
           <Text className="block text-center text-xl font-bold uppercase tracking-wide text-slate-700">
