@@ -47,7 +47,7 @@ export const useSnaps = (variables: SnapsVariables) => {
 
 export const useSnapsFrom = (variables: SnapsVariables) => {
   return useInfiniteQuery<SnapsResponse, AxiosError, SnapsResponse>(
-    ['snaps', variables.userId],
+    ['snapsProfile', variables.userId],
     async ({ pageParam = 0 }) => {
       const { data } = await client.content.get<SnapsResponse>(
         `/api/feed/${variables.userId}/snaps?limit=${variables.limit}&offset=${pageParam}`
