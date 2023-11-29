@@ -63,7 +63,10 @@ const _useAuth = create<AuthState>((set, get) => ({
     // Register for push notifications after successful sign-in
     const expoPushToken = await registerForPushNotificationsAsync();
     console.log('EXPO PUSH TOKEN', expoPushToken);
-    // Optionally, send the expoPushToken to your backend for future notifications
+    client.identity.post('/api/pushtoken/register', {
+      user_id: user.id,
+      pushtoken: expoPushToken,
+    });
   },
   signOut: async () => {
     await removeToken();
