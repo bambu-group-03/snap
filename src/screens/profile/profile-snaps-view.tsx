@@ -1,4 +1,3 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 
@@ -7,13 +6,11 @@ import { useSnapsFrom } from '@/api';
 import type { UserType } from '@/core/auth/utils';
 import { EmptyList, FocusAwareStatusBar, View } from '@/ui';
 
-import Card from '../feed/card';
-import LoadingIndicator from '../feed/loading-indicator';
+import Card, { CardSkeleton } from '../feed/card';
 
 const LIMIT = 10; // Number of items to fetch per page
 
 const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
-  const { navigate } = useNavigation();
   const {
     data,
     isLoading,
@@ -28,19 +25,22 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
     refetch();
   }, [refetch]);
 
-  useFocusEffect(
-    useCallback(() => {
-      refetch();
-    }, [refetch])
-  );
-
   const loadMoreItems = () => {
     hasNextPage && fetchNextPage();
   };
 
-  const renderItem = ({ item }: { item: Snap }) => (
-    <Card snap={item} onPress={() => navigate('Snap', { snap: item })} />
-  );
+  const renderItem = ({ item }: { item: Snap }) => <Card snap={item} />;
+
+  if (isLoading && !data) {
+    return (
+      <View>
+        <FocusAwareStatusBar />
+        {Array.from({ length: LIMIT }, (_, index) => (
+          <CardSkeleton key={index} />
+        ))}
+      </View>
+    );
+  }
 
   if (isError) {
     return (
@@ -57,11 +57,11 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
       renderItem={renderItem}
       keyExtractor={(item) => item.id}
       onEndReached={loadMoreItems}
-      onEndReachedThreshold={0.8} // Load more items earlier
+      onEndReachedThreshold={0.5} // Load more items earlier
       refreshControl={
         <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
       }
-      ListFooterComponent={isFetchingNextPage ? <LoadingIndicator /> : null}
+      ListFooterComponent={isFetchingNextPage ? <CardSkeleton /> : null}
     />
   );
 };

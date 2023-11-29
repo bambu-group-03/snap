@@ -6,13 +6,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 
 import type { Snap } from '@/api';
 import { client } from '@/api/common';
 import { getUserState } from '@/core';
 import type { UserType } from '@/core/auth/utils';
-import { Button, Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
+import { Button, Image, Pressable, Text, View } from '@/ui';
 
 import CommentButton from './comment-button';
 import HeartButton from './heart-button';
@@ -45,52 +45,54 @@ const CardSharedInfo = ({ snap }: { snap: Snap }) => {
   );
 };
 
-const CardHeader = ({
-  snap,
-  formattedDate,
-}: {
-  snap: Snap;
-  formattedDate: string;
-}) => {
-  const navigate = useNavigation();
-  const handlePress = async () => {
-    const { data: user } = await client.identity.get<UserType>(
-      `/api/auth/users/${snap.author}`
-    );
+const CardHeader = memo(
+  ({ snap, formattedDate }: { snap: Snap; formattedDate: string }) => {
+    const navigate = useNavigation();
+    const handlePress = async () => {
+      const { data: user } = await client.identity.get<UserType>(
+        `/api/auth/users/${snap.author}`
+      );
 
-    navigate.navigate('UserProfile', { user });
-  };
-  return (
-    <TouchableOpacity className="group block shrink-0" onPress={handlePress}>
-      <CardSharedInfo snap={snap} />
-      <View className="flex flex-row items-center">
-        <Image
-          className="inline-block h-10 w-10 rounded-full"
-          source={{
-            uri: snap.profile_photo_url,
-          }}
-        />
-        <View className="mx-3">
-          <Text className="text-base leading-6 text-black">
-            {snap.fullname}
-            <Text className="text-sm leading-5 text-gray-400">
-              {' '}
-              @{snap.username ? snap.username : 'default'} . {formattedDate}
+      navigate.navigate('UserProfile', { user });
+    };
+    return (
+      <Pressable className="group block shrink-0" onPress={handlePress}>
+        <CardSharedInfo snap={snap} />
+        <View className="flex flex-row items-center">
+          <Image
+            className="inline-block h-10 w-10 rounded-full"
+            source={{
+              uri: snap.profile_photo_url,
+            }}
+          />
+          <View className="mx-3">
+            <Text className="text-base leading-6 text-black">
+              {snap.fullname}
+              <Text className="text-sm leading-5 text-gray-400">
+                {' '}
+                @{snap.username ? snap.username : 'default'} . {formattedDate}
+              </Text>
             </Text>
-          </Text>
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
+      </Pressable>
+    );
+  }
+);
 
-const CardContent = ({ snap }: { snap: Snap }) => {
+const CardContent = memo(({ snap }: { snap: Snap }) => {
+  const { navigate } = useNavigation();
   return (
-    <Text className="width-auto shrink text-base font-medium text-black">
-      {snap.content}
-    </Text>
+    <Pressable
+      className="flex flex-col items-start justify-start"
+      onPress={() => navigate('Snap', { snap })}
+    >
+      <Text className="width-auto shrink text-base font-medium text-black">
+        {snap.content}
+      </Text>
+    </Pressable>
   );
-};
+});
 
 type CardFooterProps = {
   snap: Snap;
@@ -137,6 +139,22 @@ export const CardFooter: React.FC<CardFooterProps> = ({
               />
             )}
           </View>
+        </View>
+      </View>
+    </View>
+  );
+};
+export const CardSkeleton = () => {
+  return (
+    <View className="flex shrink-0 p-2 pb-0">
+      {/* Placeholder for header */}
+      <View className="flex flex-row items-center">
+        <View className="inline-block h-10 w-10 rounded-full bg-gray-300" />
+        <View className="mx-3 flex-1">
+          {/* Placeholder for content */}
+          {/* Simulate a line of text */}
+          <View className="mt-2 h-4 rounded bg-gray-300" />
+          <View className="mt-1 h-4 w-3/4 rounded bg-gray-200" />
         </View>
       </View>
     </View>

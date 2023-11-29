@@ -14,9 +14,11 @@ import ProfileScreenView from './profile-view';
 const ProfileScreen = () => {
   const route = useRoute<RouteProp<ProfileStackParamList, 'UserProfile'>>();
   const currentUser = getUserState();
-  const [user, setUser] = useState<UserType | undefined>(undefined);
-  const [followerCount, setFollowerCount] = useState<number>(0);
-  const [followingCount, setFollowingCount] = useState<number>(0);
+  const [userData, setUserData] = useState<{
+    user: UserType | undefined;
+    followerCount: number;
+    followingCount: number;
+  }>({ user: undefined, followerCount: 0, followingCount: 0 });
 
   const fetchProfileData = useCallback(
     async (viewedUserId: string, currentUserId: string) => {
@@ -34,9 +36,11 @@ const ProfileScreen = () => {
             ),
           ]);
 
-        setUser(userInfoResponse.data);
-        setFollowerCount(followerResponse.data);
-        setFollowingCount(followingResponse.data);
+        setUserData({
+          user: userInfoResponse.data,
+          followerCount: followerResponse.data,
+          followingCount: followingResponse.data,
+        });
       } catch (error) {
         console.error('Error fetching profile data:', error);
       }
@@ -55,11 +59,11 @@ const ProfileScreen = () => {
     <>
       <FocusAwareStatusBar />
       <ProfileScreenView
-        user={user}
-        follower_count={followerCount}
-        following_count={followingCount}
+        user={userData.user}
+        follower_count={userData.followerCount}
+        following_count={userData.followingCount}
       />
-      <ProfileSnapsView user={user} />
+      <ProfileSnapsView user={userData.user} />
     </>
   );
 };

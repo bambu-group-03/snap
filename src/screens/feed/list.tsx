@@ -1,4 +1,4 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 
@@ -7,13 +7,11 @@ import { useSnaps } from '@/api';
 import { getUserState } from '@/core';
 import { EmptyList, FocusAwareStatusBar, View } from '@/ui';
 
-import { Card } from './card';
-import LoadingIndicator from './loading-indicator';
+import { Card, CardSkeleton } from './card';
 
-const LIMIT = 10; // Number of items to fetch per page
+const LIMIT = 15; // Number of items to fetch per page
 
 export const Feed = () => {
-  const { navigate } = useNavigation();
   const currentUser = getUserState();
   const {
     data,
@@ -39,9 +37,18 @@ export const Feed = () => {
     hasNextPage && fetchNextPage();
   };
 
-  const renderItem = ({ item }: { item: Snap }) => (
-    <Card snap={item} onPress={() => navigate('Snap', { snap: item })} />
-  );
+  const renderItem = ({ item }: { item: Snap }) => <Card snap={item} />;
+
+  if (isLoading && !data) {
+    return (
+      <View>
+        <FocusAwareStatusBar />
+        {Array.from({ length: LIMIT }, (_, index) => (
+          <CardSkeleton key={index} />
+        ))}
+      </View>
+    );
+  }
 
   if (isError) {
     return (
@@ -64,7 +71,7 @@ export const Feed = () => {
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
         }
-        ListFooterComponent={isFetchingNextPage ? <LoadingIndicator /> : null}
+        ListFooterComponent={isFetchingNextPage ? <CardSkeleton /> : null}
       />
     </View>
   );
