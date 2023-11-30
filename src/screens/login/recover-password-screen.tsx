@@ -6,6 +6,11 @@ import * as z from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+const onResetSubmit: ResetFormProps['onResetSubmit'] = (data) => {
+  console.log('Entre aca');
+  console.log(data);
+};
+
 const schema = z.object({
   email: z
     .string({
@@ -20,9 +25,7 @@ export type ResetFormProps = {
   onResetSubmit?: SubmitHandler<FormType>;
 };
 
-export const RecoverPasswordScreen = ({
-  onResetSubmit = () => {},
-}: ResetFormProps) => {
+export const RecoverPasswordScreen = () => {
   const route =
     useRoute<RouteProp<LoginStackParamList, 'RecoverPasswordScreen'>>();
   const { email } = route.params;
@@ -51,7 +54,7 @@ export const RecoverPasswordScreen = ({
       <Button
         testID="login-button"
         label="Login with Google"
-        onPress={() => handleSubmit(onResetSubmit)}
+        onPress={handleSubmit(onResetSubmit)}
         variant="primary"
       />
 

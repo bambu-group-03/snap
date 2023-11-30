@@ -7,6 +7,7 @@ import * as z from 'zod';
 import { Image, TouchableOpacity } from '@/ui';
 import { Button, ControlledInput, Text, View } from '@/ui';
 import { useNavigation } from '@react-navigation/native';
+import { ResetFormProps } from './recover-password-screen';
 
 const schema = z.object({
   name: z.string().optional(),
@@ -28,7 +29,6 @@ export type LoginFormProps = {
   onLogInSubmit?: SubmitHandler<FormType>;
   onSignUpSubmit?: SubmitHandler<FormType>;
   onLogInGoogleSubmit?: () => void;
-  onResetSubmit?: SubmitHandler<FormType>;
 };
 
 export const LoginForm = ({

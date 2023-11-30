@@ -1,11 +1,14 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { RecoverPasswordScreen } from './recover-password-screen';
+import { FormType, RecoverPasswordScreen } from './recover-password-screen';
 import Login from '.';
+import { SubmitHandler } from 'react-hook-form';
 
 export type LoginStackParamList = {
   Login: undefined;
-  RecoverPasswordScreen: { email: string };
+  RecoverPasswordScreen: {
+    email: string;
+  };
 };
 
 const Stack = createNativeStackNavigator<LoginStackParamList>();
