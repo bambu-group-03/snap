@@ -1,7 +1,7 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import React from 'react';
 
+import { client } from '@/api/common';
 import type { UserType } from '@/core/auth/utils';
 import { FocusAwareStatusBar, ScrollView, View } from '@/ui';
 
@@ -9,15 +9,12 @@ import UserList from '../users/user-list';
 import { SearchBar } from './search-bar';
 
 const SearchView = () => {
-  const url =
-    'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/users?limit=10&offset=0';
-
   const [users, setUsers] = useState<UserType[]>([]);
 
   useEffect(() => {
     // console.log('Effect is running...');
-    axios
-      .get(url)
+    client.identity
+      .get(`api/auth/users?limit=10&offset=0`)
       .then((response) => {
         // console.log('Request successful:', response.data);
         // console.log('Cant users:', response.data.length);

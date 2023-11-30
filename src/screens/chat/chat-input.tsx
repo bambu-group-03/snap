@@ -1,12 +1,12 @@
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { client } from '@/api';
 import { Button, ControlledInput, View } from '@/ui';
 
 import type { Message } from './chat-screen';
@@ -37,14 +37,11 @@ const ChatInput: React.FC<ChatInputProps> = ({
   const onSendMessage: SubmitHandler<MessageType> = async (data) => {
     try {
       console.log(`fromId: ${fromId} toId: ${toId} message: ${data.message}`);
-      const response = await axios.post(
-        'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/chat/send_message',
-        {
-          from_id: fromId,
-          to_id: toId,
-          content: data.message,
-        }
-      );
+      const response = await client.identity.post('/api/chat/send_message', {
+        from_id: fromId,
+        to_id: toId,
+        content: data.message,
+      });
       console.log('response code', response.status);
       console.log('response', response.data);
       if (response.data.chat_id && onNewChatCreated) {

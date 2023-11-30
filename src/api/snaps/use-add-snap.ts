@@ -14,24 +14,28 @@ type Response = Snap;
 
 export const useAddSnap = createMutation<Response, Variables, AxiosError>({
   mutationFn: async (variables) =>
-    client({
-      url: '/api/feed/post',
-      method: 'POST',
-      data: variables,
-    }).then((response) => {
-      console.log('response.data by useAddSnap', response.data);
-      return response.data;
-    }),
+    client
+      .content({
+        url: '/api/feed/post',
+        method: 'POST',
+        data: variables,
+      })
+      .then((response) => {
+        console.log('response.data by useAddSnap', response.data);
+        return response.data;
+      }),
 });
 
 export const useAddReply = createMutation<Response, Variables, AxiosError>({
   mutationFn: async (variables) =>
-    client({
-      url: '/api/feed/reply',
-      method: 'POST',
-      data: variables,
-    }).then((response) => {
-      console.log('response.data by useAddReply', response.data);
-      return response.data;
-    }),
+    client
+      .content({
+        url: '/api/feed/reply',
+        method: 'POST',
+        data: variables,
+      })
+      .then((response) => {
+        console.log('response.data by useAddReply', response.data);
+        return response.data;
+      }),
 });

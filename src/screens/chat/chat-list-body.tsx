@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
 import * as React from 'react';
 import { RefreshControl } from 'react-native';
 
+import { client } from '@/api/common';
 import type { UserType } from '@/core/auth/utils';
 import { Image, ScrollView, Text, TouchableOpacity, View } from '@/ui';
 
@@ -10,9 +10,7 @@ import type { Chat } from './chat-list-screen';
 
 const getUserFromChat = async (id: string): Promise<UserType> => {
   try {
-    const response = await axios.get(
-      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/users/${id}`
-    );
+    const response = await client.identity.get(`api/auth/users/${id}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching user:', error);

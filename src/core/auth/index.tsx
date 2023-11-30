@@ -1,6 +1,8 @@
 import type { UserCredential } from 'firebase/auth';
 import { create } from 'zustand';
 
+import { client } from '@/api/common';
+
 import { createSelectors } from '../utils';
 import type { TokenType, UserType } from './utils';
 import {
@@ -42,10 +44,9 @@ const _useAuth = create<AuthState>((set, get) => ({
   token: null,
   user: undefined,
   signIn: async (token, userId) => {
-    const response = await fetch(
-      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/${userId}/users/${userId}`
+    const { data: user } = await client.identity.get<UserType>(
+      `/api/auth/${userId}/users/${userId}`
     );
-    const user: UserType = await response.json();
     await setUser(user); // store user and user in phone storage
     await setToken(token); // store token in phone storage
 
@@ -62,7 +63,10 @@ const _useAuth = create<AuthState>((set, get) => ({
     // Register for push notifications after successful sign-in
     const expoPushToken = await registerForPushNotificationsAsync();
     console.log('EXPO PUSH TOKEN', expoPushToken);
-    // Optionally, send the expoPushToken to your backend for future notifications
+    client.identity.post('/api/pushtoken/register', {
+      user_id: user.id,
+      pushtoken: expoPushToken,
+    });
   },
   signOut: async () => {
     await removeToken();
@@ -85,45 +89,24 @@ const _useAuth = create<AuthState>((set, get) => ({
     }
   },
   signInComplete: async (user) => {
-    const response = await fetch(
-      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/auth/update_user`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(user),
-      }
-    );
+    const response = await client.identity.put(`/api/auth/update_user`, user);
 
     if (response.status !== 200) {
       // Log complete_signup_error
-      await fetch(
-        'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/complete_signup_error',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email: user.email, message: null }),
-        }
-      );
+      await client.identity.post('/api/logger/complete_signup_error', {
+        email: user.email,
+        message: null,
+      });
       console.log('error updating user, status code:', response.status);
       console.log(user);
       return;
     }
 
     // Log complete_signup_successful
-    await fetch(
-      `https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/logger/complete_signup_successful`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: user.email, message: null }),
-      }
-    );
+    await client.identity.post('/api/logger/complete_signup_successful', {
+      email: user.email,
+      message: null,
+    });
 
     await setUser(user); // store user and user in phone storage
     set({ user, status: 'signInComplete' });

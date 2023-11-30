@@ -1,91 +1,71 @@
 import type { RouteProp } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
-import axios from 'axios';
-import React, { useEffect } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useCallback, useEffect, useState } from 'react';
 
+import { client } from '@/api';
 import { getUserState } from '@/core';
 import type { UserType } from '@/core/auth/utils';
-import { FocusAwareStatusBar, View } from '@/ui';
+import { FocusAwareStatusBar } from '@/ui';
 
 import type { ProfileStackParamList } from './profile-navigator';
 import ProfileSnapsView from './profile-snaps-view';
 import ProfileScreenView from './profile-view';
 
-const BASE_URL =
-  'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api';
-
-const BASE_INTERACTION_URL =
-  'https://api-identity-socializer-luiscusihuaman.cloud.okteto.net/api/interactions/';
-
 const ProfileScreen = () => {
   const route = useRoute<RouteProp<ProfileStackParamList, 'UserProfile'>>();
-  const routeUser = route.params?.user;
+  const currentUser = getUserState();
+  const [userData, setUserData] = useState<{
+    user: UserType | undefined;
+    followerCount: number;
+    followingCount: number;
+  }>({ user: undefined, followerCount: 0, followingCount: 0 });
 
-  const user = routeUser ? routeUser : getUserState();
+  const fetchProfileData = useCallback(
+    async (viewedUserId: string, currentUserId: string) => {
+      try {
+        const [userInfoResponse, followerResponse, followingResponse] =
+          await Promise.all([
+            client.identity.get(
+              `/api/auth/${currentUserId}/users/${viewedUserId}`
+            ), // Adjust this endpoint as needed
+            client.identity.get(
+              `/api/interactions/${viewedUserId}/count_followers`
+            ),
+            client.identity.get(
+              `/api/interactions/${viewedUserId}/count_following`
+            ),
+          ]);
 
-  const [userFollowerCount, setUserFollowerCount] = React.useState<number>(0);
-  const [userFollowingCount, setUserFollowingCount] = React.useState<number>(0);
-  const [userUpdatedInfo, setUserUpdatedInfo] = React.useState<UserType>();
+        setUserData({
+          user: userInfoResponse.data,
+          followerCount: followerResponse.data,
+          followingCount: followingResponse.data,
+        });
+      } catch (error) {
+        console.error('Error fetching profile data:', error);
+      }
+    },
+    []
+  );
 
   useEffect(() => {
-    axios
-      .get(BASE_URL + '/auth/' + getUserState()?.id + '/users/' + user?.id)
-      .then((response) => {
-        console.log(response.data);
-        setUserUpdatedInfo(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [user]);
-
-  // Pido la cantidad de followers
-  useEffect(() => {
-    axios
-      .get(BASE_URL + '/interactions/' + user?.id + '/count_followers')
-      .then((response) => {
-        console.log(response.data);
-        setUserFollowerCount(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [user]);
-
-  // Pido la cantidad de following
-  useEffect(() => {
-    axios
-      .get(BASE_URL + '/interactions/' + user?.id + '/count_following')
-      .then((response) => {
-        console.log(response.data);
-        setUserFollowingCount(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [user]);
-
-  const client = axios.create({
-    baseURL: BASE_INTERACTION_URL,
-  });
+    const viewedUserId = route.params?.user?.id || currentUser?.id;
+    if (viewedUserId && currentUser) {
+      fetchProfileData(viewedUserId, currentUser.id);
+    }
+  }, [route.params?.user, currentUser, fetchProfileData]);
 
   return (
     <>
       <FocusAwareStatusBar />
-      <View>
-        <ScrollView>
-          <ProfileScreenView
-            user={userUpdatedInfo}
-            follower_count={userFollowerCount}
-            following_count={userFollowingCount}
-            client={client}
-          />
-        </ScrollView>
-      </View>
-      <ProfileSnapsView user={userUpdatedInfo} />
+      <ProfileScreenView
+        user={userData.user}
+        follower_count={userData.followerCount}
+        following_count={userData.followingCount}
+      />
+      <ProfileSnapsView user={userData.user} />
     </>
   );
 };
 
-export default ProfileScreen;
+export default React.memo(ProfileScreen);
