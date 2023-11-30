@@ -43,7 +43,7 @@ export const RecoverPasswordScreen = () => {
   let navigate = useNavigation();
 
   return (
-    <View>
+    <View className="flex-1 justify-center p-4 ">
       <Text testID="form-title" variant="h1" className="pb-6 text-center">
         Reset Password
       </Text>
@@ -57,7 +57,7 @@ export const RecoverPasswordScreen = () => {
       />
       <Button
         testID="login-button"
-        label="Login with Google"
+        label="Reset Password"
         onPress={handleSubmit(onResetSubmit)}
         variant="primary"
       />
