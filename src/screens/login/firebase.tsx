@@ -57,6 +57,18 @@ auth.onIdTokenChanged(async (user) => {
 });
 const db = getFirestore(app);
 
+// Send password reset email
+const resetPasswordEmail = async (email: string) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+    console.log('Password reset email sent successfully.');
+  } catch (error) {
+    console.error('Error sending password reset email:', error);
+  }
+
+  return;
+};
+
 const logInWithEmailAndPassword = async (email: string, password: string) => {
   let userCred: UserCredential | null = null;
 
@@ -192,4 +204,5 @@ export {
   registerIntoDb,
   registerWithEmailAndPassword,
   sendPasswordReset,
+  resetPasswordEmail,
 };
