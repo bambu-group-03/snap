@@ -5,10 +5,14 @@ import { useState } from 'react';
 import * as z from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { sendPasswordReset } from './firebase';
 
 const onResetSubmit: ResetFormProps['onResetSubmit'] = (data) => {
-  console.log('Entre aca');
-  console.log(data);
+  try {
+    sendPasswordReset(data.email).then(() => {});
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const schema = z.object({
