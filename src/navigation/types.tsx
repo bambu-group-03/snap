@@ -9,6 +9,7 @@ import type { ProfileStackParamList } from '../screens/profile/profile-navigator
 import type { AuthStackParamList } from './auth-navigator';
 import type { FeedStackParamList } from './feed-navigator';
 import type { NotificationReceivedStackParamList } from './notification-handlers';
+import { LoginStackParamList } from '@/screens/login/login-navigator';
 
 // TODO: change, this must be dynamic
 export type RootStackParamList = AuthStackParamList &
@@ -18,6 +19,7 @@ export type RootStackParamList = AuthStackParamList &
   UserStackParamList &
   NotificationStackParamList &
   NotificationReceivedStackParamList &
+  LoginStackParamList &
   SearchStackParamList;
 
 declare global {

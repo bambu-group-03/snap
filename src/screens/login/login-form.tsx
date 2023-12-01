@@ -4,8 +4,10 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { Image } from '@/ui';
+import { Image, TouchableOpacity } from '@/ui';
 import { Button, ControlledInput, Text, View } from '@/ui';
+import { useNavigation } from '@react-navigation/native';
+import { ResetFormProps } from './recover-password-screen';
 
 const schema = z.object({
   name: z.string().optional(),
@@ -37,6 +39,9 @@ export const LoginForm = ({
   const { handleSubmit, control } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
+
+  let navigate = useNavigation();
+
   return (
     <View className="flex-1 justify-center p-4 ">
       <Image
@@ -63,6 +68,21 @@ export const LoginForm = ({
         placeholder="***"
         secureTextEntry={true}
       />
+
+      <TouchableOpacity
+        onPress={() =>
+          navigate.navigate('RecoverPasswordScreen', {
+            email: '',
+          })
+        }
+      >
+        <Text
+          testID="forgot-password"
+          className="text-right py-2 text-blue-600"
+        >
+          Forgot Password?
+        </Text>
+      </TouchableOpacity>
 
       <Button
         testID="login-button"
