@@ -1,13 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { showMessage } from 'react-native-flash-message';
 import { z } from 'zod';
 
-import type { Snap } from '@/api';
-import { useAddReply } from '@/api';
-import { getUserState } from '@/core';
-import { Button, ControlledInput, showErrorMessage, View } from '@/ui';
+import { Button, ControlledInput, View } from '@/ui';
 
 const schema = z.object({
   content: z.string().max(180),
@@ -15,50 +11,26 @@ const schema = z.object({
 
 type FormType = z.infer<typeof schema>;
 
-export const CommentInput = ({ snap }: { snap: Snap }) => {
-  // const [replyOption, setReplyOption] = React.useState('Everyone can reply');
+// Update the props type to include placeholder and onSubmit
+type CommentInputProps = {
+  placeholder: string;
+  onSubmit: (data: FormType) => void;
+};
 
-  // const handleMenuSelection = (selectedOption: string) => {
-  //   setReplyOption(selectedOption);
-  // };
-
+export const CommentInput: React.FC<CommentInputProps> = ({
+  placeholder,
+  onSubmit,
+}) => {
   const { control, handleSubmit } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
-  const { mutate: addSnap } = useAddReply();
-  const currentUser = getUserState();
-
-  const SNAP_VISIBLE = 1;
-
-  const onSubmit = (data: FormType) => {
-    console.log(data);
-    addSnap(
-      {
-        ...data,
-        user_id: currentUser?.id,
-        parent_id: snap.id,
-        privacy: SNAP_VISIBLE,
-      },
-      {
-        onSuccess: () => {
-          showMessage({
-            message: 'Snap added successfully',
-            type: 'success',
-          });
-        },
-        onError: () => {
-          showErrorMessage('Error adding post');
-        },
-      }
-    );
-  };
 
   return (
     <View className="flex flex-row p-4">
       <View id="textee" className="ml-3 w-full flex-1">
         <ControlledInput
           name="content"
-          placeholder="What do you want to say?"
+          placeholder={placeholder} // Use the placeholder prop
           className="h-32 w-full resize-none text-xl outline-none"
           control={control}
           multiline
@@ -70,7 +42,7 @@ export const CommentInput = ({ snap }: { snap: Snap }) => {
           <Button
             label="Publish"
             className="inline rounded-full bg-blue-500 px-4 py-3 text-center font-bold text-white"
-            onPress={handleSubmit(onSubmit)}
+            onPress={handleSubmit(onSubmit)} // Use the onSubmit prop
             testID="add-post-button"
           />
         </View>

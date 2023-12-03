@@ -7,7 +7,8 @@ import { useSnaps } from '@/api';
 import { getUserState } from '@/core';
 import { EmptyList, FocusAwareStatusBar, View } from '@/ui';
 
-import { Card, CardSkeleton } from './card';
+import { Card } from './card';
+import { CardSkeleton } from './components/card/card-skeleton';
 
 const LIMIT = 15; // Number of items to fetch per page
 

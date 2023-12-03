@@ -6,7 +6,8 @@ import { useSnapsFrom } from '@/api';
 import type { UserType } from '@/core/auth/utils';
 import { EmptyList, FocusAwareStatusBar, View } from '@/ui';
 
-import Card, { CardSkeleton } from '../feed/card';
+import { CardSkeleton } from '../feed/components/card/card-skeleton';
+import CardProfile from './components/card-profile';
 
 const LIMIT = 10; // Number of items to fetch per page
 
@@ -29,7 +30,9 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
     hasNextPage && fetchNextPage();
   };
 
-  const renderItem = ({ item }: { item: Snap }) => <Card snap={item} />;
+  const renderItem = ({ item }: { item: Snap }) => (
+    <CardProfile snap={item} username={user?.username || ''} />
+  );
 
   if (isLoading && !data) {
     return (

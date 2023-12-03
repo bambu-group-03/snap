@@ -12,9 +12,9 @@ import { client } from '@/api/common';
 import { getUserState } from '@/core';
 import { Button, Image, Pressable, Text, TouchableOpacity, View } from '@/ui';
 
-import CommentButton from './comment-button';
-import HeartButton from './heart-button';
-import ResnapButton from './re-snap-button';
+import CommentButton from './components/comment-button';
+import HeartButton from './components/heart-button';
+import ResnapButton from './components/re-snap-button';
 
 type Props = {
   snap: Snap;

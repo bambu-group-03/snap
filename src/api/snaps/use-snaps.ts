@@ -1,4 +1,8 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
 import { createQuery } from 'react-query-kit';
 
@@ -50,7 +54,7 @@ export const useSnapsFrom = (variables: SnapsVariables) => {
     ['snapsProfile', variables.userId],
     async ({ pageParam = 0 }) => {
       const { data } = await client.content.get<SnapsResponse>(
-        `/api/feed/${variables.userId}/snaps?limit=${variables.limit}&offset=${pageParam}`
+        `/api/feed/${variables.userId}/snaps_and_shares?limit=${variables.limit}&offset=${pageParam}`
       );
       return data;
     },
@@ -65,7 +69,7 @@ export const useSnapsFrom = (variables: SnapsVariables) => {
   );
 };
 
-export const getSnap = createQuery<Response, SnapVariables, AxiosError>({
+export const getSnap = createQuery<Snap, SnapVariables, AxiosError>({
   primaryKey: '/api/feed/snap', // we recommend using  endpoint base url as primaryKey
   queryFn: async ({ queryKey: [primaryKey, variables] }) => {
     try {
@@ -79,6 +83,57 @@ export const getSnap = createQuery<Response, SnapVariables, AxiosError>({
     }
   },
 });
+
+type SnapQueryKey = [string, { snap_id?: string; user_id?: string }];
+
+// Update Snap Mutation
+export const useUpdateSnapMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ({
+      user_id,
+      snap_id,
+      content,
+    }: {
+      user_id: string;
+      snap_id: string;
+      content: string;
+    }) =>
+      client.content.put(`/api/feed/update_snap`, {
+        user_id,
+        snap_id,
+        content,
+      }),
+    {
+      onSuccess: () => {
+        // Invalidate and refetch snaps to reflect the update
+        queryClient.invalidateQueries<SnapQueryKey>(['/api/feed/snap']);
+      },
+      onError: (error: AxiosError) => {
+        // Handle error
+        console.error('Error updating snap:', error);
+      },
+    }
+  );
+};
+
+// Delete Snap Mutation
+export const useDeleteSnapMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (snap_id: string) => client.content.delete(`/api/feed/snap/${snap_id}`),
+    {
+      onSuccess: () => {
+        // Invalidate and refetch snaps to reflect the deletion
+        queryClient.invalidateQueries<SnapQueryKey>(['/api/feed/snap']);
+      },
+      onError: (error: AxiosError) => {
+        // Handle error
+        console.error('Error deleting snap:', error);
+      },
+    }
+  );
+};
 
 export const userReplySnaps = createQuery<Response, ReplyVariable, AxiosError>({
   primaryKey: '/api/feed', // we recommend using  endpoint base url as primaryKey

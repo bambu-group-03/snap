@@ -3,18 +3,20 @@ import React, { useEffect, useState } from 'react';
 import type { Snap } from '@/api';
 import { client } from '@/api/common';
 import { getUserState } from '@/core';
+import CardContent from '@/screens/feed/components/card/card-content';
+import CardFooter from '@/screens/feed/components/card/card-footer';
 import { Pressable, View } from '@/ui';
 
-import CardContent from './components/card/card-content';
-import CardFooter from './components/card/card-footer';
-import CardHeader from './components/card/card-header';
+import CardHeaderProfile from './card-header-profile';
 
-export const Card = ({
+export const CardProfile = ({
   snap,
   onPress,
+  username,
 }: {
   snap: Snap;
   onPress?: () => void;
+  username?: string;
 }) => {
   const currentUser = getUserState();
   const [isReSnaped, setIsReSnaped] = useState<boolean>(
@@ -63,7 +65,11 @@ export const Card = ({
 
   return (
     <Pressable className="flex shrink-0 p-4 pb-0" onPress={onPress}>
-      <CardHeader snap={snap} formattedDate={formattedDate} />
+      <CardHeaderProfile
+        snap={snap}
+        formattedDate={formattedDate}
+        username={username || ''}
+      />
       <View className="pl-16">
         <CardContent snap={snap} />
         <CardFooter
@@ -79,4 +85,4 @@ export const Card = ({
   );
 };
 
-export default Card;
+export default CardProfile;
