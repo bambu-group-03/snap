@@ -4,9 +4,6 @@ import type { UserType } from '@/core/auth/utils';
 import { Image, Text, View } from '@/ui';
 
 const ChatHeader = ({ chatUser }: { chatUser: UserType }) => {
-  // const profile_photo =
-  //   'https://avatars.githubchatUsercontent.com/u/40549839?s=400&u=f9968082a38e11cabaeec2033e3ffb3e18395eb6&v=4';
-
   return (
     <View className="flex justify-between border-b-2 border-gray-200 py-3 sm:items-center">
       <View className="relative flex items-center space-x-4">
@@ -23,7 +20,9 @@ const ChatHeader = ({ chatUser }: { chatUser: UserType }) => {
               {chatUser?.last_name || 'Last Name'}
             </Text>
           </View>
-          <Text className="text-lg text-gray-600">{chatUser.bio_msg}</Text>
+          <Text className="text-center text-lg text-gray-600">
+            {chatUser.bio_msg}
+          </Text>
         </View>
       </View>
     </View>
