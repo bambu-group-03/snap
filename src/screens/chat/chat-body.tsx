@@ -24,13 +24,13 @@ const ChatBody: React.FC<ChatBodyProps> = ({ chatUser, messages }) => {
         {messages.map((message, index) => (
           <View key={index} className="chat-message ">
             <View
-              className={`items-${isCurrentUser(message) ? 'end' : 'start'}`}
+              className={`items-${isCurrentUser(message) ? 'end ' : 'start'}`}
             >
               <View
                 className={`order-${
                   isCurrentUser(message) ? '1' : '2'
-                } items- mx-2 flex max-w-xs flex-col${
-                  isCurrentUser(message) ? 'end' : 'start'
+                } items- mx-6 flex max-w-xs flex-col${
+                  isCurrentUser(message) ? 'end flex-row-reverse' : 'start '
                 } space-y-2 text-xs`}
               >
                 <Text
@@ -43,14 +43,20 @@ const ChatBody: React.FC<ChatBodyProps> = ({ chatUser, messages }) => {
                   {message.content}
                 </Text>
               </View>
-              <Image
-                source={
-                  isCurrentUser(message)
-                    ? current_user?.profile_photo_id
-                    : chatUser.profile_photo_id
-                }
-                className="order-2 h-6 w-6 rounded-full"
-              />
+              <View
+                className={`${
+                  isCurrentUser(message) ? 'end flex-row-reverse' : 'start'
+                }`}
+              >
+                <Image
+                  source={
+                    isCurrentUser(message)
+                      ? current_user?.profile_photo_id
+                      : chatUser.profile_photo_id
+                  }
+                  className="order-2 h-6 w-6 rounded-full "
+                />
+              </View>
             </View>
           </View>
         ))}
