@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { client } from '@/api';
 import { getUserState } from '@/core';
 import type { UserType } from '@/core/auth/utils';
-import { FocusAwareStatusBar } from '@/ui';
+import { FocusAwareStatusBar, View } from '@/ui';
 
 import type { ProfileStackParamList } from './profile-navigator';
 import ProfileSnapsView from './profile-snaps-view';
@@ -55,15 +55,21 @@ const ProfileScreen = () => {
     }
   }, [route.params?.user, currentUser, fetchProfileData]);
 
+  const profileScreenViewComponent = (
+    <ProfileScreenView
+      user={userData.user}
+      follower_count={userData.followerCount}
+      following_count={userData.followingCount}
+    />
+  );
   return (
     <>
       <FocusAwareStatusBar />
-      <ProfileScreenView
+      <View className="border-blueGray-200 border-t border-gray-100" />
+      <ProfileSnapsView
         user={userData.user}
-        follower_count={userData.followerCount}
-        following_count={userData.followingCount}
+        headerComponent={profileScreenViewComponent}
       />
-      <ProfileSnapsView user={userData.user} />
     </>
   );
 };

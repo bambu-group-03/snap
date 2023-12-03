@@ -11,7 +11,13 @@ import CardProfile from './components/card-profile';
 
 const LIMIT = 10; // Number of items to fetch per page
 
-const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
+const ProfileSnapsView = ({
+  user,
+  headerComponent,
+}: {
+  user: UserType | undefined;
+  headerComponent: React.ComponentType<any> | React.ReactElement | null;
+}) => {
   const {
     data,
     isLoading,
@@ -64,6 +70,7 @@ const ProfileSnapsView = ({ user }: { user: UserType | undefined }) => {
       refreshControl={
         <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
       }
+      ListHeaderComponent={headerComponent}
       ListFooterComponent={isFetchingNextPage ? <CardSkeleton /> : null}
     />
   );
