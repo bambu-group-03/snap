@@ -2,6 +2,7 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
+import { showMessage } from 'react-native-flash-message'; // Correct import for showMessage
 
 import type { Snap } from '@/api';
 import {
@@ -10,7 +11,7 @@ import {
   useUpdateSnapMutation,
 } from '@/api';
 import { getUserState } from '@/core';
-import { Button, TextInput, TouchableOpacity, View } from '@/ui';
+import { TouchableOpacity, View } from '@/ui';
 
 import { Card } from '../feed/card';
 import { CommentInput } from './comment-component';
@@ -19,7 +20,6 @@ import { Comments } from './comment-list';
 export const SnapView = ({ snap }: { snap: Snap }) => {
   const currentUser = getUserState();
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [editedContent, setEditedContent] = useState<string>(snap.content);
   const updateSnapMutation = useUpdateSnapMutation();
   const deleteSnapMutation = useDeleteSnapMutation();
   const { mutate: addReply } = useAddReply();
@@ -30,10 +30,10 @@ export const SnapView = ({ snap }: { snap: Snap }) => {
     setEditMode(true);
   };
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = (data: { content: string }) => {
     updateSnapMutation.mutate({
       snap_id: snap.id,
-      content: editedContent,
+      content: data.content,
       user_id: currentUser!.id,
     });
     setEditMode(false);
@@ -55,7 +55,7 @@ export const SnapView = ({ snap }: { snap: Snap }) => {
           ...data,
           user_id: currentUser?.id,
           parent_id: snap.id,
-          privacy: 1, // Assuming SNAP_VISIBLE is equal to 1
+          privacy: 1,
         },
         {
           onSuccess: () => {
@@ -65,7 +65,10 @@ export const SnapView = ({ snap }: { snap: Snap }) => {
             });
           },
           onError: () => {
-            showErrorMessage('Error adding reply');
+            showMessage({
+              message: 'Error adding reply',
+              type: 'danger',
+            });
           },
         }
       );
@@ -78,27 +81,25 @@ export const SnapView = ({ snap }: { snap: Snap }) => {
         <Card snap={snap} />
         {isOwner && !editMode && (
           <View className="my-2 flex flex-row justify-around">
-            <TouchableOpacity onPress={handleEdit} className="...">
-              <FontAwesomeIcon icon={faEdit} size={15} />
+            <TouchableOpacity
+              onPress={handleEdit}
+              className="rounded-full  border border-gray-300 px-3 py-2 text-center font-bold text-white"
+            >
+              <FontAwesomeIcon icon={faEdit} size={13} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleDelete} className="...">
-              <FontAwesomeIcon icon={faTrash} size={15} color="red" />
+            <TouchableOpacity
+              onPress={handleDelete}
+              className="rounded-full  border border-gray-300 px-3 py-2 text-center font-bold text-white"
+            >
+              <FontAwesomeIcon icon={faTrash} size={13} color="red" />
             </TouchableOpacity>
           </View>
         )}
-        {editMode ? (
-          <CommentInput
-            placeholder="Edit your snap..."
-            onSubmit={handleSubmit}
-            initialContent={editedContent}
-            onContentChange={setEditedContent}
-          />
-        ) : (
-          <CommentInput
-            placeholder="Write a reply..."
-            onSubmit={handleSubmit}
-          />
-        )}
+        <CommentInput
+          placeholder={editMode ? 'Edit your snap...' : 'Write a reply...'}
+          onSubmit={handleSubmit}
+          initialContent={editMode ? snap.content : ''}
+        />
         <Comments snap={snap} />
       </View>
     </>

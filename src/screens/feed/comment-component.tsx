@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -11,26 +11,33 @@ const schema = z.object({
 
 type FormType = z.infer<typeof schema>;
 
-// Update the props type to include placeholder and onSubmit
+// Update the props type to include placeholder, onSubmit, and initialContent
 type CommentInputProps = {
   placeholder: string;
   onSubmit: (data: FormType) => void;
+  initialContent?: string; // Optional prop for initial content
 };
 
 export const CommentInput: React.FC<CommentInputProps> = ({
   placeholder,
   onSubmit,
+  initialContent = '', // Default value is an empty string
 }) => {
-  const { control, handleSubmit } = useForm<FormType>({
+  console.log(`initialContent: '${initialContent}'`);
+  const { control, handleSubmit, reset } = useForm<FormType>({
     resolver: zodResolver(schema),
+    defaultValues: { content: initialContent }, // Initialize the form with initialContent
   });
+  useEffect(() => {
+    reset({ content: initialContent });
+  }, [initialContent, reset]);
 
   return (
     <View className="flex flex-row p-4">
       <View id="textee" className="ml-3 w-full flex-1">
         <ControlledInput
           name="content"
-          placeholder={placeholder} // Use the placeholder prop
+          placeholder={placeholder}
           className="h-32 w-full resize-none text-xl outline-none"
           control={control}
           multiline
@@ -42,7 +49,7 @@ export const CommentInput: React.FC<CommentInputProps> = ({
           <Button
             label="Publish"
             className="inline rounded-full bg-blue-500 px-4 py-3 text-center font-bold text-white"
-            onPress={handleSubmit(onSubmit)} // Use the onSubmit prop
+            onPress={handleSubmit(onSubmit)}
             testID="add-post-button"
           />
         </View>
