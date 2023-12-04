@@ -1,9 +1,71 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, ScrollView, Text, View } from 'react-native';
 import { BarChart, LineChart, PieChart } from 'react-native-chart-kit';
+import GrowthStats from './growth-stats';
+import { client } from '@/api';
+import { getUserState } from '@/core';
+
+[
+  {
+    total_snaps: 21,
+  },
+  {
+    total_likes: 6,
+  },
+  {
+    total_shares: 3,
+  },
+  {
+    period_snaps: 21,
+  },
+  {
+    period_likes: 6,
+  },
+  {
+    period_shares: 3,
+  },
+];
+
+export interface StatisticsScreenProps {
+  total_snaps: number;
+  total_likes: number;
+  total_shares: number;
+  period_snaps: number;
+  period_likes: number;
+  period_shares: number;
+}
 
 const StatisticsScreen = () => {
+  const [statistics, setStatistics] = useState<StatisticsScreenProps[]>([]);
+
+  const currentUser = getUserState();
+
+  const fetchUserStats = useCallback(async (userID: string) => {
+    try {
+      let res = await client.content.get(
+        'api/metrics/' +
+          userID +
+          '/get_user_metrics_between_' +
+          startDate.toISOString().split('T')[0] +
+          '_and_' +
+          endDate.toISOString().split('T')[0]
+      );
+
+      setStatistics(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (currentUser) {
+      fetchUserStats(currentUser.id);
+    }
+  }, [currentUser, fetchUserStats]);
+
+  console.log(statistics);
+
   const mockData = {
     engagement: [
       { date: '2023-01-01', likes: 300, retweets: 150, mentions: 75 },
@@ -118,6 +180,8 @@ const StatisticsScreen = () => {
     '-' +
     endDate.getFullYear();
 
+  console.log('startDate', startDate.toISOString().split('T')[0]);
+
   return (
     <ScrollView style={{ flex: 1, padding: 10 }}>
       <View style={{ alignItems: 'center' }}>
@@ -183,7 +247,8 @@ const StatisticsScreen = () => {
           </View>
         </View>
 
-        {/* Chart sections */}
+        <GrowthStats />
+        {/* Chart sections
         <Text>User Engagement</Text>
         <BarChart
           data={engagementData}
@@ -193,7 +258,6 @@ const StatisticsScreen = () => {
           yAxisLabel=""
           yAxisSuffix=""
         />
-
         <Text>Follower Growth</Text>
         <LineChart
           data={followerData}
@@ -201,7 +265,6 @@ const StatisticsScreen = () => {
           height={220}
           chartConfig={chartConfig}
         />
-
         <Text>Content Distribution</Text>
         <PieChart
           data={pieChartData}
@@ -212,7 +275,7 @@ const StatisticsScreen = () => {
           backgroundColor="transparent"
           paddingLeft="15"
           absolute={false}
-        />
+        /> */}
       </View>
     </ScrollView>
   );
