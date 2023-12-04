@@ -7,7 +7,9 @@ import { getUserState } from '@/core';
 import type { UserType } from '@/core/auth/utils';
 import { FocusAwareStatusBar, View } from '@/ui';
 
+import Tab from './components/tab';
 import type { ProfileStackParamList } from './profile-navigator';
+import ProfileSharesHistoryView from './profile-shares-history-view';
 import ProfileSnapsView from './profile-snaps-view';
 import ProfileScreenView from './profile-view';
 
@@ -19,7 +21,11 @@ const ProfileScreen = () => {
     followerCount: number;
     followingCount: number;
   }>({ user: undefined, followerCount: 0, followingCount: 0 });
+  const [selectedTab, setSelectedTab] = useState<'snaps' | 'shared'>('snaps');
 
+  const handleTabChange = (tab: 'snaps' | 'shared') => {
+    setSelectedTab(tab);
+  };
   const fetchProfileData = useCallback(
     async (viewedUserId: string, currentUserId: string) => {
       try {
@@ -66,10 +72,33 @@ const ProfileScreen = () => {
     <>
       <FocusAwareStatusBar />
       <View className="border-blueGray-200 border-t border-gray-100" />
-      <ProfileSnapsView
-        user={userData.user}
-        headerComponent={profileScreenViewComponent}
-      />
+
+      {/* Tab Selector */}
+      <View className="flex-row">
+        <Tab
+          selected={selectedTab === 'snaps'}
+          title="Snaps"
+          onPress={() => handleTabChange('snaps')}
+        />
+        <Tab
+          selected={selectedTab === 'shared'}
+          title="Shared by"
+          onPress={() => handleTabChange('shared')}
+        />
+      </View>
+
+      {/* Conditional Rendering based on Selected Tab */}
+      {selectedTab === 'snaps' ? (
+        <ProfileSnapsView
+          user={userData.user}
+          headerComponent={profileScreenViewComponent}
+        />
+      ) : (
+        <ProfileSharesHistoryView
+          user={userData.user}
+          headerComponent={profileScreenViewComponent}
+        />
+      )}
     </>
   );
 };

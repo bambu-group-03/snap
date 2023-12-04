@@ -68,6 +68,25 @@ export const useSnapsFrom = (variables: SnapsVariables) => {
     }
   );
 };
+export const useSnapSharedByMeFrom = (variables: SnapsVariables) => {
+  return useInfiniteQuery<SnapsResponse, AxiosError, SnapsResponse>(
+    ['snapsProfile', variables.userId],
+    async ({ pageParam = 0 }) => {
+      const { data } = await client.content.get<SnapsResponse>(
+        `/api/feed/${variables.userId}/shares?limit=${variables.limit}&offset=${pageParam}`
+      );
+      return data;
+    },
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        if (lastPage.snaps.length === 0) {
+          return undefined; // no more pages
+        }
+        return allPages.length * variables.limit; // Calculate the next offset
+      },
+    }
+  );
+};
 
 export const getSnap = createQuery<Snap, SnapVariables, AxiosError>({
   primaryKey: '/api/feed/snap', // we recommend using  endpoint base url as primaryKey
