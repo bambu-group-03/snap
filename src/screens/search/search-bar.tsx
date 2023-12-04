@@ -20,7 +20,7 @@ const whenSearch = async (
   console.log(data);
   if (data.username && data.username.trim() !== '') {
     try {
-      const { data: users } = await client.content.get(
+      const { data: users } = await client.identity.get(
         `/api/filter/${currentUser?.id}/${data.username}`
       );
       navigate('Users', { users });
