@@ -120,98 +120,100 @@ const StatisticsScreen = () => {
 
   return (
     <ScrollView style={{ flex: 1, padding: 10 }}>
-      <Text
-        style={{
-          fontSize: 52,
-          fontWeight: 'bold',
-          textAlign: 'center',
-          marginTop: 0,
-        }}
-      >
-        My Stats
-      </Text>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginVertical: 10,
-        }}
-      >
-        <View style={{ flex: 1, marginRight: 5 }}>
-          <Button
-            title={
-              startDate.toISOString().split('T')[0] === '2023-01-01'
-                ? 'Select Start Date'
-                : formattedStartDate
-            }
-            color="#007AFF"
-            onPress={() => setShowStartDatePicker(true)}
-          />
-          {showStartDatePicker && (
-            <DateTimePicker
-              value={startDate}
-              mode="date"
-              display="default"
-              onChange={(event, selectedDate) =>
-                handleDateChange('start', selectedDate)
+      <View style={{ alignItems: 'center' }}>
+        <Text
+          style={{
+            fontSize: 52,
+            fontWeight: 'bold',
+            textAlign: 'center',
+            marginTop: 0,
+          }}
+        >
+          My Stats
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginVertical: 10,
+          }}
+        >
+          <View style={{ flex: 1, marginRight: 5 }}>
+            <Button
+              title={
+                startDate.toISOString().split('T')[0] === '2023-01-01'
+                  ? 'Select Start Date'
+                  : formattedStartDate
               }
+              color="#007AFF"
+              onPress={() => setShowStartDatePicker(true)}
             />
-          )}
+            {showStartDatePicker && (
+              <DateTimePicker
+                value={startDate}
+                mode="date"
+                display="default"
+                onChange={(event, selectedDate) =>
+                  handleDateChange('start', selectedDate)
+                }
+              />
+            )}
+          </View>
+
+          <View style={{ flex: 1, marginLeft: 5 }}>
+            <Button
+              title={
+                endDate.toISOString().split('T')[0] === '2023-03-01'
+                  ? 'Select End Date'
+                  : formattedEndDate
+              }
+              color="#FF4500"
+              onPress={() => setShowEndDatePicker(true)}
+            />
+            {showEndDatePicker && (
+              <DateTimePicker
+                value={endDate}
+                mode="date"
+                display="default"
+                onChange={(event, selectedDate) =>
+                  handleDateChange('end', selectedDate)
+                }
+              />
+            )}
+          </View>
         </View>
 
-        <View style={{ flex: 1, marginLeft: 5 }}>
-          <Button
-            title={
-              endDate.toISOString().split('T')[0] === '2023-03-01'
-                ? 'Select End Date'
-                : formattedEndDate
-            }
-            color="#FF4500"
-            onPress={() => setShowEndDatePicker(true)}
-          />
-          {showEndDatePicker && (
-            <DateTimePicker
-              value={endDate}
-              mode="date"
-              display="default"
-              onChange={(event, selectedDate) =>
-                handleDateChange('end', selectedDate)
-              }
-            />
-          )}
-        </View>
+        {/* Chart sections */}
+        <Text>User Engagement</Text>
+        <BarChart
+          data={engagementData}
+          width={300}
+          height={220}
+          chartConfig={chartConfig}
+          yAxisLabel=""
+          yAxisSuffix=""
+        />
+
+        <Text>Follower Growth</Text>
+        <LineChart
+          data={followerData}
+          width={300}
+          height={220}
+          chartConfig={chartConfig}
+        />
+
+        <Text>Content Distribution</Text>
+        <PieChart
+          data={pieChartData}
+          width={300}
+          height={220}
+          chartConfig={chartConfig}
+          accessor="count"
+          backgroundColor="transparent"
+          paddingLeft="15"
+          absolute={false}
+        />
       </View>
-
-      {/* Chart sections */}
-      <Text>User Engagement</Text>
-      <BarChart
-        data={engagementData}
-        width={300}
-        height={220}
-        chartConfig={chartConfig}
-        yAxisLabel=""
-        yAxisSuffix=""
-      />
-
-      <Text>Follower Growth</Text>
-      <LineChart
-        data={followerData}
-        width={300}
-        height={220}
-        chartConfig={chartConfig}
-      />
-
-      <Text>Content Distribution</Text>
-      <PieChart
-        data={pieChartData}
-        width={300}
-        height={220}
-        chartConfig={chartConfig}
-        accessor="count"
-        backgroundColor="transparent"
-        paddingLeft="15"
-        absolute={false}
-      />
     </ScrollView>
   );
 };
