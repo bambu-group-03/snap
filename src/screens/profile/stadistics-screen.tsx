@@ -104,44 +104,82 @@ const StatisticsScreen = () => {
     },
   };
 
-  return (
-    <ScrollView style={{ flex: 1, padding: 2 }}>
-      <View>
-        <Button
-          title="Select Start Date"
-          onPress={() => setShowStartDatePicker(true)}
-        />
-        {showStartDatePicker && (
-          <DateTimePicker
-            value={startDate}
-            mode="date"
-            display="default"
-            onChange={(event, selectedDate) =>
-              handleDateChange('start', selectedDate)
-            }
-          />
-        )}
-        <Text>
-          Selected Start Date: {startDate.toISOString().split('T')[0]}
-        </Text>
-      </View>
+  const formattedStartDate =
+    startDate.getDate().toString().padStart(2, '0') +
+    '-' +
+    (startDate.getMonth() + 1).toString().padStart(2, '0') +
+    '-' +
+    startDate.getFullYear();
 
-      <View>
-        <Button
-          title="Select End Date"
-          onPress={() => setShowEndDatePicker(true)}
-        />
-        {showEndDatePicker && (
-          <DateTimePicker
-            value={endDate}
-            mode="date"
-            display="default"
-            onChange={(event, selectedDate) =>
-              handleDateChange('end', selectedDate)
+  const formattedEndDate =
+    endDate.getDate().toString().padStart(2, '0') +
+    '-' +
+    (endDate.getMonth() + 1).toString().padStart(2, '0') +
+    '-' +
+    endDate.getFullYear();
+
+  return (
+    <ScrollView style={{ flex: 1, padding: 10 }}>
+      <Text
+        style={{
+          fontSize: 52,
+          fontWeight: 'bold',
+          textAlign: 'center',
+          marginTop: 0,
+        }}
+      >
+        My Stats
+      </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginVertical: 10,
+        }}
+      >
+        <View style={{ flex: 1, marginRight: 5 }}>
+          <Button
+            title={
+              startDate.toISOString().split('T')[0] === '2023-01-01'
+                ? 'Select Start Date'
+                : formattedStartDate
             }
+            color="#007AFF"
+            onPress={() => setShowStartDatePicker(true)}
           />
-        )}
-        <Text>Selected End Date: {endDate.toISOString().split('T')[0]}</Text>
+          {showStartDatePicker && (
+            <DateTimePicker
+              value={startDate}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) =>
+                handleDateChange('start', selectedDate)
+              }
+            />
+          )}
+        </View>
+
+        <View style={{ flex: 1, marginLeft: 5 }}>
+          <Button
+            title={
+              endDate.toISOString().split('T')[0] === '2023-03-01'
+                ? 'Select End Date'
+                : formattedEndDate
+            }
+            color="#FF4500"
+            onPress={() => setShowEndDatePicker(true)}
+          />
+          {showEndDatePicker && (
+            <DateTimePicker
+              value={endDate}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) =>
+                handleDateChange('end', selectedDate)
+              }
+            />
+          )}
+        </View>
       </View>
 
       {/* Chart sections */}
