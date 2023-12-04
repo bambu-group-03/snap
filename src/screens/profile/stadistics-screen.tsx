@@ -1,33 +1,13 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, ScrollView, Text, View } from 'react-native';
-import { BarChart, LineChart, PieChart } from 'react-native-chart-kit';
+// import { BarChart, LineChart, PieChart } from 'react-native-chart-kit';
 import GrowthStats from './growth-stats';
 import { client } from '@/api';
 import { getUserState } from '@/core';
+import Test from './test';
 
-[
-  {
-    total_snaps: 21,
-  },
-  {
-    total_likes: 6,
-  },
-  {
-    total_shares: 3,
-  },
-  {
-    period_snaps: 21,
-  },
-  {
-    period_likes: 6,
-  },
-  {
-    period_shares: 3,
-  },
-];
-
-export interface StatisticsScreenProps {
+export interface UserStatistics {
   total_snaps: number;
   total_likes: number;
   total_shares: number;
@@ -37,7 +17,14 @@ export interface StatisticsScreenProps {
 }
 
 const StatisticsScreen = () => {
-  const [statistics, setStatistics] = useState<StatisticsScreenProps[]>([]);
+  const [statistics, setStatistics] = useState<UserStatistics>({
+    total_snaps: 0,
+    total_likes: 0,
+    total_shares: 0,
+    period_snaps: 0,
+    period_likes: 0,
+    period_shares: 0,
+  });
 
   const currentUser = getUserState();
 
@@ -52,7 +39,20 @@ const StatisticsScreen = () => {
           endDate.toISOString().split('T')[0]
       );
 
-      setStatistics(res.data);
+      const mergedStats = res.data.reduce(
+        (acc: any, obj: any) => {
+          acc.total_snaps += obj.total_snaps;
+          acc.total_likes += obj.total_likes;
+          acc.total_shares += obj.total_shares;
+          acc.period_snaps += obj.period_snaps;
+          acc.period_likes += obj.period_likes;
+          acc.period_shares += obj.period_shares;
+          return acc;
+        },
+        { ...statistics }
+      );
+
+      setStatistics(mergedStats);
     } catch (err) {
       console.error(err);
     }
@@ -246,36 +246,12 @@ const StatisticsScreen = () => {
             )}
           </View>
         </View>
+      </View>
 
-        <GrowthStats />
-        {/* Chart sections
-        <Text>User Engagement</Text>
-        <BarChart
-          data={engagementData}
-          width={300}
-          height={220}
-          chartConfig={chartConfig}
-          yAxisLabel=""
-          yAxisSuffix=""
-        />
-        <Text>Follower Growth</Text>
-        <LineChart
-          data={followerData}
-          width={300}
-          height={220}
-          chartConfig={chartConfig}
-        />
-        <Text>Content Distribution</Text>
-        <PieChart
-          data={pieChartData}
-          width={300}
-          height={220}
-          chartConfig={chartConfig}
-          accessor="count"
-          backgroundColor="transparent"
-          paddingLeft="15"
-          absolute={false}
-        /> */}
+      <View>
+        <GrowthStats stats={statistics} />
+
+        {/* <Test /> */}
       </View>
     </ScrollView>
   );
