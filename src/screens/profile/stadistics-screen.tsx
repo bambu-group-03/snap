@@ -57,7 +57,7 @@ const StatisticsScreen = () => {
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 
-  const fetchStats = useCallback(
+  const fetchSnapStats = useCallback(
     async (userID: string) => {
       if (
         startDate.toISOString().split('T')[0] ===
@@ -92,7 +92,32 @@ const StatisticsScreen = () => {
         );
 
         setSnapStatistics(mergedSnapStats);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    [startDate, endDate]
+  );
 
+  useEffect(() => {
+    if (currentUser) {
+      fetchSnapStats(currentUser.id);
+    }
+  }, [currentUser, fetchSnapStats]);
+
+  const fetchAccountStats = useCallback(
+    async (userID: string) => {
+      if (
+        startDate.toISOString().split('T')[0] ===
+          new Date().toISOString().split('T')[0] &&
+        endDate.toISOString().split('T')[0] ===
+          new Date().toISOString().split('T')[0]
+      ) {
+        return;
+      }
+
+      try {
+        // Otro endpoint
         let account_stats = await client.content.get(
           'api/metrics/' +
             userID +
@@ -125,9 +150,9 @@ const StatisticsScreen = () => {
 
   useEffect(() => {
     if (currentUser) {
-      fetchStats(currentUser.id);
+      fetchAccountStats(currentUser.id);
     }
-  }, [currentUser, fetchStats]);
+  }, [currentUser, fetchAccountStats]);
 
   // Function to handle the validation of dates
   const handleDateChange = (
