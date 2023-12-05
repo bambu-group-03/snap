@@ -1,10 +1,13 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Button, ScrollView, Text, View } from 'react-native';
-// import { BarChart, LineChart, PieChart } from 'react-native-chart-kit';
-import GrowthStats from './growth-stats';
+import { Button, ScrollView, View } from 'react-native';
+
 import { client } from '@/api';
 import { getUserState } from '@/core';
+import { FocusAwareStatusBar } from '@/ui';
+
+import Tab from './components/tab';
+import SnapStats from './growth-stats';
 
 export interface UserStatistics {
   total_snaps: number;
@@ -72,7 +75,7 @@ const StatisticsScreen = () => {
         console.error(err);
       }
     },
-    [startDate, endDate]
+    [startDate, endDate, statistics]
   );
 
   useEffect(() => {
@@ -118,19 +121,31 @@ const StatisticsScreen = () => {
     '-' +
     endDate.getFullYear();
 
+  const [selectedTab, setSelectedTab] = useState<'snapStats' | 'userStats'>(
+    'snapStats'
+  );
+
+  const handleTabChange = (tab: 'snapStats' | 'userStats') => {
+    setSelectedTab(tab);
+  };
+
   return (
     <ScrollView style={{ flex: 1, padding: 10 }}>
-      <View style={{ alignItems: 'center' }}>
-        <Text
-          style={{
-            fontSize: 52,
-            fontWeight: 'bold',
-            textAlign: 'center',
-            marginTop: 0,
-          }}
-        >
-          My Stats
-        </Text>
+      <FocusAwareStatusBar />
+      <View>
+        <View className="flex-row">
+          <Tab
+            selected={selectedTab === 'snapStats'}
+            title="Snap Stats"
+            onPress={() => handleTabChange('snapStats')}
+          />
+          <Tab
+            selected={selectedTab === 'userStats'}
+            title="User Stats"
+            onPress={() => handleTabChange('userStats')}
+          />
+        </View>
+
         <View
           style={{
             flexDirection: 'row',
@@ -190,9 +205,12 @@ const StatisticsScreen = () => {
         </View>
       </View>
 
-      <View>
-        <GrowthStats stats={statistics} />
-      </View>
+      {/* Conditional Rendering based on Selected Tab */}
+      {selectedTab === 'snapStats' ? (
+        <View>
+          <SnapStats stats={statistics} />
+        </View>
+      ) : null}
     </ScrollView>
   );
 };
