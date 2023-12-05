@@ -28,6 +28,7 @@ export type UserType = {
   dni?: string;
   img_1_url?: string;
   img_2_url?: string;
+  certified?: boolean;
 };
 
 export const getToken = () => getItem<TokenType>(TOKEN);
