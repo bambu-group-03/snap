@@ -7,6 +7,7 @@ import { SignInComplete } from '@/navigation/signin-complete';
 
 import type { Chat } from '../chat/chat-list-screen';
 import ChatScreen from '../chat/chat-screen';
+import FavoriteSnapScreen from '../profile/fav-snaps-screen';
 import InteractionsScreen from '../profile/interaction-view';
 import ProfileScreen from '../profile/profile-screen';
 import SearchView from './search-view';
@@ -20,6 +21,7 @@ export type SearchStackParamList = {
   Followers: { users: UserType[] | undefined };
   Following: { users: UserType[] | undefined };
   SnapList: { snaps: Snap[] };
+  FavSnaps: { snaps: Snap[] };
   EditProfileScreen: { user: UserType | undefined };
   ChatMessagesScreen: {
     chat: Chat | undefined;
@@ -38,6 +40,7 @@ export const SearchNavigator = () => {
       <Stack.Screen name="Followers" component={InteractionsScreen} />
       <Stack.Screen name="Following" component={InteractionsScreen} />
       <Stack.Screen name="SnapList" component={SnapList} />
+      <Stack.Screen name="FavSnaps" component={FavoriteSnapScreen} />
       <Stack.Screen name="EditProfileScreen" component={SignInComplete} />
       <Stack.Screen name="ChatMessagesScreen" component={ChatScreen} />
     </Stack.Navigator>
