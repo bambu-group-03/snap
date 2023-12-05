@@ -1,10 +1,10 @@
 import {
-  faCalendarAlt,
-  faPencilAlt,
-  faPollH,
-  faRetweet,
-  faShareAlt,
-  faThumbsUp,
+  faBarcode,
+  faBeer,
+  faBomb,
+  faBug,
+  faHamburger,
+  faPanorama,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { Text, View } from '@/ui';
@@ -19,34 +19,34 @@ const AccountStats = ({ stats }: { stats: AccountStatistics | undefined }) => {
         <View className="mx-1 max-w-full py-6 sm:mx-auto sm:px-6 lg:px-8">
           <View className="sm:flex sm:space-x-4">
             <StatCard
-              label="Total Snaps"
+              label="Total likes received"
               value={stats.total_snaps}
-              icon={faPencilAlt}
+              icon={faBarcode}
             />
             <StatCard
-              label="Total Likes"
+              label="Total ReSnap received"
               value={stats.total_likes}
-              icon={faThumbsUp}
+              icon={faHamburger}
             />
             <StatCard
-              label="Total Shares"
+              label="Followers"
               value={stats.total_shares}
-              icon={faRetweet}
+              icon={faPanorama}
             />
             <StatCard
-              label="Period Snaps"
+              label="Total Stat 1"
               value={stats.period_snaps}
-              icon={faCalendarAlt}
+              icon={faBomb}
             />
             <StatCard
-              label="Period Likes"
+              label="Total Stat 2"
               value={stats.period_likes}
-              icon={faPollH}
+              icon={faBeer}
             />
             <StatCard
-              label="Period Shares"
+              label="Total Stat 3"
               value={stats.period_shares}
-              icon={faShareAlt}
+              icon={faBug}
             />
           </View>
         </View>
