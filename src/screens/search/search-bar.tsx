@@ -20,9 +20,6 @@ const whenSearch = async (
   navigate: NavigationProp<SearchStackParamList>['navigate']
 ) => {
   const currentUser = getUserState();
-  console.log(currentUser);
-
-  console.log(data);
 
   if (data.type === SEARCH_BY_USERNAME && data.search.trim() !== '') {
     try {
