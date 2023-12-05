@@ -1,4 +1,8 @@
-import { faBookmark } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAngleDown,
+  faAngleUp,
+  faBookmark,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
@@ -11,12 +15,16 @@ type ProfileStatsProps = {
   user: UserType | undefined;
   followerCount: number;
   followingCount: number;
+  option: boolean;
+  setOption: (option: boolean) => void;
 };
 
 export const ProfileStats = ({
   user,
   followerCount,
   followingCount,
+  option,
+  setOption,
 }: ProfileStatsProps) => {
   const navigate = useNavigation();
 
@@ -72,6 +80,18 @@ export const ProfileStats = ({
           </TouchableOpacity>
         </View>
       ) : null}
+
+      <View className="p-3 text-center ">
+        <TouchableOpacity onPress={() => setOption(!option)}>
+          <Text className=" tracking-wide text-slate-700" />
+          <Text className="text-sm text-blue-600">
+            <FontAwesomeIcon
+              icon={option ? faAngleUp : faAngleDown}
+              color={'black'}
+            />
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

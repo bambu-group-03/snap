@@ -17,7 +17,7 @@ export const StadisticsButton = ({
 
   if (user?.id === currentUser?.id) {
     return (
-      <View className="mb-2 flex  justify-center">
+      <View className="flex justify-center">
         <Button
           label="Stats"
           className="mt-4 rounded-full bg-violet-400 px-4 py-2 text-center font-bold text-white shadow"
