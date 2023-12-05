@@ -1,11 +1,11 @@
+import { faBookmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 
 import { client } from '@/api/common';
 import { getUser, type UserType } from '@/core/auth/utils';
 import { Text, TouchableOpacity, View } from '@/ui';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBookmark } from '@fortawesome/free-solid-svg-icons';
 
 type ProfileStatsProps = {
   user: UserType | undefined;
@@ -75,16 +75,3 @@ export const ProfileStats = ({
     </View>
   );
 };
-
-{
-  /* <Button
-  variant="icon"
-  onPress={onPress}
-  label={
-    <FontAwesomeIcon
-      icon={faBookmark}
-      color={isFavBookmarked ? 'red' : 'black'}
-    />
-  }
-/>; */
-}
