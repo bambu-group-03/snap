@@ -25,6 +25,9 @@ export type UserType = {
   username: null | string;
   ubication: null | string;
   is_followed?: boolean;
+  dni?: string;
+  img_1_url?: string;
+  img_2_url?: string;
 };
 
 export const getToken = () => getItem<TokenType>(TOKEN);

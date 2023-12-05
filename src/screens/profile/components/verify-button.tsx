@@ -22,7 +22,7 @@ export const VerifyButton = ({
           label="Verify"
           className="mt-4 rounded-full bg-green-400 px-4 py-2 text-center font-bold text-white shadow"
           onPress={() => {
-            navigate('StadisticsScreen');
+            navigate('Verify');
           }}
         />
       </View>
