@@ -46,7 +46,7 @@ export const FormForSearch: React.FC<SearchFormProps> = ({
 
   return (
     <View className="flex-1 p-4">
-      <Text className="py-2 text-center text-2xl font-bold">Search By</Text>
+      <Text className="p-2 text-left text-2xl font-bold">Search By</Text>
       <ScrollView className="flex-1 ">
         <View className="flex p-2">
           <Picker
