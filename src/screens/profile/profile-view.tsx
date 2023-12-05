@@ -56,6 +56,7 @@ const ProfileScreenView = ({
       />
       <ProfileStats
         user={user}
+        currentUser={currentUser}
         followerCount={followerCount}
         followingCount={followingCount}
         option={moreOptions}

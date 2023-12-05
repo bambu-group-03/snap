@@ -13,6 +13,7 @@ import { Text, TouchableOpacity, View } from '@/ui';
 
 type ProfileStatsProps = {
   user: UserType | undefined;
+  currentUser: UserType | undefined;
   followerCount: number;
   followingCount: number;
   option: boolean;
@@ -21,6 +22,7 @@ type ProfileStatsProps = {
 
 export const ProfileStats = ({
   user,
+  currentUser,
   followerCount,
   followingCount,
   option,
@@ -78,17 +80,19 @@ export const ProfileStats = ({
         </TouchableOpacity>
       </View>
 
-      <View className="p-3 text-center ">
-        <TouchableOpacity onPress={() => setOption(!option)}>
-          <Text className=" tracking-wide text-slate-700" />
-          <Text className="text-sm text-blue-600">
-            <FontAwesomeIcon
-              icon={option ? faAngleUp : faAngleDown}
-              color={'black'}
-            />
-          </Text>
-        </TouchableOpacity>
-      </View>
+      {user?.id === currentUser?.id ? (
+        <View className="p-3 text-center ">
+          <TouchableOpacity onPress={() => setOption(!option)}>
+            <Text className=" tracking-wide text-slate-700" />
+            <Text className="text-sm text-blue-600">
+              <FontAwesomeIcon
+                icon={option ? faAngleUp : faAngleDown}
+                color={'black'}
+              />
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
     </View>
   );
 };
