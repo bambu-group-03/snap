@@ -10,7 +10,7 @@ type ProfileBioProps = {
 export const ProfileBio = ({ user }: ProfileBioProps) => {
   return (
     <>
-      <View className="text-center">
+      <View className="py-5 text-center">
         <Text className="mb-1 text-2xl font-bold leading-normal text-slate-700">
           {user?.first_name} {user?.last_name}
         </Text>

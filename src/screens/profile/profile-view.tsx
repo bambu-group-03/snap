@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { getUserState } from '@/core/auth';
 import type { UserType } from '@/core/auth/utils';
-import { View } from '@/ui';
+import { Button, View } from '@/ui';
 
 import EditProfileButton from './components/edit-profile-button';
 import { FollowActions } from './components/follow-actions';
@@ -22,6 +22,8 @@ const ProfileScreenView = ({
   following_count: number;
 }) => {
   const currentUser = getUserState();
+
+  const [moreOptions, setMoreOptions] = useState<boolean>(false);
 
   const [isFollowing, setIsFollowing] = useState<boolean>(
     user?.is_followed || false
@@ -57,11 +59,20 @@ const ProfileScreenView = ({
         followerCount={followerCount}
         followingCount={followingCount}
       />
-      <View className=" border-gray-200 flex flex-row py-5 justify-between">
-        <EditProfileButton user={user} currentUser={currentUser} />
-        <StadisticsButton user={user} currentUser={currentUser} />
-        <VerifyButton user={user} currentUser={currentUser} />
-      </View>
+
+      <Button
+        className="py-18 mx-20 mt-3 flex items-center justify-center rounded-full bg-blue-400 px-6 text-center font-bold text-black shadow"
+        onPress={() => setMoreOptions(!moreOptions)}
+        label={moreOptions ? 'Less Options' : 'More Options'}
+      />
+
+      {moreOptions ? (
+        <View className=" flex flex-row justify-between border-gray-200 py-1">
+          <EditProfileButton user={user} currentUser={currentUser} />
+          <StadisticsButton user={user} currentUser={currentUser} />
+          <VerifyButton user={user} currentUser={currentUser} />
+        </View>
+      ) : null}
       <ProfileBio user={user} />
     </View>
   );
