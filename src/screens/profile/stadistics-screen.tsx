@@ -105,16 +105,16 @@ const StatisticsScreen = () => {
   };
 
   const formattedStartDate =
-    startDate.getDate().toString().padStart(2, '0') +
-    '-' +
     (startDate.getMonth() + 1).toString().padStart(2, '0') +
+    '-' +
+    startDate.getDate().toString().padStart(2, '0') +
     '-' +
     startDate.getFullYear();
 
   const formattedEndDate =
-    endDate.getDate().toString().padStart(2, '0') +
-    '-' +
     (endDate.getMonth() + 1).toString().padStart(2, '0') +
+    '-' +
+    endDate.getDate().toString().padStart(2, '0') +
     '-' +
     endDate.getFullYear();
 

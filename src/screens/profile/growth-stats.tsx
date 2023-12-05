@@ -1,21 +1,22 @@
-import { View, Text } from '@/ui';
-import { UserStatistics } from './stadistics-screen';
-import StatCard from './card';
-
 import {
   faCalendarAlt,
+  faPencilAlt,
+  faPollH,
+  faRetweet,
   faShareAlt,
   faThumbsUp,
-  faRetweet,
-  faPollH,
-  faPencilAlt,
 } from '@fortawesome/free-solid-svg-icons';
+
+import { Text, View } from '@/ui';
+
+import type { UserStatistics } from './stadistics-screen';
+import StatCard from './stats-card';
 
 const GrowthStats = ({ stats }: { stats: UserStatistics | undefined }) => {
   return (
     <View className=" bg-white ">
       {stats ? (
-        <View className="max-w-full mx-1 py-6 sm:mx-auto sm:px-6 lg:px-8">
+        <View className="mx-1 max-w-full py-6 sm:mx-auto sm:px-6 lg:px-8">
           <View className="sm:flex sm:space-x-4">
             <StatCard
               label="Total Snaps"
@@ -50,7 +51,7 @@ const GrowthStats = ({ stats }: { stats: UserStatistics | undefined }) => {
           </View>
         </View>
       ) : (
-        <View className="max-w-full mx-4 py-6 sm:mx-auto sm:px-6 lg:px-8">
+        <View className="mx-4 max-w-full py-6 sm:mx-auto sm:px-6 lg:px-8">
           <Text>Loading...</Text>
         </View>
       )}

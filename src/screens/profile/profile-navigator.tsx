@@ -10,11 +10,14 @@ import InteractionsScreen from './interaction-view';
 import ProfileScreen from './profile-screen';
 import StadisticsScreen from './stadistics-screen';
 import VerifyScreen from './verify-screen';
+import { Snap } from '@/api';
+import FavoriteSnapScreen from './fav-snaps-screen';
 
 export type ProfileStackParamList = {
   UserProfile: { user: UserType };
   Followers: { users: UserType[] | undefined };
   Following: { users: UserType[] | undefined };
+  FavSnaps: { snaps: Snap[] };
   EditProfileScreen: { user: UserType | undefined };
   ChatMessagesScreen: {
     chat: Chat | undefined;
@@ -32,6 +35,7 @@ export const ProfileNavigator = () => {
       <Stack.Screen name="UserProfile" component={ProfileScreen} />
       <Stack.Screen name="Followers" component={InteractionsScreen} />
       <Stack.Screen name="Following" component={InteractionsScreen} />
+      <Stack.Screen name="FavSnaps" component={FavoriteSnapScreen} />
       <Stack.Screen name="EditProfileScreen" component={SignInComplete} />
       <Stack.Screen name="ChatMessagesScreen" component={ChatScreen} />
       <Stack.Screen name="StadisticsScreen" component={StadisticsScreen} />
