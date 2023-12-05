@@ -27,47 +27,59 @@ const StatisticsScreen = () => {
 
   const currentUser = getUserState();
 
-  const fetchUserStats = useCallback(async (userID: string) => {
-    try {
-      let res = await client.content.get(
-        'api/metrics/' +
-          userID +
-          '/get_user_metrics_between_' +
-          startDate.toISOString().split('T')[0] +
-          '_and_' +
-          endDate.toISOString().split('T')[0]
-      );
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
-      const mergedStats = res.data.reduce(
-        (acc: any, obj: any) => {
-          acc.total_snaps = obj.total_snaps;
-          acc.total_likes = obj.total_likes;
-          acc.total_shares = obj.total_shares;
-          acc.period_snaps = obj.period_snaps;
-          acc.period_likes = obj.period_likes;
-          acc.period_shares = obj.period_shares;
-          return acc;
-        },
-        { ...statistics }
-      );
+  const [showStartDatePicker, setShowStartDatePicker] = useState(false);
+  const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 
-      setStatistics(mergedStats);
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
+  const fetchUserStats = useCallback(
+    async (userID: string) => {
+      if (
+        startDate.toISOString().split('T')[0] ===
+          new Date().toISOString().split('T')[0] &&
+        endDate.toISOString().split('T')[0] ===
+          new Date().toISOString().split('T')[0]
+      ) {
+        return;
+      }
+
+      try {
+        let res = await client.content.get(
+          'api/metrics/' +
+            userID +
+            '/get_user_metrics_between_' +
+            startDate.toISOString().split('T')[0] +
+            '_and_' +
+            endDate.toISOString().split('T')[0]
+        );
+
+        const mergedStats = res.data.reduce(
+          (acc: any, obj: any) => {
+            acc.total_snaps = obj.total_snaps;
+            acc.total_likes = obj.total_likes;
+            acc.total_shares = obj.total_shares;
+            acc.period_snaps = obj.period_snaps;
+            acc.period_likes = obj.period_likes;
+            acc.period_shares = obj.period_shares;
+            return acc;
+          },
+          { ...statistics }
+        );
+
+        setStatistics(mergedStats);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    [startDate, endDate]
+  );
 
   useEffect(() => {
     if (currentUser) {
       fetchUserStats(currentUser.id);
     }
   }, [currentUser, fetchUserStats]);
-
-  const [startDate, setStartDate] = useState(new Date('2023-01-01'));
-  const [endDate, setEndDate] = useState(new Date('2023-01-01'));
-
-  const [showStartDatePicker, setShowStartDatePicker] = useState(false);
-  const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 
   // Function to handle the validation of dates
   const handleDateChange = (
@@ -77,10 +89,12 @@ const StatisticsScreen = () => {
     const newDate = selectedDate || (type === 'start' ? startDate : endDate);
     if (type === 'start' && newDate > endDate) {
       console.error('Start date must be before the end date.');
+      setShowStartDatePicker(false);
       return;
     }
     if (type === 'end' && newDate < startDate) {
       console.error('End date must be after the start date.');
+      setShowEndDatePicker(false);
       return;
     }
 
@@ -129,7 +143,10 @@ const StatisticsScreen = () => {
           <View style={{ flex: 1, marginRight: 5 }}>
             <Button
               title={
-                startDate.toISOString().split('T')[0] === '2023-01-01'
+                startDate.toISOString().split('T')[0] ===
+                  new Date().toISOString().split('T')[0] &&
+                endDate.toISOString().split('T')[0] ===
+                  new Date().toISOString().split('T')[0]
                   ? 'Select Start Date'
                   : formattedStartDate
               }
@@ -151,7 +168,10 @@ const StatisticsScreen = () => {
           <View style={{ flex: 1, marginLeft: 5 }}>
             <Button
               title={
-                endDate.toISOString().split('T')[0] === '2023-03-01'
+                startDate.toISOString().split('T')[0] ===
+                  new Date().toISOString().split('T')[0] &&
+                endDate.toISOString().split('T')[0] ===
+                  new Date().toISOString().split('T')[0]
                   ? 'Select End Date'
                   : formattedEndDate
               }
