@@ -27,6 +27,12 @@ export const Card = ({
     snap.num_replies || 0
   );
 
+  const [isFavedBookmark, setFavedBookmark] = useState<boolean>(
+    snap.has_faved || false
+  );
+
+  // Verificar si ya esta bookmarked
+
   const formattedDate = new Date(snap.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
     month: '2-digit',
@@ -37,6 +43,7 @@ export const Card = ({
     setIsLiked(snap.has_liked);
     setIsReSnaped(snap.has_shared);
     setCommentCount(snap.num_replies);
+    setFavedBookmark(snap.has_faved);
   }, [snap]);
 
   const handleResnap = async () => {
@@ -61,6 +68,16 @@ export const Card = ({
     await client.content({ url, method });
   };
 
+  const handleFavBookmark = async () => {
+    const interaction = isFavedBookmark ? '/unfav/' : '/fav/';
+    const method = isFavedBookmark ? 'DELETE' : 'POST';
+
+    const url = `/api/interactions/${currentUser?.id}${interaction}${snap.id}`;
+    setFavedBookmark(!isFavedBookmark); //Optimistic update
+
+    await client.content({ url, method });
+  };
+
   return (
     <Pressable className="flex shrink-0 p-4 pb-0" onPress={onPress}>
       <CardHeader snap={snap} formattedDate={formattedDate} />
@@ -71,8 +88,10 @@ export const Card = ({
           isLiked={isLiked}
           isReSnaped={isReSnaped}
           commentCount={commentCount}
+          isFavBookmarked={isFavedBookmark}
           onResnap={handleResnap}
           onLike={handleLike}
+          onFavBookmark={handleFavBookmark}
         />
       </View>
     </Pressable>

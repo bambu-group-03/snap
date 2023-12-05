@@ -8,6 +8,7 @@ export type Snap = {
   created_at: string;
   likes: number;
   has_liked: boolean;
+  has_faved: boolean;
   shares: number;
   has_shared: boolean;
   favs: number;

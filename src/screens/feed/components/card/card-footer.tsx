@@ -9,6 +9,7 @@ import type { Snap } from '@/api';
 import { Button, View } from '@/ui';
 
 import CommentButton from './comment-button';
+import FavBookmarkButton from './fav-bookmark-button';
 import HeartButton from './heart-button';
 import ResnapButton from './re-snap-button';
 
@@ -18,9 +19,11 @@ type CardFooterProps = {
   snap: Snap;
   isLiked: boolean;
   isReSnaped: boolean;
+  isFavBookmarked: boolean;
   commentCount: number;
   onResnap: () => void;
   onLike: () => void;
+  onFavBookmark: () => void;
 };
 
 export const CardFooter: React.FC<CardFooterProps> = ({
@@ -28,8 +31,10 @@ export const CardFooter: React.FC<CardFooterProps> = ({
   isLiked,
   isReSnaped,
   commentCount,
+  isFavBookmarked,
   onResnap,
   onLike,
+  onFavBookmark,
 }) => {
   return (
     <View className="mt-2 flex border-t border-gray-200">
@@ -59,6 +64,10 @@ export const CardFooter: React.FC<CardFooterProps> = ({
               />
             )}
           </View>
+          <FavBookmarkButton
+            isFavBookmarked={isFavBookmarked}
+            onPress={onFavBookmark}
+          />
         </View>
       </View>
     </View>
