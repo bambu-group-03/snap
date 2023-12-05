@@ -9,10 +9,10 @@ import {
 
 import { Text, View } from '@/ui';
 
-import type { UserStatistics } from './stadistics-screen';
+import type { SnapStatistics } from './stadistics-screen';
 import StatCard from './stats-card';
 
-const SnapStats = ({ stats }: { stats: UserStatistics | undefined }) => {
+const SnapStats = ({ stats }: { stats: SnapStatistics | undefined }) => {
   return (
     <View className=" bg-white ">
       {stats ? (

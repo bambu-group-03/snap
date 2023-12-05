@@ -7,9 +7,19 @@ import { getUserState } from '@/core';
 import { FocusAwareStatusBar } from '@/ui';
 
 import Tab from './components/tab';
-import SnapStats from './growth-stats';
+import SnapStats from './snap-stats';
+import AccountStats from './account-stats';
 
-export interface UserStatistics {
+export interface SnapStatistics {
+  total_snaps: number;
+  total_likes: number;
+  total_shares: number;
+  period_snaps: number;
+  period_likes: number;
+  period_shares: number;
+}
+
+export interface AccountStatistics {
   total_snaps: number;
   total_likes: number;
   total_shares: number;
@@ -19,7 +29,7 @@ export interface UserStatistics {
 }
 
 const StatisticsScreen = () => {
-  const [statistics, setStatistics] = useState<UserStatistics>({
+  const [snapStatistics, setSnapStatistics] = useState<SnapStatistics>({
     total_snaps: 0,
     total_likes: 0,
     total_shares: 0,
@@ -27,6 +37,17 @@ const StatisticsScreen = () => {
     period_likes: 0,
     period_shares: 0,
   });
+
+  const [accountStatistics, setAccountStatistics] = useState<AccountStatistics>(
+    {
+      total_snaps: 0,
+      total_likes: 0,
+      total_shares: 0,
+      period_snaps: 0,
+      period_likes: 0,
+      period_shares: 0,
+    }
+  );
 
   const currentUser = getUserState();
 
@@ -36,7 +57,7 @@ const StatisticsScreen = () => {
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 
-  const fetchUserStats = useCallback(
+  const fetchStats = useCallback(
     async (userID: string) => {
       if (
         startDate.toISOString().split('T')[0] ===
@@ -48,7 +69,7 @@ const StatisticsScreen = () => {
       }
 
       try {
-        let res = await client.content.get(
+        let snap_stats = await client.content.get(
           'api/metrics/' +
             userID +
             '/get_user_metrics_between_' +
@@ -57,7 +78,7 @@ const StatisticsScreen = () => {
             endDate.toISOString().split('T')[0]
         );
 
-        const mergedStats = res.data.reduce(
+        const mergedSnapStats = snap_stats.data.reduce(
           (acc: any, obj: any) => {
             acc.total_snaps = obj.total_snaps;
             acc.total_likes = obj.total_likes;
@@ -67,22 +88,46 @@ const StatisticsScreen = () => {
             acc.period_shares = obj.period_shares;
             return acc;
           },
-          { ...statistics }
+          { ...snapStatistics }
         );
 
-        setStatistics(mergedStats);
+        setSnapStatistics(mergedSnapStats);
+
+        let account_stats = await client.content.get(
+          'api/metrics/' +
+            userID +
+            '/get_user_metrics_between_' +
+            startDate.toISOString().split('T')[0] +
+            '_and_' +
+            endDate.toISOString().split('T')[0]
+        );
+
+        const mergedAccountStats = account_stats.data.reduce(
+          (acc: any, obj: any) => {
+            acc.total_snaps = obj.total_snaps;
+            acc.total_likes = obj.total_likes;
+            acc.total_shares = obj.total_shares;
+            acc.period_snaps = obj.period_snaps;
+            acc.period_likes = obj.period_likes;
+            acc.period_shares = obj.period_shares;
+            return acc;
+          },
+          { ...accountStatistics }
+        );
+
+        setAccountStatistics(mergedAccountStats);
       } catch (err) {
         console.error(err);
       }
     },
-    [startDate, endDate, statistics]
+    [startDate, endDate]
   );
 
   useEffect(() => {
     if (currentUser) {
-      fetchUserStats(currentUser.id);
+      fetchStats(currentUser.id);
     }
-  }, [currentUser, fetchUserStats]);
+  }, [currentUser, fetchStats]);
 
   // Function to handle the validation of dates
   const handleDateChange = (
@@ -208,9 +253,13 @@ const StatisticsScreen = () => {
       {/* Conditional Rendering based on Selected Tab */}
       {selectedTab === 'snapStats' ? (
         <View>
-          <SnapStats stats={statistics} />
+          <SnapStats stats={snapStatistics} />
         </View>
-      ) : null}
+      ) : (
+        <View>
+          <AccountStats stats={accountStatistics} />
+        </View>
+      )}
     </ScrollView>
   );
 };
