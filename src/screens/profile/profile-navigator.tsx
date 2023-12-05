@@ -9,6 +9,7 @@ import ChatScreen from '../chat/chat-screen';
 import InteractionsScreen from './interaction-view';
 import ProfileScreen from './profile-screen';
 import StadisticsScreen from './stadistics-screen';
+import VerifyScreen from './verify-screen';
 
 export type ProfileStackParamList = {
   UserProfile: { user: UserType };
@@ -20,6 +21,7 @@ export type ProfileStackParamList = {
     user: UserType;
   };
   StadisticsScreen: undefined;
+  Verify: undefined;
 };
 
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
@@ -33,6 +35,7 @@ export const ProfileNavigator = () => {
       <Stack.Screen name="EditProfileScreen" component={SignInComplete} />
       <Stack.Screen name="ChatMessagesScreen" component={ChatScreen} />
       <Stack.Screen name="StadisticsScreen" component={StadisticsScreen} />
+      <Stack.Screen name="Verify" component={VerifyScreen} />
     </Stack.Navigator>
   );
 };

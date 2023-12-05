@@ -10,6 +10,7 @@ import { ProfileBio } from './components/profile-bio';
 import { ProfileStats } from './components/profile-stats';
 import { ProfileHeader } from './components/profle-header';
 import StadisticsButton from './components/stadistics-button';
+import VerifyButton from './components/verify-button';
 
 const ProfileScreenView = ({
   user,
@@ -56,8 +57,11 @@ const ProfileScreenView = ({
         followerCount={followerCount}
         followingCount={followingCount}
       />
-      <EditProfileButton user={user} currentUser={currentUser} />
-      <StadisticsButton user={user} currentUser={currentUser} />
+      <View className=" border-gray-200 flex flex-row py-5 justify-between">
+        <EditProfileButton user={user} currentUser={currentUser} />
+        <StadisticsButton user={user} currentUser={currentUser} />
+        <VerifyButton user={user} currentUser={currentUser} />
+      </View>
       <ProfileBio user={user} />
     </View>
   );

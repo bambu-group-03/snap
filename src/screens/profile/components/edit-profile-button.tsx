@@ -17,10 +17,10 @@ export const EditProfileButton = ({
 
   if (user?.id === currentUser?.id) {
     return (
-      <View className="flex flex-row justify-center">
+      <View className="flex  justify-center">
         <Button
           label="Edit"
-          className="mt-4 rounded-full bg-blue-400 px-4 py-2 text-center font-bold text-white shadow hover:bg-blue-500"
+          className="mb-2 mt-4 rounded-full bg-blue-400 px-4 py-2 text-center font-bold text-white shadow hover:bg-blue-500"
           onPress={() => {
             navigation.navigate('EditProfileScreen', { user: currentUser });
           }}
