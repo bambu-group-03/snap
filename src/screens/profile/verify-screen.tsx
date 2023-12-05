@@ -1,15 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Picker } from '@react-native-picker/picker';
 import React, { useEffect, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { useNavigation } from '@react-navigation/native';
 
 import { getUserState, signInComplete } from '@/core';
 import type { UserType } from '@/core/auth/utils';
 import { Button, ControlledInput, ScrollView, Text, View } from '@/ui';
 import { client } from '@/api';
+import { showMessage } from 'react-native-flash-message';
 
 const schema = z.object({
   dni: z
@@ -30,7 +29,6 @@ export type VerifyFormProps = {
 };
 
 const whenVerifyComplete: VerifyFormProps['onVerifySubmit'] = async (data) => {
-  const { navigate } = useNavigation();
   const getCurrentUser = getUserState();
   console.log('current user data:', getCurrentUser);
   if (getCurrentUser) {
