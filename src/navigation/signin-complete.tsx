@@ -8,6 +8,7 @@ import * as z from 'zod';
 import { getUserState, signInComplete } from '@/core';
 import type { UserType } from '@/core/auth/utils';
 import { Button, ControlledInput, ScrollView, Text, View } from '@/ui';
+import { showMessage } from 'react-native-flash-message';
 
 import { locationOptions } from './list-of-countries';
 
@@ -50,6 +51,13 @@ const whenSignInComplete: SignUpFormProps['onSignUpSubmit'] = (data) => {
   } else {
     console.error('Error: Current user data is undefined');
   }
+
+  showMessage({
+    message: 'User Profile Edited Successfully',
+    type: 'success',
+    duration: 3000,
+    autoHide: true,
+  });
 };
 export const SignInComplete = () => {
   return <FormForSignInComplete onSignUpSubmit={whenSignInComplete} />;

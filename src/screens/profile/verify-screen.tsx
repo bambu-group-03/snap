@@ -52,6 +52,13 @@ const whenVerifyComplete: VerifyFormProps['onVerifySubmit'] = async (data) => {
     }
 
     signInComplete(updatedUser);
+
+    showMessage({
+      message: 'Request Verification sent successfully',
+      type: 'success',
+      duration: 3000,
+      autoHide: true,
+    });
   } else {
     console.error('Error: Current user data is undefined');
   }
