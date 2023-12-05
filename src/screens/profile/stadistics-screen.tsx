@@ -118,8 +118,6 @@ const StatisticsScreen = () => {
     '-' +
     endDate.getFullYear();
 
-  console.log('startDate', startDate.toISOString().split('T')[0]);
-
   return (
     <ScrollView style={{ flex: 1, padding: 10 }}>
       <View style={{ alignItems: 'center' }}>
