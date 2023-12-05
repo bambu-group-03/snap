@@ -6,7 +6,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { Button, ControlledInput, ScrollView, Text, View } from '@/ui';
+import { Button, ControlledInput, Text, View } from '@/ui';
 
 export const SEARCH_BY_USERNAME = 1;
 export const SEARCH_BY_CONTENT = 2;
@@ -46,28 +46,26 @@ export const FormForSearch: React.FC<SearchFormProps> = ({
 
   return (
     <View className="flex-1 p-4">
-      <Text className="p-2 text-left text-2xl font-bold">Search By</Text>
-      <ScrollView className="flex-1 ">
-        <View className="flex p-2">
-          <Picker
-            testID="type-input"
-            selectedValue={type}
-            className="inline rounded-full bg-blue-100 px-4 py-3"
-            onValueChange={(itemValue) => {
-              setTypeOption(itemValue);
-            }}
-          >
-            {typeOptions.map((option, index) => (
-              <Picker.Item key={index} label={option} value={option} />
-            ))}
-          </Picker>
+      <View className="flex flex-row items-center">
+        <Text className="p-2 text-left text-2xl font-bold">Search By</Text>
+        <View className="flex-1 px-8">
+          <View className="flex p-2">
+            <Picker
+              testID="type-input"
+              selectedValue={type}
+              className="inline rounded-full bg-blue-100 px-4 py-3"
+              onValueChange={(itemValue) => {
+                setTypeOption(itemValue);
+              }}
+            >
+              {typeOptions.map((option, index) => (
+                <Picker.Item key={index} label={option} value={option} />
+              ))}
+            </Picker>
+          </View>
         </View>
-        <ControlledInput
-          testID="search-input"
-          control={control}
-          name="search"
-        />
-      </ScrollView>
+      </View>
+      <ControlledInput testID="search-input" control={control} name="search" />
 
       <Button
         testID="search-button"
