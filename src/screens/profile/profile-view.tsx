@@ -70,7 +70,7 @@ const ProfileScreenView = ({
       /> */}
 
       {moreOptions ? (
-        <View className=" flex flex-row justify-between border-gray-200 py-1">
+        <View className=" flex flex-row justify-center border-gray-200 py-1">
           <EditProfileButton user={user} currentUser={currentUser} />
           <StadisticsButton user={user} currentUser={currentUser} />
           <VerifyButton user={user} currentUser={currentUser} />
