@@ -40,12 +40,12 @@ const StatisticsScreen = () => {
 
       const mergedStats = res.data.reduce(
         (acc: any, obj: any) => {
-          acc.total_snaps += obj.total_snaps;
-          acc.total_likes += obj.total_likes;
-          acc.total_shares += obj.total_shares;
-          acc.period_snaps += obj.period_snaps;
-          acc.period_likes += obj.period_likes;
-          acc.period_shares += obj.period_shares;
+          acc.total_snaps = obj.total_snaps;
+          acc.total_likes = obj.total_likes;
+          acc.total_shares = obj.total_shares;
+          acc.period_snaps = obj.period_snaps;
+          acc.period_likes = obj.period_likes;
+          acc.period_shares = obj.period_shares;
           return acc;
         },
         { ...statistics }
@@ -63,31 +63,11 @@ const StatisticsScreen = () => {
     }
   }, [currentUser, fetchUserStats]);
 
-  console.log(statistics);
-
-  const mockData = {
-    engagement: [
-      { date: '2023-01-01', likes: 300, retweets: 150, mentions: 75 },
-      { date: '2023-02-01', likes: 200, retweets: 100, mentions: 50 },
-      // ... more data
-    ],
-    followers: [
-      { date: '2023-01-01', count: 200 },
-      { date: '2023-02-01', count: 300 },
-      // ... more data
-    ],
-    content: [
-      { type: 'Original', count: 10 },
-      { type: 'Shared', count: 5 },
-      { type: 'Edited', count: 3 },
-    ],
-  };
-
   const [startDate, setStartDate] = useState(new Date('2023-01-01'));
-  const [endDate, setEndDate] = useState(new Date('2023-03-01'));
+  const [endDate, setEndDate] = useState(new Date('2023-01-01'));
+
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
-  const [filteredData, setFilteredData] = useState(mockData);
 
   // Function to handle the validation of dates
   const handleDateChange = (
@@ -108,61 +88,6 @@ const StatisticsScreen = () => {
     type === 'start'
       ? setShowStartDatePicker(false)
       : setShowEndDatePicker(false);
-  };
-
-  // TODO:  ERROR  Warning: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
-  useEffect(() => {
-    const filterData = () => {
-      const filteredEngagement = mockData.engagement.filter(
-        (item) =>
-          new Date(item.date) >= startDate && new Date(item.date) <= endDate
-      );
-      const filteredFollowers = mockData.followers.filter(
-        (item) =>
-          new Date(item.date) >= startDate && new Date(item.date) <= endDate
-      );
-      const filteredContent = mockData.content;
-
-      setFilteredData({
-        engagement: filteredEngagement,
-        followers: filteredFollowers,
-        content: filteredContent,
-      });
-    };
-    filterData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startDate, endDate]);
-
-  const engagementData = {
-    labels: filteredData.engagement.map((item) => item.date),
-    datasets: [{ data: filteredData.engagement.map((item) => item.likes) }],
-  };
-
-  const followerData = {
-    labels: filteredData.followers.map((item) => item.date),
-    datasets: [{ data: filteredData.followers.map((item) => item.count) }],
-  };
-
-  const defaultColors = ['blue', 'green', 'red'];
-  const pieChartData = filteredData.content.map((item, index) => ({
-    name: item.type,
-    count: item.count,
-    color: defaultColors[index % defaultColors.length],
-    legendFontColor: 'black',
-    legendFontSize: 15,
-  }));
-
-  const chartConfig = {
-    backgroundGradientFrom: '#fff',
-    backgroundGradientTo: '#fff',
-    decimalPlaces: 2,
-    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    propsForDots: {
-      r: '6',
-      strokeWidth: '2',
-      stroke: '#ffa726',
-    },
   };
 
   const formattedStartDate =
