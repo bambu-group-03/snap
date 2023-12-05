@@ -8,6 +8,11 @@ import { getUserState } from '@/core';
 
 import type { FormType } from './form-for-search';
 import { FormForSearch } from './form-for-search';
+import {
+  SEARCH_BY_CONTENT,
+  SEARCH_BY_HASHTAG,
+  SEARCH_BY_USERNAME,
+} from './form-for-search';
 import type { SearchStackParamList } from './search-navigator';
 
 const whenSearch = async (
@@ -18,30 +23,29 @@ const whenSearch = async (
   console.log(currentUser);
 
   console.log(data);
-  if (data.username && data.username.trim() !== '') {
+
+  if (data.type === SEARCH_BY_USERNAME && data.search.trim() !== '') {
     try {
       const { data: users } = await client.identity.get(
-        `/api/filter/${currentUser?.id}/${data.username}`
+        `/api/filter/${currentUser?.id}/${data.search}`
       );
       navigate('Users', { users });
     } catch (error) {
       console.error('Error searching by username:', error);
     }
-  }
-  if (data.content && data.content.trim() !== '') {
+  } else if (data.type === SEARCH_BY_CONTENT && data.search.trim() !== '') {
     try {
       const { data: snapsFromContent } = await client.content.get(
-        `/api/filter/content?user_id=${currentUser?.id}&content=${data.content}`
+        `/api/filter/content?user_id=${currentUser?.id}&content=${data.search}`
       );
       navigate('SnapList', { snaps: snapsFromContent.snaps });
     } catch (error) {
       console.error('Error searching by content:', error);
     }
-  }
-  if (data.hashtag && data.hashtag.trim() !== '') {
+  } else if (data.type === SEARCH_BY_HASHTAG && data.search.trim() !== '') {
     try {
       const { data: snapsFromHashtags } = await client.content.get(
-        `/api/filter/hashtag?user_id=${currentUser?.id}&hashtag=${data.hashtag}`
+        `/api/filter/hashtag?user_id=${currentUser?.id}&hashtag=${data.search}`
       );
       navigate('SnapList', { snaps: snapsFromHashtags.snaps });
     } catch (error) {

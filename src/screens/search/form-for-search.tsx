@@ -1,24 +1,20 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Picker } from '@react-native-picker/picker';
 import React from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { Button, ControlledInput, ScrollView, View } from '@/ui';
+import { Button, ControlledInput, ScrollView, Text, View } from '@/ui';
+
+export const SEARCH_BY_USERNAME = 1;
+export const SEARCH_BY_CONTENT = 2;
+export const SEARCH_BY_HASHTAG = 3;
 
 export const schema = z.object({
-  username: z
-    .string()
-    .max(50, 'First Name cannot exceed 50 characters')
-    .optional(),
-  content: z
-    .string()
-    .max(50, 'Last Name cannot exceed 50 characters')
-    .optional(),
-  hashtag: z
-    .string()
-    .max(50, 'Last Name cannot exceed 50 characters')
-    .optional(),
+  search: z.string().max(50, 'Search cannot exceed 50 characters'),
+  type: z.number(),
 });
 
 export type FormType = z.infer<typeof schema>;
@@ -30,50 +26,46 @@ export interface SearchFormProps {
 export const FormForSearch: React.FC<SearchFormProps> = ({
   onSearchSubmit = () => {},
 }) => {
-  const { handleSubmit, control, watch } = useForm<FormType>({
+  const { handleSubmit, control, setValue } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
 
-  const watchedFields = watch();
-  const [isAnyFieldFilled, setIsAnyFieldFilled] =
-    React.useState<boolean>(false);
+  const typeOptions = useMemo(() => ['username', 'content', 'hashtag'], []);
+  const [type, setTypeOption] = useState<string>(typeOptions[0]);
 
-  React.useEffect(() => {
-    const anyFieldFilled = Object.values(watchedFields).some(
-      (fieldValue) => fieldValue && fieldValue.trim() !== ''
+  useEffect(() => {
+    setValue(
+      'type',
+      type === typeOptions[0]
+        ? SEARCH_BY_USERNAME
+        : type === typeOptions[1]
+        ? SEARCH_BY_CONTENT
+        : SEARCH_BY_HASHTAG
     );
-    setIsAnyFieldFilled(anyFieldFilled);
-  }, [watchedFields]);
-
-  const shouldDisableField = (fieldName: keyof FormType) => {
-    const fieldValue = watchedFields[fieldName];
-    const isFieldEmpty = !fieldValue || fieldValue.trim() === '';
-    return isAnyFieldFilled && isFieldEmpty;
-  };
+  }, [type, setValue, typeOptions]);
 
   return (
     <View className="flex-1 p-4">
-      <ScrollView className="flex-1 p-4">
+      <Text className="py-2 text-center text-2xl font-bold">Search By</Text>
+      <ScrollView className="flex-1 ">
+        <View className="flex p-2">
+          <Picker
+            testID="type-input"
+            selectedValue={type}
+            className="inline rounded-full bg-blue-100 px-4 py-3"
+            onValueChange={(itemValue) => {
+              setTypeOption(itemValue);
+            }}
+          >
+            {typeOptions.map((option, index) => (
+              <Picker.Item key={index} label={option} value={option} />
+            ))}
+          </Picker>
+        </View>
         <ControlledInput
-          testID="username-input"
+          testID="search-input"
           control={control}
-          name="username"
-          label="username"
-          disabled={shouldDisableField('username')}
-        />
-        <ControlledInput
-          testID="content-input"
-          control={control}
-          name="content"
-          label="content"
-          disabled={shouldDisableField('content')}
-        />
-        <ControlledInput
-          testID="hashtag-input"
-          control={control}
-          name="hashtag"
-          label="hashtag"
-          disabled={shouldDisableField('hashtag')}
+          name="search"
         />
       </ScrollView>
 
