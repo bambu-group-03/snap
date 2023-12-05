@@ -58,6 +58,8 @@ const ProfileScreenView = ({
         user={user}
         followerCount={followerCount}
         followingCount={followingCount}
+        option={moreOptions}
+        setOption={setMoreOptions}
       />
 
       <Button
