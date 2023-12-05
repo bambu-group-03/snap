@@ -5,7 +5,6 @@ import { Button, ScrollView, Text, View } from 'react-native';
 import GrowthStats from './growth-stats';
 import { client } from '@/api';
 import { getUserState } from '@/core';
-import Test from './test';
 
 export interface UserStatistics {
   total_snaps: number;
@@ -250,8 +249,6 @@ const StatisticsScreen = () => {
 
       <View>
         <GrowthStats stats={statistics} />
-
-        {/* <Test /> */}
       </View>
     </ScrollView>
   );
