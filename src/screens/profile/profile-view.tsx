@@ -55,7 +55,8 @@ const ProfileScreenView = ({
         followerCount={followerCount}
       />
 
-      {user?.is_followed && user?.is_followed_back ? (
+      {(user?.is_followed && user?.is_followed_back) ||
+      user?.id === currentUser?.id ? (
         <ProfileStats
           user={user}
           currentUser={currentUser}

@@ -118,6 +118,9 @@ const StatisticsScreen = () => {
 
       try {
         // Otro endpoint
+        // - Snaps en tendencia
+        // - Followers en el periodo
+
         let account_stats = await client.content.get(
           'api/metrics/' +
             userID +
@@ -211,7 +214,7 @@ const StatisticsScreen = () => {
           />
           <Tab
             selected={selectedTab === 'userStats'}
-            title="User Stats"
+            title="Account Stats"
             onPress={() => handleTabChange('userStats')}
           />
         </View>

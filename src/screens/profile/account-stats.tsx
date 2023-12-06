@@ -34,7 +34,7 @@ const AccountStats = ({ stats }: { stats: AccountStatistics | undefined }) => {
               icon={faPanorama}
             />
             <StatCard
-              label="Total Stat 1"
+              label="Total Snaps in Thrending"
               value={stats.period_snaps}
               icon={faBomb}
             />
