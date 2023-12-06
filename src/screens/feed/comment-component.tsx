@@ -21,24 +21,32 @@ type CommentInputProps = {
 export const CommentInput: React.FC<CommentInputProps> = ({
   placeholder,
   onSubmit,
-  initialContent = '', // Default value is an empty string
+  initialContent = '',
 }) => {
-  console.log(`initialContent: '${initialContent}'`);
   const { control, handleSubmit, reset } = useForm<FormType>({
     resolver: zodResolver(schema),
-    defaultValues: { content: initialContent }, // Initialize the form with initialContent
+    defaultValues: { content: initialContent },
   });
+
+  const handleFormSubmit = (data: FormType) => {
+    // Call the onSubmit function
+    onSubmit(data);
+
+    // Reset the form to clear the input field
+    reset({ content: '' }); // Clear the 'content' field
+  };
+
   useEffect(() => {
     reset({ content: initialContent });
   }, [initialContent, reset]);
 
   return (
-    <View className="flex flex-row p-4">
-      <View id="textee" className="ml-3 w-full flex-1">
+    <View className="flex flex-row px-2 pb-4">
+      <View id="textee" className="ml-2 w-full flex-1">
         <ControlledInput
           name="content"
           placeholder={placeholder}
-          className="h-32 w-full resize-none text-xl outline-none"
+          className="h-28 w-full resize text-xl outline-none"
           control={control}
           multiline
           selectTextOnFocus={true}
@@ -49,7 +57,7 @@ export const CommentInput: React.FC<CommentInputProps> = ({
           <Button
             label="Publish"
             className="inline rounded-full bg-blue-500 px-4 py-3 text-center font-bold text-white"
-            onPress={handleSubmit(onSubmit)}
+            onPress={handleSubmit(handleFormSubmit)} // Use handleFormSubmit instead
             testID="add-post-button"
           />
         </View>
