@@ -25,6 +25,7 @@ export type UserType = {
   username: null | string;
   ubication: null | string;
   is_followed?: boolean;
+  is_followed_back?: boolean;
   dni?: string;
   img_1_url?: string;
   img_2_url?: string;
