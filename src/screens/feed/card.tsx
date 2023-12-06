@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import type { Snap } from '@/api';
 import { client } from '@/api/common';
 import { getUserState } from '@/core';
-import { Pressable, View } from '@/ui';
+import { Pressable, TouchableOpacity, View } from '@/ui';
 
 import CardContent from './components/card/card-content';
 import CardFooter from './components/card/card-footer';
@@ -82,13 +82,17 @@ export const Card = ({
       ? 'bg-gray-100 border-transparent rounded-lg shadow-sm border border-gray-100 ml-4 mr-2'
       : '';
   return (
-    <Pressable
+    <TouchableOpacity
       className={`flex shrink-0 p-4 pb-0 ${cardHeaderClass}`}
       onPress={onPress}
     >
       <CardHeader snap={snap} formattedDate={formattedDate} />
+
       <View className="pl-16">
         <CardContent snap={snap} />
+      </View>
+
+      <View className="pl-16">
         <CardFooter
           snap={snap}
           isLiked={isLiked}
@@ -100,7 +104,7 @@ export const Card = ({
           onFavBookmark={handleFavBookmark}
         />
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

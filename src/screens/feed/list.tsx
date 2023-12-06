@@ -9,10 +9,9 @@ import { EmptyList, FocusAwareStatusBar } from '@/ui';
 
 import Card from './card';
 import { CardSkeleton } from './components/card/card-skeleton';
+import { useNavigation } from '@react-navigation/native';
 
 const LIMIT = 15; // Number of items to fetch per page
-
-const renderItem = ({ item }: { item: SnapType }) => <Card snap={item} />;
 
 const Feed = React.memo(() => {
   const currentUser = getUserState();
@@ -25,6 +24,12 @@ const Feed = React.memo(() => {
     isFetchingNextPage,
     refetch,
   } = useSnaps({ userId: currentUser?.id, limit: LIMIT, offset: 0 });
+
+  const { navigate } = useNavigation();
+
+  const renderItem = ({ item }: { item: SnapType }) => (
+    <Card snap={item} onPress={() => navigate('Snap', { snap: item })} />
+  );
 
   const onRefresh = useCallback(() => {
     refetch();
