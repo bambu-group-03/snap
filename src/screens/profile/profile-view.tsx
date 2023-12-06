@@ -54,13 +54,18 @@ const ProfileScreenView = ({
         setFollowerCount={setFollowerCount}
         followerCount={followerCount}
       />
-      <ProfileStats
-        user={user}
-        followerCount={followerCount}
-        followingCount={followingCount}
-        option={moreOptions}
-        setOption={setMoreOptions}
-      />
+
+      {(user?.is_followed && user?.is_followed_back) ||
+      user?.id === currentUser?.id ? (
+        <ProfileStats
+          user={user}
+          currentUser={currentUser}
+          followerCount={followerCount}
+          followingCount={followingCount}
+          option={moreOptions}
+          setOption={setMoreOptions}
+        />
+      ) : null}
 
       {/* <Button
         className="py-18 mx-20 mt-3 flex items-center justify-center rounded-full bg-blue-400 px-6 text-center font-bold text-black shadow"
@@ -69,7 +74,7 @@ const ProfileScreenView = ({
       /> */}
 
       {moreOptions ? (
-        <View className=" flex flex-row justify-between border-gray-200 py-1">
+        <View className=" flex flex-row justify-center border-gray-200 py-1">
           <EditProfileButton user={user} currentUser={currentUser} />
           <StadisticsButton user={user} currentUser={currentUser} />
           <VerifyButton user={user} currentUser={currentUser} />

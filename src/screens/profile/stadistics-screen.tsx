@@ -1,12 +1,25 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Button, ScrollView, Text, View } from 'react-native';
-// import { BarChart, LineChart, PieChart } from 'react-native-chart-kit';
-import GrowthStats from './growth-stats';
+import { Button, ScrollView, View } from 'react-native';
+
 import { client } from '@/api';
 import { getUserState } from '@/core';
+import { FocusAwareStatusBar } from '@/ui';
 
-export interface UserStatistics {
+import Tab from './components/tab';
+import SnapStats from './snap-stats';
+import AccountStats from './account-stats';
+
+export interface SnapStatistics {
+  total_snaps: number;
+  total_likes: number;
+  total_shares: number;
+  period_snaps: number;
+  period_likes: number;
+  period_shares: number;
+}
+
+export interface AccountStatistics {
   total_snaps: number;
   total_likes: number;
   total_shares: number;
@@ -16,7 +29,7 @@ export interface UserStatistics {
 }
 
 const StatisticsScreen = () => {
-  const [statistics, setStatistics] = useState<UserStatistics>({
+  const [snapStatistics, setSnapStatistics] = useState<SnapStatistics>({
     total_snaps: 0,
     total_likes: 0,
     total_shares: 0,
@@ -24,6 +37,17 @@ const StatisticsScreen = () => {
     period_likes: 0,
     period_shares: 0,
   });
+
+  const [accountStatistics, setAccountStatistics] = useState<AccountStatistics>(
+    {
+      total_snaps: 0,
+      total_likes: 0,
+      total_shares: 0,
+      period_snaps: 0,
+      period_likes: 0,
+      period_shares: 0,
+    }
+  );
 
   const currentUser = getUserState();
 
@@ -33,7 +57,7 @@ const StatisticsScreen = () => {
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 
-  const fetchUserStats = useCallback(
+  const fetchSnapStats = useCallback(
     async (userID: string) => {
       if (
         startDate.toISOString().split('T')[0] ===
@@ -45,7 +69,7 @@ const StatisticsScreen = () => {
       }
 
       try {
-        let res = await client.content.get(
+        let snap_stats = await client.content.get(
           'api/metrics/' +
             userID +
             '/get_user_metrics_between_' +
@@ -54,7 +78,7 @@ const StatisticsScreen = () => {
             endDate.toISOString().split('T')[0]
         );
 
-        const mergedStats = res.data.reduce(
+        const mergedSnapStats = snap_stats.data.reduce(
           (acc: any, obj: any) => {
             acc.total_snaps = obj.total_snaps;
             acc.total_likes = obj.total_likes;
@@ -64,10 +88,10 @@ const StatisticsScreen = () => {
             acc.period_shares = obj.period_shares;
             return acc;
           },
-          { ...statistics }
+          { ...snapStatistics }
         );
 
-        setStatistics(mergedStats);
+        setSnapStatistics(mergedSnapStats);
       } catch (err) {
         console.error(err);
       }
@@ -77,9 +101,61 @@ const StatisticsScreen = () => {
 
   useEffect(() => {
     if (currentUser) {
-      fetchUserStats(currentUser.id);
+      fetchSnapStats(currentUser.id);
     }
-  }, [currentUser, fetchUserStats]);
+  }, [currentUser, fetchSnapStats]);
+
+  const fetchAccountStats = useCallback(
+    async (userID: string) => {
+      if (
+        startDate.toISOString().split('T')[0] ===
+          new Date().toISOString().split('T')[0] &&
+        endDate.toISOString().split('T')[0] ===
+          new Date().toISOString().split('T')[0]
+      ) {
+        return;
+      }
+
+      try {
+        // Otro endpoint
+        // - Snaps en tendencia
+        // - Followers en el periodo
+
+        let account_stats = await client.content.get(
+          'api/metrics/' +
+            userID +
+            '/get_user_metrics_between_' +
+            startDate.toISOString().split('T')[0] +
+            '_and_' +
+            endDate.toISOString().split('T')[0]
+        );
+
+        const mergedAccountStats = account_stats.data.reduce(
+          (acc: any, obj: any) => {
+            acc.total_snaps = obj.total_snaps;
+            acc.total_likes = obj.total_likes;
+            acc.total_shares = obj.total_shares;
+            acc.period_snaps = obj.period_snaps;
+            acc.period_likes = obj.period_likes;
+            acc.period_shares = obj.period_shares;
+            return acc;
+          },
+          { ...accountStatistics }
+        );
+
+        setAccountStatistics(mergedAccountStats);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    [startDate, endDate]
+  );
+
+  useEffect(() => {
+    if (currentUser) {
+      fetchAccountStats(currentUser.id);
+    }
+  }, [currentUser, fetchAccountStats]);
 
   // Function to handle the validation of dates
   const handleDateChange = (
@@ -118,19 +194,31 @@ const StatisticsScreen = () => {
     '-' +
     endDate.getFullYear();
 
+  const [selectedTab, setSelectedTab] = useState<'snapStats' | 'userStats'>(
+    'snapStats'
+  );
+
+  const handleTabChange = (tab: 'snapStats' | 'userStats') => {
+    setSelectedTab(tab);
+  };
+
   return (
     <ScrollView style={{ flex: 1, padding: 10 }}>
-      <View style={{ alignItems: 'center' }}>
-        <Text
-          style={{
-            fontSize: 52,
-            fontWeight: 'bold',
-            textAlign: 'center',
-            marginTop: 0,
-          }}
-        >
-          My Stats
-        </Text>
+      <FocusAwareStatusBar />
+      <View>
+        <View className="flex-row">
+          <Tab
+            selected={selectedTab === 'snapStats'}
+            title="Snap Stats"
+            onPress={() => handleTabChange('snapStats')}
+          />
+          <Tab
+            selected={selectedTab === 'userStats'}
+            title="Account Stats"
+            onPress={() => handleTabChange('userStats')}
+          />
+        </View>
+
         <View
           style={{
             flexDirection: 'row',
@@ -190,9 +278,16 @@ const StatisticsScreen = () => {
         </View>
       </View>
 
-      <View>
-        <GrowthStats stats={statistics} />
-      </View>
+      {/* Conditional Rendering based on Selected Tab */}
+      {selectedTab === 'snapStats' ? (
+        <View>
+          <SnapStats stats={snapStatistics} />
+        </View>
+      ) : (
+        <View>
+          <AccountStats stats={accountStatistics} />
+        </View>
+      )}
     </ScrollView>
   );
 };
