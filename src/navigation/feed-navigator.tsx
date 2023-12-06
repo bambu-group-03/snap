@@ -5,7 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
 import type { Snap as SnapType } from '@/api';
-import { AddSnap, Feed, Snap } from '@/screens';
+import { AddSnap, Snap } from '@/screens';
+import Feed from '@/screens/feed/list';
 import { Pressable, View } from '@/ui';
 
 import { GoToLogout } from './auth-navigator';
