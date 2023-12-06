@@ -105,52 +105,128 @@ export const getSnap = createQuery<Snap, SnapVariables, AxiosError>({
   },
 });
 
-type SnapQueryKey = [string, { snap_id?: string; user_id?: string }];
-
-// Update Snap Mutation
+type UpdateSnapArgs = {
+  user_id: string;
+  snap_id: string;
+  content: string;
+};
+type SnapsFeedResponse = {
+  pages: Array<{
+    snaps: Snap[];
+  }>;
+};
+type SnapQueryFeedKey = ['snaps', string | undefined];
+/**
+ * Custom hook to update a snap.
+ * This hook uses optimistic UI update to immediately reflect changes in the UI
+ * and then syncs with the server.
+ *
+ * @returns The mutation object with methods to trigger the update.
+ */
 export const useUpdateSnapMutation = () => {
   const queryClient = useQueryClient();
+
   return useMutation(
-    ({
-      user_id,
-      snap_id,
-      content,
-    }: {
-      user_id: string;
-      snap_id: string;
-      content: string;
-    }) =>
+    ({ user_id, snap_id, content }: UpdateSnapArgs) =>
+      // API call to update the snap
       client.content.put(`/api/feed/update_snap`, {
         user_id,
         snap_id,
         content,
       }),
     {
-      onSuccess: () => {
-        // Invalidate and refetch snaps to reflect the update
-        queryClient.invalidateQueries<SnapQueryKey>(['/api/feed/snap']);
+      // Optimistically update the UI before the server responds
+      onMutate: async (updatedSnap: UpdateSnapArgs) => {
+        await queryClient.cancelQueries(['snaps', updatedSnap.user_id]);
+
+        const previousSnaps = queryClient.getQueryData<SnapsFeedResponse>([
+          'snaps',
+          updatedSnap.user_id,
+        ]);
+
+        queryClient.setQueryData<SnapsFeedResponse>(
+          ['snaps', updatedSnap.user_id],
+          (old) => {
+            if (!old) return;
+
+            const newPages = old.pages.map((page) => ({
+              ...page,
+              snaps: page.snaps.map((snap) =>
+                snap.id === updatedSnap.snap_id
+                  ? { ...snap, content: updatedSnap.content }
+                  : snap
+              ),
+            }));
+
+            return { ...old, pages: newPages };
+          }
+        );
+
+        return { previousSnaps };
       },
-      onError: (error: AxiosError) => {
-        // Handle error
-        console.error('Error updating snap:', error);
+      onSuccess: () => {
+        // Invalidate and refetch the snaps query to ensure data consistency
+        queryClient.invalidateQueries(['snaps']);
+      },
+      onError: (error: AxiosError, variables: UpdateSnapArgs, context: any) => {
+        // Rollback the optimistic update in case of error
+        if (context?.previousSnaps) {
+          queryClient.setQueryData(
+            ['snaps', variables.user_id],
+            context.previousSnaps
+          );
+        }
       },
     }
   );
 };
 
-// Delete Snap Mutation
-export const useDeleteSnapMutation = () => {
+/**
+ * Custom hook to delete a snap.
+ * It uses optimistic UI updates to remove the snap from the UI immediately
+ * before confirming the deletion from the server.
+ *
+ * @param userId The ID of the user performing the deletion.
+ * @returns The mutation object with methods to trigger the deletion.
+ */
+export const useDeleteSnapMutation = (userId: string) => {
   const queryClient = useQueryClient();
+
   return useMutation(
-    (snap_id: string) => client.content.delete(`/api/feed/snap/${snap_id}`),
+    (snap_id: string) =>
+      // API call to delete the snap
+      client.content.delete(`/api/feed/snap/${snap_id}`),
     {
-      onSuccess: () => {
-        // Invalidate and refetch snaps to reflect the deletion
-        queryClient.invalidateQueries<SnapQueryKey>(['/api/feed/snap']);
+      // Optimistically update the UI before the server responds
+      onMutate: async (snapId: string) => {
+        const queryKey: SnapQueryFeedKey = ['snaps', userId];
+        await queryClient.cancelQueries(queryKey);
+
+        const previousSnaps =
+          queryClient.getQueryData<SnapsFeedResponse>(queryKey);
+
+        queryClient.setQueryData<SnapsFeedResponse>(queryKey, (old) => ({
+          ...old,
+          pages:
+            old?.pages.map((page) => ({
+              ...page,
+              snaps: page.snaps.filter((snap) => snap.id !== snapId),
+            })) ?? [],
+        }));
+
+        return { previousSnaps };
       },
-      onError: (error: AxiosError) => {
-        // Handle error
-        console.error('Error deleting snap:', error);
+      onSuccess: () => {
+        // Invalidate and refetch the snaps query to ensure data consistency
+        const queryKey: SnapQueryFeedKey = ['snaps', userId];
+        queryClient.invalidateQueries(queryKey);
+      },
+      onError: (error: AxiosError, snapId: string, context: any) => {
+        // Rollback the optimistic update in case of error
+        if (context?.previousSnaps) {
+          const queryKey: SnapQueryFeedKey = ['snaps', userId];
+          queryClient.setQueryData(queryKey, context.previousSnaps);
+        }
       },
     }
   );

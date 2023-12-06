@@ -1,18 +1,20 @@
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback } from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import React, { useCallback, useMemo } from 'react';
+import { FlatList, RefreshControl, View } from 'react-native';
 
-import type { Snap } from '@/api';
+import type { Snap as SnapType } from '@/api';
 import { useSnaps } from '@/api';
 import { getUserState } from '@/core';
-import { EmptyList, FocusAwareStatusBar, View } from '@/ui';
+import { EmptyList, FocusAwareStatusBar } from '@/ui';
 
-import { Card } from './card';
+import Card from './card';
 import { CardSkeleton } from './components/card/card-skeleton';
 
 const LIMIT = 15; // Number of items to fetch per page
 
-export const Feed = () => {
+const renderItem = ({ item }: { item: SnapType }) => <Card snap={item} />;
+
+const Feed = React.memo(() => {
   const currentUser = getUserState();
   const {
     data,
@@ -38,7 +40,10 @@ export const Feed = () => {
     hasNextPage && fetchNextPage();
   };
 
-  const renderItem = ({ item }: { item: Snap }) => <Card snap={item} />;
+  const flatListData = useMemo(
+    () => data?.pages.flatMap((page) => page.snaps) || [],
+    [data]
+  );
 
   if (isLoading && !data) {
     return (
@@ -61,10 +66,10 @@ export const Feed = () => {
   }
 
   return (
-    <View>
+    <>
       <FocusAwareStatusBar />
       <FlatList
-        data={data?.pages.flatMap((page) => page.snaps) || []}
+        data={flatListData}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         onEndReached={loadMoreItems}
@@ -73,9 +78,10 @@ export const Feed = () => {
           <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
         }
         ListFooterComponent={isFetchingNextPage ? <CardSkeleton /> : null}
+        initialNumToRender={10}
       />
-    </View>
+    </>
   );
-};
+});
 
 export default Feed;

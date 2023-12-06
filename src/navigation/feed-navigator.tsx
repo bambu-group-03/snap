@@ -5,7 +5,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
 import type { Snap as SnapType } from '@/api';
-import { AddSnap, Feed, Snap } from '@/screens';
+import type { UserType } from '@/core/auth/utils';
+import { AddSnap, Snap } from '@/screens';
+import Feed from '@/screens/feed/list';
+import ProfileScreen from '@/screens/profile/profile-screen';
 import { Pressable, View } from '@/ui';
 
 import { GoToLogout } from './auth-navigator';
@@ -15,6 +18,7 @@ export type FeedStackParamList = {
   Snap: { snap: SnapType };
   AddSnap: undefined;
   Auth: undefined;
+  UserProfile: { user: UserType };
 };
 
 const Stack = createNativeStackNavigator<FeedStackParamList>();
@@ -48,6 +52,7 @@ export const FeedNavigator = () => {
       </Stack.Group>
 
       <Stack.Screen name="AddSnap" component={AddSnap} />
+      <Stack.Screen name="UserProfile" component={ProfileScreen} />
     </Stack.Navigator>
   );
 };
