@@ -1,16 +1,23 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Picker } from '@react-native-picker/picker';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+import { LogBox } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
+import MultiSelect from 'react-native-multiple-select';
 import * as z from 'zod';
 
 import { getUserState, signInComplete } from '@/core';
 import type { UserType } from '@/core/auth/utils';
+import { predefinedInterests } from '@/screens/profile/components/interests';
 import { Button, ControlledInput, ScrollView, Text, View } from '@/ui';
 
 import { locationOptions } from './list-of-countries';
+
+LogBox.ignoreLogs([
+  'VirtualizedLists should never be nested inside plain ScrollViews',
+]);
 
 const schema = z.object({
   first_name: z
@@ -72,6 +79,9 @@ export const FormForSignInComplete = ({
   });
 
   const [ubication, setSelectedUbication] = useState<string>('Argentina');
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+  const multiSelect = useRef<MultiSelect | null>(null);
+
   const user = getUserState();
 
   // Initialize the initialState using useMemo
@@ -84,19 +94,33 @@ export const FormForSignInComplete = ({
       ubication: 'Argentina', // You can set the initial value here
       bio_msg: user?.bio_msg || '',
       profile_photo_id: user?.profile_photo_id || '',
+      selectedInterests: user?.interests || [],
     }),
     [user]
   );
 
+  const onSelectedItemsChange = (selectedItemsByOptions: string[]) => {
+    setSelectedInterests(selectedItemsByOptions);
+  };
+
   // Set initial values for form fields
   useEffect(() => {
+    if (multiSelect.current) {
+      const selected =
+        multiSelect.current.getSelectedItemsExt(selectedInterests);
+      if (Array.isArray(selected)) {
+        setSelectedInterests(
+          selected.map((item: { name: string }) => item.name)
+        );
+      }
+    }
     for (const key in initialState) {
       if (initialState.hasOwnProperty(key)) {
         const fieldName = key as keyof FormType; // Type assertion here
         setValue(fieldName, initialState[fieldName]);
       }
     }
-  }, [initialState, setValue]);
+  }, [initialState, setValue, selectedInterests]);
 
   return (
     <View className="flex-1 p-4">
@@ -121,7 +145,40 @@ export const FormForSignInComplete = ({
           name="username"
           label="Username"
         />
-
+        <View>
+          <Text>Interests</Text>
+          <MultiSelect
+            hideTags
+            items={predefinedInterests}
+            uniqueKey="id"
+            onSelectedItemsChange={onSelectedItemsChange}
+            selectedItems={selectedInterests}
+            selectText="Pick Items"
+            searchInputPlaceholderText="Search Items..."
+            onChangeInput={(text) => console.log(text)}
+            tagRemoveIconColor="#CCC"
+            tagBorderColor="#CCC"
+            tagTextColor="#CCC"
+            selectedItemTextColor="#007bff" // Twitter-like blue color
+            selectedItemIconColor="#007bff" // Twitter-like blue color
+            itemTextColor="#000"
+            displayKey="name"
+            searchInputStyle={{ color: '#CCC' }}
+            submitButtonColor="#007bff" // Twitter-like blue color
+            submitButtonText="Submit"
+          />
+        </View>
+        <View className="flex flex-row flex-wrap pb-4">
+          <Text className="py-2 pr-2">Selected Interests:</Text>
+          {selectedInterests.map((item, index) => (
+            <View
+              className="m-1 rounded-full border border-gray-300 px-3 py-1"
+              key={index}
+            >
+              <Text>{item}</Text>
+            </View>
+          ))}
+        </View>
         <ControlledInput
           testID="phone-number-input"
           control={control}
