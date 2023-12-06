@@ -6,6 +6,8 @@ import {
 import type { AxiosError } from 'axios';
 import { createQuery } from 'react-query-kit';
 
+import type { Notification } from '@/screens/notifications/types';
+
 import { client } from '../common';
 import type { Snap } from './types';
 
@@ -186,7 +188,11 @@ export const useMentions = createQuery<Response, Variables, Error>({
   },
 });
 
-export const useNotifications = createQuery<Response, Variables, AxiosError>({
+export const useNotifications = createQuery<
+  Notification[],
+  Variables,
+  AxiosError
+>({
   primaryKey: '/api/notification',
   queryFn: async ({ queryKey: [primaryKey, variables] }) => {
     try {
