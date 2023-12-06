@@ -6,6 +6,7 @@ import {
 import type { AxiosError } from 'axios';
 import { createQuery } from 'react-query-kit';
 
+import { getUserState } from '@/core';
 import type { Notification } from '@/screens/notifications/types';
 
 import { client } from '../common';
@@ -30,6 +31,8 @@ interface SnapsVariables {
   limit: number;
   offset: number;
 }
+
+const currentUser = getUserState();
 
 export const useSnaps = (variables: SnapsVariables) => {
   return useInfiniteQuery<SnapsResponse, AxiosError, SnapsResponse>(
@@ -56,7 +59,7 @@ export const useSnapsFrom = (variables: SnapsVariables) => {
     ['snapsProfile', variables.userId],
     async ({ pageParam = 0 }) => {
       const { data } = await client.content.get<SnapsResponse>(
-        `/api/feed/${variables.userId}/snaps_and_shares?limit=${variables.limit}&offset=${pageParam}`
+        `/api/feed/${variables.userId}/snaps_and_shares/requested_by/${currentUser?.id}?limit=${variables.limit}&offset=${pageParam}`
       );
       return data;
     },
