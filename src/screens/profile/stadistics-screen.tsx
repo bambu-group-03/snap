@@ -205,82 +205,78 @@ const StatisticsScreen = () => {
   return (
     <ScrollView style={{ flex: 1, padding: 10 }}>
       <FocusAwareStatusBar />
-      <View>
-        <View className="flex-row">
-          <Tab
-            selected={selectedTab === 'snapStats'}
-            title="Snap Stats"
-            onPress={() => handleTabChange('snapStats')}
-          />
-          <Tab
-            selected={selectedTab === 'userStats'}
-            title="Account Stats"
-            onPress={() => handleTabChange('userStats')}
-          />
-        </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginVertical: 10,
-          }}
-        >
-          <View style={{ flex: 1, marginRight: 5 }}>
-            <Button
-              title={
-                startDate.toISOString().split('T')[0] ===
-                  new Date().toISOString().split('T')[0] &&
-                endDate.toISOString().split('T')[0] ===
-                  new Date().toISOString().split('T')[0]
-                  ? 'Select Start Date'
-                  : formattedStartDate
-              }
-              color="#007AFF"
-              onPress={() => setShowStartDatePicker(true)}
-            />
-            {showStartDatePicker && (
-              <DateTimePicker
-                value={startDate}
-                mode="date"
-                display="default"
-                onChange={(event, selectedDate) =>
-                  handleDateChange('start', selectedDate)
-                }
-              />
-            )}
-          </View>
-
-          <View style={{ flex: 1, marginLeft: 5 }}>
-            <Button
-              title={
-                startDate.toISOString().split('T')[0] ===
-                  new Date().toISOString().split('T')[0] &&
-                endDate.toISOString().split('T')[0] ===
-                  new Date().toISOString().split('T')[0]
-                  ? 'Select End Date'
-                  : formattedEndDate
-              }
-              color="#FF4500"
-              onPress={() => setShowEndDatePicker(true)}
-            />
-            {showEndDatePicker && (
-              <DateTimePicker
-                value={endDate}
-                mode="date"
-                display="default"
-                onChange={(event, selectedDate) =>
-                  handleDateChange('end', selectedDate)
-                }
-              />
-            )}
-          </View>
-        </View>
+      <View className="flex-row">
+        <Tab
+          selected={selectedTab === 'snapStats'}
+          title="Stats by Period"
+          onPress={() => handleTabChange('snapStats')}
+        />
+        <Tab
+          selected={selectedTab === 'userStats'}
+          title="Live"
+          onPress={() => handleTabChange('userStats')}
+        />
       </View>
-
-      {/* Conditional Rendering based on Selected Tab */}
       {selectedTab === 'snapStats' ? (
         <View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginVertical: 10,
+            }}
+          >
+            <View style={{ flex: 1, marginRight: 5 }}>
+              <Button
+                title={
+                  startDate.toISOString().split('T')[0] ===
+                    new Date().toISOString().split('T')[0] &&
+                  endDate.toISOString().split('T')[0] ===
+                    new Date().toISOString().split('T')[0]
+                    ? 'Select Start Date'
+                    : formattedStartDate
+                }
+                color="#007AFF"
+                onPress={() => setShowStartDatePicker(true)}
+              />
+              {showStartDatePicker && (
+                <DateTimePicker
+                  value={startDate}
+                  mode="date"
+                  display="default"
+                  onChange={(event, selectedDate) =>
+                    handleDateChange('start', selectedDate)
+                  }
+                />
+              )}
+            </View>
+
+            <View style={{ flex: 1, marginLeft: 5 }}>
+              <Button
+                title={
+                  startDate.toISOString().split('T')[0] ===
+                    new Date().toISOString().split('T')[0] &&
+                  endDate.toISOString().split('T')[0] ===
+                    new Date().toISOString().split('T')[0]
+                    ? 'Select End Date'
+                    : formattedEndDate
+                }
+                color="#FF4500"
+                onPress={() => setShowEndDatePicker(true)}
+              />
+              {showEndDatePicker && (
+                <DateTimePicker
+                  value={endDate}
+                  mode="date"
+                  display="default"
+                  onChange={(event, selectedDate) =>
+                    handleDateChange('end', selectedDate)
+                  }
+                />
+              )}
+            </View>
+          </View>
+
           <SnapStats stats={snapStatistics} />
         </View>
       ) : (
