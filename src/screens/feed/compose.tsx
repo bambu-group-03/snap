@@ -7,16 +7,18 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { showMessage } from 'react-native-flash-message';
 import { z } from 'zod';
 
+import type { Snap } from '@/api';
 import { useAddSnap } from '@/api';
 import { getUserState } from '@/core';
 import type { UserType } from '@/core/auth/utils';
 import { Image, TouchableOpacity, View } from '@/ui';
-import { Button, ControlledInput, showErrorMessage } from '@/ui';
+import { Button, ControlledInput } from '@/ui';
 
 const SNAP_VISIBLE = 1;
 const SNAP_HIDDEN = 2;
@@ -33,15 +35,16 @@ export const Compose = ({ user }: { user: UserType | undefined }) => {
     resolver: zodResolver(schema),
   });
 
-  const { mutate: addSnap, isLoading } = useAddSnap();
   const currentUser = getUserState();
-
   const privacyOptions = useMemo(
     () => ['Everyone can see', 'Only Followers'],
     []
   );
   const [privacy, setPrivacyOption] = useState<string>(privacyOptions[0]);
+  const addSnapMutation = useAddSnap(currentUser);
+  const { isLoading } = addSnapMutation;
 
+  const { navigate } = useNavigation();
   useEffect(() => {
     setValue(
       'privacy',
@@ -50,8 +53,7 @@ export const Compose = ({ user }: { user: UserType | undefined }) => {
   }, [privacy, setValue, privacyOptions]);
 
   const onSubmit = (data: FormType) => {
-    console.log(data);
-    addSnap(
+    addSnapMutation.mutate(
       {
         ...data,
         user_id: currentUser?.id,
@@ -59,14 +61,20 @@ export const Compose = ({ user }: { user: UserType | undefined }) => {
         privacy: privacy === privacyOptions[0] ? SNAP_VISIBLE : SNAP_HIDDEN,
       },
       {
-        onSuccess: () => {
+        onSuccess: (createdSnap: Snap) => {
+          console.log('onSuccess', createdSnap);
+          // responseData should be the snap data
+          navigate('Snap', { snap: createdSnap });
           showMessage({
             message: 'Snap added successfully',
             type: 'success',
           });
         },
         onError: () => {
-          showErrorMessage('Error adding post');
+          showMessage({
+            message: 'Error adding snap',
+            type: 'danger',
+          });
         },
       }
     );

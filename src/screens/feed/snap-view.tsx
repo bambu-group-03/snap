@@ -21,7 +21,7 @@ export const SnapView = ({ snap }: { snap: Snap }) => {
   const currentUser = getUserState();
   const [editMode, setEditMode] = useState<boolean>(false);
   const updateSnapMutation = useUpdateSnapMutation();
-  const deleteSnapMutation = useDeleteSnapMutation();
+  const deleteSnapMutation = useDeleteSnapMutation(currentUser!.id);
   const addReplyMutation = useAddReplyMutation(); // Use the new useAddReplyMutation
   const { navigate } = useNavigation(); // Use the useNavigation hook
 
