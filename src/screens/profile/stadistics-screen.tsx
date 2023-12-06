@@ -7,8 +7,11 @@ import { getUserState } from '@/core';
 import { FocusAwareStatusBar } from '@/ui';
 
 import Tab from './components/tab';
-import SnapStats from './snap-stats';
-import AccountStats from './account-stats';
+import PeriodStats from './snap-stats';
+import LiveStats from './account-stats';
+import { showMessage } from 'react-native-flash-message';
+
+const TIMER_INTERVAL = 10;
 
 export interface SnapStatistics {
   total_snaps: number;
@@ -57,6 +60,40 @@ const StatisticsScreen = () => {
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 
+  const [timer, setTimer] = useState<number>(TIMER_INTERVAL);
+  const [isActive, setIsActive] = useState(false);
+
+  function toggle() {
+    setIsActive(!isActive);
+  }
+
+  const reset = () => {
+    setTimer(TIMER_INTERVAL);
+  };
+
+  useEffect(() => {
+    let interval: any = null;
+    if (isActive) {
+      interval = setInterval(() => {
+        setTimer((timer) => timer - 1);
+      }, 1000);
+
+      if (timer === 0) {
+        reset();
+        showMessage({
+          message: 'Fetching Live Stats',
+          type: 'success',
+        });
+        console.log('Fetching Live Stats');
+        fetchAccountStats(currentUser!.id);
+      }
+    } else if (!isActive && timer !== 0) {
+      clearInterval(interval);
+    }
+    console.log(timer);
+    return () => clearInterval(interval);
+  }, [isActive, timer]);
+
   const fetchSnapStats = useCallback(
     async (userID: string) => {
       if (
@@ -65,6 +102,15 @@ const StatisticsScreen = () => {
         endDate.toISOString().split('T')[0] ===
           new Date().toISOString().split('T')[0]
       ) {
+        setSnapStatistics({
+          total_snaps: 0,
+          total_likes: 0,
+          total_shares: 0,
+          period_snaps: 0,
+          period_likes: 0,
+          period_shares: 0,
+        });
+
         return;
       }
 
@@ -113,14 +159,19 @@ const StatisticsScreen = () => {
         endDate.toISOString().split('T')[0] ===
           new Date().toISOString().split('T')[0]
       ) {
+        setAccountStatistics({
+          total_snaps: 0,
+          total_likes: 0,
+          total_shares: 0,
+          period_snaps: 0,
+          period_likes: 0,
+          period_shares: 0,
+        });
+
         return;
       }
 
       try {
-        // Otro endpoint
-        // - Snaps en tendencia
-        // - Followers en el periodo
-
         let account_stats = await client.content.get(
           'api/metrics/' +
             userID +
@@ -194,11 +245,22 @@ const StatisticsScreen = () => {
     '-' +
     endDate.getFullYear();
 
-  const [selectedTab, setSelectedTab] = useState<'snapStats' | 'userStats'>(
-    'snapStats'
+  const [selectedTab, setSelectedTab] = useState<'periodStats' | 'liveStats'>(
+    'periodStats'
   );
 
-  const handleTabChange = (tab: 'snapStats' | 'userStats') => {
+  const handleTabChange = (tab: 'periodStats' | 'liveStats') => {
+    if (tab === 'liveStats') {
+      setIsActive(true);
+      reset();
+      setStartDate(new Date('2021-01-01'));
+      setEndDate(new Date());
+    } else {
+      setIsActive(false);
+      reset();
+      setStartDate(new Date());
+      setEndDate(new Date());
+    }
     setSelectedTab(tab);
   };
 
@@ -207,17 +269,17 @@ const StatisticsScreen = () => {
       <FocusAwareStatusBar />
       <View className="flex-row">
         <Tab
-          selected={selectedTab === 'snapStats'}
+          selected={selectedTab === 'periodStats'}
           title="Stats by Period"
-          onPress={() => handleTabChange('snapStats')}
+          onPress={() => handleTabChange('periodStats')}
         />
         <Tab
-          selected={selectedTab === 'userStats'}
+          selected={selectedTab === 'liveStats'}
           title="Live"
-          onPress={() => handleTabChange('userStats')}
+          onPress={() => handleTabChange('liveStats')}
         />
       </View>
-      {selectedTab === 'snapStats' ? (
+      {selectedTab === 'periodStats' ? (
         <View>
           <View
             style={{
@@ -277,11 +339,11 @@ const StatisticsScreen = () => {
             </View>
           </View>
 
-          <SnapStats stats={snapStatistics} />
+          <PeriodStats stats={snapStatistics} />
         </View>
       ) : (
         <View>
-          <AccountStats stats={accountStatistics} />
+          <LiveStats stats={accountStatistics} />
         </View>
       )}
     </ScrollView>
