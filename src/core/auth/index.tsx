@@ -61,12 +61,16 @@ const _useAuth = create<AuthState>((set, get) => ({
     set({ status, user, token }); // store token in phone memory ram
 
     // Register for push notifications after successful sign-in
-    const expoPushToken = await registerForPushNotificationsAsync();
-    console.log('EXPO PUSH TOKEN', expoPushToken);
-    client.identity.post('/api/pushtoken/register', {
-      user_id: user.id,
-      pushtoken: expoPushToken,
-    });
+    try {
+      const expoPushToken = await registerForPushNotificationsAsync();
+      console.log('EXPO PUSH TOKEN', expoPushToken);
+      client.identity.post('/api/pushtoken/register', {
+        user_id: user.id,
+        pushtoken: expoPushToken,
+      });
+    } catch (error) {
+      console.error('Error registering for push notifications:', error);
+    }
   },
   signOut: async () => {
     await removeToken();
@@ -90,7 +94,6 @@ const _useAuth = create<AuthState>((set, get) => ({
   },
   signInComplete: async (user) => {
     const response = await client.identity.put(`/api/auth/update_user`, user);
-
     if (response.status !== 200) {
       // Log complete_signup_error
       await client.identity.post('/api/logger/complete_signup_error', {
