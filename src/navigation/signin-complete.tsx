@@ -1,14 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Picker } from '@react-native-picker/picker';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+import { showMessage } from 'react-native-flash-message';
 import * as z from 'zod';
 
 import { getUserState, signInComplete } from '@/core';
 import type { UserType } from '@/core/auth/utils';
 import { Button, ControlledInput, ScrollView, Text, View } from '@/ui';
-import { showMessage } from 'react-native-flash-message';
 
 import { locationOptions } from './list-of-countries';
 
@@ -59,6 +59,7 @@ const whenSignInComplete: SignUpFormProps['onSignUpSubmit'] = (data) => {
     autoHide: true,
   });
 };
+
 export const SignInComplete = () => {
   return <FormForSignInComplete onSignUpSubmit={whenSignInComplete} />;
 };
@@ -71,12 +72,31 @@ export const FormForSignInComplete = ({
   });
 
   const [ubication, setSelectedUbication] = useState<string>('Argentina');
-
-  useEffect(() => {
-    setValue('ubication', ubication); // Update the value for the 'ubication' field in the controller
-  }, [ubication, setValue]);
-
   const user = getUserState();
+
+  // Initialize the initialState using useMemo
+  const initialState = useMemo(
+    () => ({
+      first_name: user?.first_name || '',
+      last_name: user?.last_name || '',
+      username: user?.username || '',
+      phone_number: user?.phone_number || '',
+      ubication: 'Argentina', // You can set the initial value here
+      bio_msg: user?.bio_msg || '',
+      profile_photo_id: user?.profile_photo_id || '',
+    }),
+    [user]
+  );
+
+  // Set initial values for form fields
+  useEffect(() => {
+    for (const key in initialState) {
+      if (initialState.hasOwnProperty(key)) {
+        const fieldName = key as keyof FormType; // Type assertion here
+        setValue(fieldName, initialState[fieldName]);
+      }
+    }
+  }, [initialState, setValue]);
 
   return (
     <View className="flex-1 p-4">
@@ -86,7 +106,6 @@ export const FormForSignInComplete = ({
           control={control}
           name="first_name"
           label="First Name"
-          defaultValue={user?.first_name ? user.first_name : ''}
         />
 
         <ControlledInput
@@ -94,7 +113,6 @@ export const FormForSignInComplete = ({
           control={control}
           name="last_name"
           label="Last Name"
-          defaultValue={user?.last_name ? user.last_name : ''}
         />
 
         <ControlledInput
@@ -102,7 +120,6 @@ export const FormForSignInComplete = ({
           control={control}
           name="username"
           label="Username"
-          defaultValue={user?.username ? user.username : ''}
         />
 
         <ControlledInput
@@ -111,7 +128,6 @@ export const FormForSignInComplete = ({
           name="phone_number"
           label="Phone Number"
           keyboardType="numeric"
-          defaultValue={user?.phone_number ? user.phone_number : ''}
         />
 
         <View>
@@ -132,7 +148,6 @@ export const FormForSignInComplete = ({
           control={control}
           name="bio_msg"
           label="Bio Message"
-          defaultValue={user?.bio_msg ? user.bio_msg : ''}
         />
 
         <ControlledInput
@@ -140,7 +155,6 @@ export const FormForSignInComplete = ({
           control={control}
           name="profile_photo_id"
           label="Profile Photo ID"
-          defaultValue={user?.profile_photo_id ? user.profile_photo_id : ''}
         />
       </ScrollView>
 
