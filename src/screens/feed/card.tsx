@@ -77,9 +77,15 @@ export const Card = ({
 
     await client.content({ url, method });
   };
-
+  const cardHeaderClass =
+    snap.parent_id && snap.parent_id !== 'None'
+      ? 'bg-gray-100 border-transparent rounded-lg shadow-sm border border-gray-100 ml-4 mr-2'
+      : '';
   return (
-    <Pressable className="flex shrink-0 p-4 pb-0" onPress={onPress}>
+    <Pressable
+      className={`flex shrink-0 p-4 pb-0 ${cardHeaderClass}`}
+      onPress={onPress}
+    >
       <CardHeader snap={snap} formattedDate={formattedDate} />
       <View className="pl-16">
         <CardContent snap={snap} />

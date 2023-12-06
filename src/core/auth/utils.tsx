@@ -30,6 +30,7 @@ export type UserType = {
   img_1_url?: string;
   img_2_url?: string;
   certified?: boolean;
+  interests?: string[];
 };
 
 export const getToken = () => getItem<TokenType>(TOKEN);

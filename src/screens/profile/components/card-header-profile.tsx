@@ -21,11 +21,12 @@ const CardSharedInfo = ({
 
   return (
     <>
-      {snap.parent_id && (
-        <View className="flex items-start justify-end pr-2">
-          <FontAwesomeIcon icon={faComment} color={'#006AFF'} />
+      {snap.parent_id && snap.parent_id !== 'None' ? (
+        <View className="mb-1 flex flex-row items-center pl-12">
+          <FontAwesomeIcon icon={faComment} color={'green'} />
+          <Text className="pl-2 text-sm leading-6 text-gray-400">reply</Text>
         </View>
-      )}
+      ) : null}
 
       {isSharedByProfileUser && (
         <View className="flex flex-row items-center pl-12">
