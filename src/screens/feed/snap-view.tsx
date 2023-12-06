@@ -16,6 +16,7 @@ import { TouchableOpacity, View } from '@/ui';
 import { Card } from '../feed/card';
 import { CommentInput } from './comment-component';
 import { Comments } from './comment-list';
+import { ScrollView } from '@/ui';
 
 export const SnapView = ({ snap }: { snap: Snap }) => {
   const currentUser = getUserState();
@@ -67,7 +68,7 @@ export const SnapView = ({ snap }: { snap: Snap }) => {
   };
 
   return (
-    <>
+    <ScrollView>
       <View>
         <Card snap={snap} />
         <View className="flex flex-row items-start">
@@ -89,6 +90,7 @@ export const SnapView = ({ snap }: { snap: Snap }) => {
                 </TouchableOpacity>
               </View>
             )}
+
             <View className="m-3 mr-5 rounded-3xl border border-gray-200">
               <CommentInput
                 placeholder={
@@ -98,10 +100,11 @@ export const SnapView = ({ snap }: { snap: Snap }) => {
                 initialContent={editMode ? snap.content : ''}
               />
             </View>
+
             <Comments snap={snap} />
           </View>
         </View>
       </View>
-    </>
+    </ScrollView>
   );
 };

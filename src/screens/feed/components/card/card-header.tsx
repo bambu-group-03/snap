@@ -5,7 +5,8 @@ import { memo } from 'react';
 import { client } from '@/api/common/client';
 import type { Snap } from '@/api/snaps/types';
 import type { UserType } from '@/core/auth/utils';
-import { Image, Pressable, Text, View } from '@/ui';
+import { Image, Pressable, TouchableOpacity, Text, View } from '@/ui';
+import { useEffect, useState } from 'react';
 
 import CardSharedInfo from './card-shared-info';
 
@@ -19,28 +20,56 @@ const CardHeader = memo(
 
       navigate.navigate('UserProfile', { user });
     };
+
+    const [parentSnap, setParentSnap] = useState<Snap | null>(null);
+
+    useEffect(() => {
+      const fetchParentSnap = async () => {
+        if (snap.parent_id) {
+          try {
+            const { data: snapResponse } = await client.content.get<Snap>(
+              `/api/feed/snap/${snap.parent_id}?user_id=${snap.author}`
+            );
+            setParentSnap(snapResponse);
+          } catch (error) {
+            console.error('Error fetching parent snap:', error);
+          }
+        }
+      };
+
+      fetchParentSnap();
+    }, [snap.parent_id, snap.author]);
+
+    const snapNavigate = parentSnap || snap;
     return (
       <View className="group block shrink-0">
-        <CardSharedInfo snap={snap} />
-        <Pressable onPress={handlePress}>
-          <View className="flex flex-row items-center">
+        <TouchableOpacity
+          className="mx-3"
+          onPress={() => navigate.navigate('Snap', { snap: snapNavigate })}
+        >
+          <CardSharedInfo snap={snap} />
+        </TouchableOpacity>
+
+        <View className="flex flex-row items-center">
+          <TouchableOpacity onPress={handlePress}>
             <Image
               className="inline-block h-10 w-10 rounded-full"
               source={{
                 uri: snap.profile_photo_url,
               }}
             />
-            <View className="mx-3">
-              <Text className="text-base leading-6 text-black">
-                {snap.fullname}
-                <Text className="text-sm leading-5 text-gray-400">
-                  {' '}
-                  @{snap.username ? snap.username : 'default'} - {formattedDate}
-                </Text>
+          </TouchableOpacity>
+
+          <View className="mx-3">
+            <Text className="text-base leading-6 text-black">
+              {snap.fullname}
+              <Text className="text-sm leading-5 text-gray-400">
+                {' '}
+                @{snap.username ? snap.username : 'default'} - {formattedDate}
               </Text>
-            </View>
+            </Text>
           </View>
-        </Pressable>
+        </View>
       </View>
     );
   }
