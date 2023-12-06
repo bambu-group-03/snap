@@ -81,46 +81,64 @@ export const FormForSignInComplete = ({
   const [ubication, setSelectedUbication] = useState<string>('Argentina');
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const multiSelect = useRef<MultiSelect | null>(null);
-
-  const user = getUserState();
-
-  // Initialize the initialState using useMemo
-  const initialState = useMemo(
-    () => ({
-      first_name: user?.first_name || '',
-      last_name: user?.last_name || '',
-      username: user?.username || '',
-      phone_number: user?.phone_number || '',
-      ubication: 'Argentina', // You can set the initial value here
-      bio_msg: user?.bio_msg || '',
-      profile_photo_id: user?.profile_photo_id || '',
-      selectedInterests: user?.interests || [],
-    }),
-    [user]
+  const [currentUser, setCurrentUser] = useState<UserType | undefined>(
+    undefined
   );
 
+  useEffect(() => {
+    const fetchUserState = () => {
+      const user = getUserState(); // Assuming getUserState is async
+      console.log(user);
+      setCurrentUser(user);
+    };
+
+    // Set a timer to delay fetching the user data by 0.5 seconds
+    const timer = setTimeout(() => {
+      fetchUserState();
+    }, 500); // 500 milliseconds (0.5 seconds)
+
+    // Clear the timer if the component unmounts before the timer expires
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (currentUser) {
+      // Initialize the initialState only when user is not undefined
+      const initialState = {
+        first_name: currentUser.first_name || '',
+        last_name: currentUser.last_name || '',
+        username: currentUser.username || '',
+        phone_number: currentUser.phone_number || '',
+        ubication: currentUser.ubication || 'Argentina', // Set to user's ubication or default
+        bio_msg: currentUser.bio_msg || '',
+        profile_photo_id: currentUser.profile_photo_id || '',
+        selectedInterests: currentUser.interests || [],
+      };
+
+      // Set initial values for form fields
+      for (const key in initialState) {
+        if (initialState.hasOwnProperty(key)) {
+          const fieldName = key as keyof FormType;
+          setValue(fieldName, initialState[fieldName]);
+        }
+      }
+
+      // Set initial values for selectedInterests
+      if (multiSelect.current && initialState.selectedInterests) {
+        const selected = multiSelect.current.getSelectedItemsExt(
+          initialState.selectedInterests
+        );
+        if (Array.isArray(selected)) {
+          setSelectedInterests(
+            selected.map((item: { name: string }) => item.name)
+          );
+        }
+      }
+    }
+  }, [currentUser, setValue]);
   const onSelectedItemsChange = (selectedItemsByOptions: string[]) => {
     setSelectedInterests(selectedItemsByOptions);
   };
-
-  // Set initial values for form fields
-  useEffect(() => {
-    if (multiSelect.current) {
-      const selected =
-        multiSelect.current.getSelectedItemsExt(selectedInterests);
-      if (Array.isArray(selected)) {
-        setSelectedInterests(
-          selected.map((item: { name: string }) => item.name)
-        );
-      }
-    }
-    for (const key in initialState) {
-      if (initialState.hasOwnProperty(key)) {
-        const fieldName = key as keyof FormType; // Type assertion here
-        setValue(fieldName, initialState[fieldName]);
-      }
-    }
-  }, [initialState, setValue, selectedInterests]);
 
   return (
     <View className="flex-1 p-4">
