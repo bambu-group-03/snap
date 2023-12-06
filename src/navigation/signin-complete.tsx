@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Picker } from '@react-native-picker/picker';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { LogBox } from 'react-native';
@@ -78,6 +78,16 @@ export const FormForSignInComplete = ({
     resolver: zodResolver(schema),
   });
 
+  const onSubmit: SubmitHandler<FormType> = (data) => {
+    // Combine the form data with the selected interests
+    const combinedData = {
+      ...data,
+      interests: selectedInterests,
+    };
+    // Call the provided onSignUpSubmit function with the combined data
+    onSignUpSubmit(combinedData);
+  };
+
   const [ubication, setSelectedUbication] = useState<string>('Argentina');
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const multiSelect = useRef<MultiSelect | null>(null);
@@ -122,6 +132,7 @@ export const FormForSignInComplete = ({
           setValue(fieldName, initialState[fieldName]);
         }
       }
+      setSelectedInterests(initialState.selectedInterests);
 
       // Set initial values for selectedInterests
       if (multiSelect.current && initialState.selectedInterests) {
@@ -236,7 +247,7 @@ export const FormForSignInComplete = ({
       <Button
         testID="sign-up-button"
         label="Complete Sign Up"
-        onPress={handleSubmit(onSignUpSubmit)}
+        onPress={handleSubmit(onSubmit)}
         variant="secondary"
       />
     </View>
