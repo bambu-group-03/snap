@@ -13,16 +13,7 @@ import { showMessage } from 'react-native-flash-message';
 
 const TIMER_INTERVAL = 10;
 
-export interface SnapStatistics {
-  total_snaps: number;
-  total_likes: number;
-  total_shares: number;
-  period_snaps: number;
-  period_likes: number;
-  period_shares: number;
-}
-
-export interface AccountStatistics {
+export interface Statistics {
   total_snaps: number;
   total_likes: number;
   total_shares: number;
@@ -32,7 +23,7 @@ export interface AccountStatistics {
 }
 
 const StatisticsScreen = () => {
-  const [snapStatistics, setSnapStatistics] = useState<SnapStatistics>({
+  const [snapStatistics, setSnapStatistics] = useState<Statistics>({
     total_snaps: 0,
     total_likes: 0,
     total_shares: 0,
@@ -41,16 +32,14 @@ const StatisticsScreen = () => {
     period_shares: 0,
   });
 
-  const [accountStatistics, setAccountStatistics] = useState<AccountStatistics>(
-    {
-      total_snaps: 0,
-      total_likes: 0,
-      total_shares: 0,
-      period_snaps: 0,
-      period_likes: 0,
-      period_shares: 0,
-    }
-  );
+  const [accountStatistics, setAccountStatistics] = useState<Statistics>({
+    total_snaps: 0,
+    total_likes: 0,
+    total_shares: 0,
+    period_snaps: 0,
+    period_likes: 0,
+    period_shares: 0,
+  });
 
   const currentUser = getUserState();
 
@@ -63,11 +52,11 @@ const StatisticsScreen = () => {
   const [timer, setTimer] = useState<number>(TIMER_INTERVAL);
   const [isActive, setIsActive] = useState(false);
 
-  function toggle() {
+  function toggle_timer() {
     setIsActive(!isActive);
   }
 
-  const reset = () => {
+  const reset_timer = () => {
     setTimer(TIMER_INTERVAL);
   };
 
@@ -79,18 +68,16 @@ const StatisticsScreen = () => {
       }, 1000);
 
       if (timer === 0) {
-        reset();
+        reset_timer();
         showMessage({
           message: 'Fetching Live Stats',
           type: 'success',
         });
-        console.log('Fetching Live Stats');
         fetchAccountStats(currentUser!.id);
       }
     } else if (!isActive && timer !== 0) {
       clearInterval(interval);
     }
-    console.log(timer);
     return () => clearInterval(interval);
   }, [isActive, timer]);
 
@@ -251,13 +238,13 @@ const StatisticsScreen = () => {
 
   const handleTabChange = (tab: 'periodStats' | 'liveStats') => {
     if (tab === 'liveStats') {
-      setIsActive(true);
-      reset();
+      toggle_timer();
+      reset_timer();
       setStartDate(new Date('2021-01-01'));
       setEndDate(new Date());
     } else {
-      setIsActive(false);
-      reset();
+      toggle_timer();
+      reset_timer();
       setStartDate(new Date());
       setEndDate(new Date());
     }

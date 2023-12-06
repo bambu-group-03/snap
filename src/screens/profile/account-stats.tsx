@@ -6,10 +6,10 @@ import {
 
 import { Text, View } from '@/ui';
 
-import type { AccountStatistics } from './stadistics-screen';
+import type { Statistics } from './stadistics-screen';
 import StatCard from './stats-card';
 
-const LiveStats = ({ stats }: { stats: AccountStatistics | undefined }) => {
+const LiveStats = ({ stats }: { stats: Statistics | undefined }) => {
   return (
     <View className=" bg-white ">
       {stats ? (
