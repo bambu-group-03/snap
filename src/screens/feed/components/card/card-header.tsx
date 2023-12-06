@@ -20,26 +20,28 @@ const CardHeader = memo(
       navigate.navigate('UserProfile', { user });
     };
     return (
-      <Pressable className="group block shrink-0" onPress={handlePress}>
+      <View className="group block shrink-0">
         <CardSharedInfo snap={snap} />
-        <View className="flex flex-row items-center">
-          <Image
-            className="inline-block h-10 w-10 rounded-full"
-            source={{
-              uri: snap.profile_photo_url,
-            }}
-          />
-          <View className="mx-3">
-            <Text className="text-base leading-6 text-black">
-              {snap.fullname}
-              <Text className="text-sm leading-5 text-gray-400">
-                {' '}
-                @{snap.username ? snap.username : 'default'} . {formattedDate}
+        <Pressable onPress={handlePress}>
+          <View className="flex flex-row items-center">
+            <Image
+              className="inline-block h-10 w-10 rounded-full"
+              source={{
+                uri: snap.profile_photo_url,
+              }}
+            />
+            <View className="mx-3">
+              <Text className="text-base leading-6 text-black">
+                {snap.fullname}
+                <Text className="text-sm leading-5 text-gray-400">
+                  {' '}
+                  @{snap.username ? snap.username : 'default'} - {formattedDate}
+                </Text>
               </Text>
-            </Text>
+            </View>
           </View>
-        </View>
-      </Pressable>
+        </Pressable>
+      </View>
     );
   }
 );
