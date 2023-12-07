@@ -15,7 +15,7 @@ Notifications.setNotificationHandler({
 });
 
 export type NotificationReceivedStackParamList = {
-  LikeNotification: { snap: Snap };
+  NewLikeNotification: { snap: Snap };
   NewFollowerNotification: { user: UserType };
   NewMentionNotification: { snap: Snap };
   NewMessageNotification: {

@@ -69,7 +69,7 @@ export const Root = ({ navigationRef }: RootProps) => {
         )}
       </Stack.Group>
       <Stack.Group>
-        <Stack.Screen name="LikeNotification" component={SnapScreen} />
+        <Stack.Screen name="NewLikeNotification" component={SnapScreen} />
         <Stack.Screen
           name="NewFollowerNotification"
           component={ProfileScreen}
