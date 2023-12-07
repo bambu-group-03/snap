@@ -22,7 +22,7 @@ export type NotificationReceivedStackParamList = {
     chat: Chat | undefined;
     user: UserType;
   };
-  //   SnapMsgTrendingNotification: { snaps: Snap[] };
+  NewTrendingNotification: { snap: Snap };
 };
 
 export const onNotificationArrived = (notif: Notifications.Notification) => {
