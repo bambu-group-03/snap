@@ -9,9 +9,12 @@ import { Text, TouchableOpacity, View } from '@/ui';
 import UserList from '../users/user-list';
 import { SearchBar } from './search-bar';
 
+const LAST_N_TRENDING_TOPICS = 10;
+
 type TrendingTopic = {
   id: string;
   name: string;
+  created_at: string;
 };
 
 const SearchView = () => {
@@ -50,12 +53,19 @@ const SearchView = () => {
     navigate('SnapList', { snaps });
   };
 
+  const recentTrends = trendingTopics
+    .sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    )
+    .slice(0, LAST_N_TRENDING_TOPICS);
+
   const renderTrendingTopics = () => (
     <>
       <SearchBar />
       <View className="flex flex-row flex-wrap p-4">
         <Text className="w-full text-lg font-bold">Trending Topics</Text>
-        {trendingTopics.map((topic) => (
+        {recentTrends.map((topic) => (
           <TouchableOpacity
             key={topic.id}
             onPress={() => handleTopicSelect(topic)}
