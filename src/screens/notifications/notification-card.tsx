@@ -1,9 +1,11 @@
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import {
-  faBell,
+  faAt,
+  faBolt,
   faComment,
   faMessage,
-  faPlus,
+  faMinus,
+  faThumbsDown,
   faThumbsUp,
   faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
@@ -22,6 +24,7 @@ type NotificationMetadata = {
 
 import { useNavigation } from '@react-navigation/native';
 
+import { getUserState } from '@/core';
 import { TouchableOpacity } from '@/ui';
 
 import type { Notification } from './types';
@@ -30,64 +33,91 @@ function getNotificationMetada(
   notification: Notification
 ): NotificationMetadata {
   if (notification.redirect_id && notification.notification_type) {
-    if (notification?.notification_type === 'NewTrendingNotification') {
+    if (
+      notification?.notification_type === 'NewTrendingNotification' ||
+      notification?.notification_type === 'NewLikeNotification' ||
+      notification?.notification_type === 'NewCommentNotification' ||
+      notification?.notification_type === 'NewMentionNotification'
+    ) {
+      let icon =
+        notification?.notification_type === 'NewTrendingNotification'
+          ? faBolt
+          : notification?.notification_type === 'NewLikeNotification'
+          ? faThumbsUp
+          : notification?.notification_type === 'NewCommentNotification'
+          ? faComment
+          : faAt;
+
       return {
-        icon: faBell,
+        icon: icon,
         navigate: 'Snap',
         redirect_id: `/api/feed/snap/${notification.redirect_id}?user_id=${notification.user_id}`,
       };
     } else if (notification?.notification_type === 'NewFollowerNotification') {
       return {
-        icon: faBell,
+        icon: faUserPlus,
         navigate: 'Profile',
         redirect_id: `/api/auth/users/${notification.redirect_id}`,
       };
-    } else {
-      return {
-        icon: faPlus,
-        navigate: '',
-        redirect_id: '',
-      };
-    }
-  } else {
-    let title = notification?.title;
-    if (title?.includes('follower')) {
-      return {
-        icon: faUserPlus,
-        navigate: '',
-        redirect_id: '',
-      };
-    } else if (title?.includes('like')) {
-      return {
-        icon: faThumbsUp,
-        navigate: '',
-        redirect_id: '',
-      };
-    } else if (title?.includes('comment')) {
-      return {
-        icon: faComment,
-        navigate: '',
-        redirect_id: '',
-      };
-    } else if (title?.includes('message')) {
+    } else if (notification?.notification_type === 'NewMessageNotification') {
       return {
         icon: faMessage,
-        navigate: '',
-        redirect_id: '',
-      };
-    } else if (title?.includes('mention')) {
-      return {
-        icon: faBell,
-        navigate: '',
-        redirect_id: '',
+        navigate: 'Chat',
+        redirect_id: `/api/feed/snap/${notification.redirect_id}?user_id=${notification.user_id}`,
       };
     } else {
       return {
-        icon: faPlus,
+        icon: faMinus,
         navigate: '',
         redirect_id: '',
       };
     }
+  }
+  // } else {
+  //   let title = notification?.title;
+  //   if (title?.includes('follower')) {
+  //     return {
+  //       icon: faUserPlus,
+  //       navigate: '',
+  //       redirect_id: '',
+  //     };
+  //   } else if (title?.includes('like')) {
+  //     return {
+  //       icon: faThumbsUp,
+  //       navigate: '',
+  //       redirect_id: '',
+  //     };
+  //   } else if (title?.includes('comment')) {
+  //     return {
+  //       icon: faComment,
+  //       navigate: '',
+  //       redirect_id: '',
+  //     };
+  //   } else if (title?.includes('message')) {
+  //     return {
+  //       icon: faMessage,
+  //       navigate: '',
+  //       redirect_id: '',
+  //     };
+  //   } else if (title?.includes('mention')) {
+  //     return {
+  //       icon: faBell,
+  //       navigate: '',
+  //       redirect_id: '',
+  //     };
+  //   } else if (title?.includes('trending')) {
+  //     return {
+  //       icon: faLightbulb,
+  //       navigate: '',
+  //       redirect_id: '',
+  //     };
+  //   }
+  else {
+    return {
+      icon: faThumbsDown,
+      navigate: '',
+      redirect_id: '',
+    };
   }
 }
 
@@ -97,6 +127,8 @@ export default function NotificationCard({
   notification: Notification;
 }) {
   const navigate = useNavigation();
+
+  let currentUser = getUserState();
 
   let notif_metadata: NotificationMetadata =
     getNotificationMetada(notification);
@@ -126,6 +158,25 @@ export default function NotificationCard({
       );
 
       navigate.navigate('Profile', { user: user });
+    } else if (
+      notif_metadata.navigate === 'Chat' &&
+      notif_metadata.redirect_id !== ''
+    ) {
+      const { data: otherUser } = await client.identity.get<UserType>(
+        notif_metadata.redirect_id
+      );
+
+      if (currentUser) {
+        navigate.navigate('Chat', {
+          user: otherUser,
+          chat: {
+            chat_id: '',
+            owner_id: currentUser.id,
+            other_id: otherUser.id,
+            created_at: '',
+          },
+        });
+      }
     } else {
       console.log('No redirect');
     }
