@@ -1,11 +1,15 @@
-import { View, Text, ControlledInput, Button } from '@/ui';
-import { LoginStackParamList } from './login-navigator';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { useState } from 'react';
-import * as z from 'zod';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { RouteProp } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useState } from 'react';
+import type { SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+import { Button, ControlledInput, Text, View } from '@/ui';
+
 import { sendPasswordReset } from './firebase';
+import type { LoginStackParamList } from './login-navigator';
 
 const onResetSubmit: ResetFormProps['onResetSubmit'] = (data) => {
   try {

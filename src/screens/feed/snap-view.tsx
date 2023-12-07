@@ -12,11 +12,11 @@ import {
 } from '@/api'; // Updated import to useAddReplyMutation
 import { getUserState } from '@/core';
 import { TouchableOpacity, View } from '@/ui';
+import { ScrollView } from '@/ui';
 
 import { Card } from '../feed/card';
 import { CommentInput } from './comment-component';
 import { Comments } from './comment-list';
-import { ScrollView } from '@/ui';
 
 export const SnapView = ({ snap }: { snap: Snap }) => {
   const currentUser = getUserState();

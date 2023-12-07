@@ -1,15 +1,15 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, ScrollView, View } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 
 import { client } from '@/api';
 import { getUserState } from '@/core';
 import { FocusAwareStatusBar } from '@/ui';
 
+import LiveStats from './account-stats';
 import Tab from './components/tab';
 import PeriodStats from './snap-stats';
-import LiveStats from './account-stats';
-import { showMessage } from 'react-native-flash-message';
 
 const TIMER_INTERVAL = 10;
 
