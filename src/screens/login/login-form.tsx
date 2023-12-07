@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
@@ -6,8 +7,6 @@ import * as z from 'zod';
 
 import { Image, TouchableOpacity } from '@/ui';
 import { Button, ControlledInput, Text, View } from '@/ui';
-import { useNavigation } from '@react-navigation/native';
-import { ResetFormProps } from './recover-password-screen';
 
 const schema = z.object({
   name: z.string().optional(),
@@ -78,7 +77,7 @@ export const LoginForm = ({
       >
         <Text
           testID="forgot-password"
-          className="text-right py-2 text-blue-600"
+          className="py-2 text-right text-blue-600"
         >
           Forgot Password?
         </Text>

@@ -1,14 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+import { showMessage } from 'react-native-flash-message';
 import * as z from 'zod';
 
+import { client } from '@/api';
 import { getUserState, signInComplete } from '@/core';
 import type { UserType } from '@/core/auth/utils';
-import { Button, ControlledInput, ScrollView, Text, View } from '@/ui';
-import { client } from '@/api';
-import { showMessage } from 'react-native-flash-message';
+import { Button, ControlledInput, ScrollView, View } from '@/ui';
 
 const schema = z.object({
   dni: z

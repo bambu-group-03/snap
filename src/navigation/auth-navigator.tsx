@@ -5,8 +5,8 @@ import * as React from 'react';
 
 import { useAuth } from '@/core';
 import { Login } from '@/screens';
-import { Pressable, View } from '@/ui';
 import { RecoverPasswordScreen } from '@/screens/login/recover-password-screen';
+import { Pressable, View } from '@/ui';
 
 export const GoToLogout = () => {
   const status = useAuth.use.status();

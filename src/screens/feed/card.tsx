@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import type { Snap } from '@/api';
 import { client } from '@/api/common';
 import { getUserState } from '@/core';
-import { Pressable, TouchableOpacity, View } from '@/ui';
+import { TouchableOpacity, View } from '@/ui';
 
 import CardContent from './components/card/card-content';
 import CardFooter from './components/card/card-footer';

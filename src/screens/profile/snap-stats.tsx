@@ -1,10 +1,7 @@
 import {
   faCalendarAlt,
-  faPencilAlt,
   faPollH,
-  faRetweet,
   faShareAlt,
-  faThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { Text, View } from '@/ui';
