@@ -22,7 +22,7 @@ export const StadisticsButton = ({
           label="Stats"
           className="mt-4 rounded-full bg-violet-400 px-4 py-2 text-center font-bold text-white shadow"
           onPress={() => {
-            navigate('StadisticsScreen');
+            navigate('Stadistics');
           }}
         />
       </View>

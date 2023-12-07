@@ -22,8 +22,8 @@ export type SearchStackParamList = {
   Following: { users: UserType[] | undefined };
   SnapList: { snaps: Snap[] };
   FavSnaps: { snaps: Snap[] };
-  EditProfileScreen: { user: UserType | undefined };
-  ChatMessagesScreen: {
+  EditProfile: { user: UserType | undefined };
+  Chat: {
     chat: Chat | undefined;
     user: UserType;
   };
@@ -41,8 +41,8 @@ export const SearchNavigator = () => {
       <Stack.Screen name="Following" component={InteractionsScreen} />
       <Stack.Screen name="SnapList" component={SnapList} />
       <Stack.Screen name="FavSnaps" component={FavoriteSnapScreen} />
-      <Stack.Screen name="EditProfileScreen" component={SignInComplete} />
-      <Stack.Screen name="ChatMessagesScreen" component={ChatScreen} />
+      <Stack.Screen name="EditProfile" component={SignInComplete} />
+      <Stack.Screen name="Chat" component={ChatScreen} />
     </Stack.Navigator>
   );
 };

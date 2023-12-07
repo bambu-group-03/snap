@@ -29,7 +29,7 @@ export const ChatProfileButton = ({
       <TouchableOpacity
         className="mt-4 rounded-full bg-blue-300 px-4 py-3 text-center font-bold text-white"
         onPress={() =>
-          navigation.navigate('ChatMessagesScreen', {
+          navigation.navigate('Chat', {
             user: otherUser,
             chat: {
               chat_id: '',

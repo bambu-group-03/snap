@@ -153,7 +153,7 @@ const ProfileScreenView = ({
                 <TouchableOpacity
                   className="mt-4 rounded-full bg-blue-500 px-4 py-3 text-center font-bold text-white"
                   onPress={() =>
-                    navigate.navigate('ChatMessagesScreen', {
+                    navigate.navigate('Chat', {
                       user,
                       chat: {
                         chat_id: '',
@@ -259,7 +259,7 @@ const ProfileScreenView = ({
                 label="Edit"
                 className="mt-4 rounded-full bg-blue-400 px-4 py-2 text-center font-bold text-white shadow hover:bg-blue-500"
                 onPress={() => {
-                  navigate.navigate('EditProfileScreen', {
+                  navigate.navigate('EditProfile', {
                     user: userData,
                   });
                 }}

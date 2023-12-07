@@ -18,12 +18,12 @@ export type ProfileStackParamList = {
   Followers: { users: UserType[] | undefined };
   Following: { users: UserType[] | undefined };
   FavSnaps: { snaps: Snap[] };
-  EditProfileScreen: { user: UserType | undefined };
-  ChatMessagesScreen: {
+  EditProfile: { user: UserType | undefined };
+  Chat: {
     chat: Chat | undefined;
     user: UserType;
   };
-  StadisticsScreen: undefined;
+  Stadistics: undefined;
   Verify: undefined;
 };
 
@@ -36,9 +36,9 @@ export const ProfileNavigator = () => {
       <Stack.Screen name="Followers" component={InteractionsScreen} />
       <Stack.Screen name="Following" component={InteractionsScreen} />
       <Stack.Screen name="FavSnaps" component={FavoriteSnapScreen} />
-      <Stack.Screen name="EditProfileScreen" component={SignInComplete} />
-      <Stack.Screen name="ChatMessagesScreen" component={ChatScreen} />
-      <Stack.Screen name="StadisticsScreen" component={StadisticsScreen} />
+      <Stack.Screen name="EditProfile" component={SignInComplete} />
+      <Stack.Screen name="Chat" component={ChatScreen} />
+      <Stack.Screen name="Stadistics" component={StadisticsScreen} />
       <Stack.Screen name="Verify" component={VerifyScreen} />
     </Stack.Navigator>
   );

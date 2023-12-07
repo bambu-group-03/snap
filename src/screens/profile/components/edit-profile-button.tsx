@@ -22,7 +22,7 @@ export const EditProfileButton = ({
           label="Edit"
           className="mt-4 rounded-full bg-blue-400  px-4 py-2 text-center font-bold text-white shadow hover:bg-blue-500"
           onPress={() => {
-            navigation.navigate('EditProfileScreen', { user: currentUser });
+            navigation.navigate('EditProfile', { user: currentUser });
           }}
         />
       </View>

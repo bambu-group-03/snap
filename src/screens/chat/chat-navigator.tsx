@@ -9,7 +9,7 @@ import ChatScreen from './chat-screen';
 
 export type ChatStackParamList = {
   Chats: undefined;
-  ChatMessagesScreen: {
+  Chat: {
     chat: Chat | undefined;
     user: UserType;
   };
@@ -21,7 +21,7 @@ export const ChatNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Chats" component={ChatListScreen} />
-      <Stack.Screen name="ChatMessagesScreen" component={ChatScreen} />
+      <Stack.Screen name="Chat" component={ChatScreen} />
     </Stack.Navigator>
   );
 };
