@@ -1,4 +1,3 @@
-// Tab.tsx
 import type { FC } from 'react';
 import React from 'react';
 
@@ -8,9 +7,10 @@ interface TabProps {
   selected: boolean;
   title: string;
   onPress: () => void;
+  className?: string; // Optional className prop
 }
 
-const Tab: FC<TabProps> = ({ selected, title, onPress }) => (
+const Tab: FC<TabProps> = ({ selected, title, onPress, className }) => (
   <TouchableOpacity
     onPress={onPress}
     className={`flex-1 items-center py-2 ${
@@ -19,7 +19,7 @@ const Tab: FC<TabProps> = ({ selected, title, onPress }) => (
   >
     <Text
       className={`text-sm font-semibold ${
-        selected ? 'text-blue-500' : 'text-gray-500'
+        selected ? className || 'text-blue-500' : 'text-gray-500'
       }`}
     >
       {title}

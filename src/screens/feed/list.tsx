@@ -1,4 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo } from 'react';
 import { FlatList, RefreshControl, View } from 'react-native';
 
@@ -9,7 +10,6 @@ import { EmptyList, FocusAwareStatusBar } from '@/ui';
 
 import Card from './card';
 import { CardSkeleton } from './components/card/card-skeleton';
-import { useNavigation } from '@react-navigation/native';
 
 const LIMIT = 15; // Number of items to fetch per page
 

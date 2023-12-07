@@ -1,37 +1,35 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 
 import type { UserType } from '@/core/auth/utils';
-import { EmptyList, FocusAwareStatusBar } from '@/ui';
+import { Text, View } from '@/ui';
 
 import UserCard from './user-card';
 
-const UserList = ({ users }: { users: UserType[] }) => {
-  const { navigate } = useNavigation();
+type UserListProps = {
+  users: UserType[];
+  headerComponent?: React.ComponentType<any> | React.ReactElement | null;
+  title?: string; // Optional title prop
+};
 
-  const renderItem = ({ item }: { item: UserType }) => {
-    return (
-      <UserCard
-        user={item}
-        onPress={() => {
-          navigate('Profile', { user: item });
-        }}
-      />
-    );
-  };
+const UserList = ({ users, headerComponent, title }: UserListProps) => {
+  const renderItem = ({ item }: { item: UserType }) => <UserCard user={item} />;
+  const renderHeader = () => (
+    <>
+      <>{headerComponent}</>
+      <View>
+        {title && <Text className="px-4 py-2 text-lg font-bold">{title}</Text>}
+      </View>
+    </>
+  );
 
   return (
-    <>
-      <FocusAwareStatusBar />
-
-      <FlatList
-        data={users}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        ListEmptyComponent={<EmptyList isLoading={false} />}
-      />
-    </>
+    <FlatList
+      data={users}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id}
+      ListHeaderComponent={renderHeader}
+    />
   );
 };
 
