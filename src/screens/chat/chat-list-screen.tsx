@@ -37,7 +37,7 @@ const ChatListScreen = () => {
   }, [fetchChats]);
 
   return (
-    <View className="flex-1">
+    <View className="flex-1 p-2">
       <ChatListBody chats={chats} onRefresh={fetchChats} loading={loading} />
     </View>
   );
