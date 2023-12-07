@@ -23,7 +23,7 @@ export type Message = {
 };
 
 const ChatScreen = () => {
-  const route = useRoute<RouteProp<ChatStackParamList, 'ChatMessagesScreen'>>();
+  const route = useRoute<RouteProp<ChatStackParamList, 'Chat'>>();
   const { chat, user } = route.params;
   const [chatId, setChatId] = useState(chat?.chat_id);
 

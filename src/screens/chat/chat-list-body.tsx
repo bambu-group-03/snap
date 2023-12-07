@@ -58,9 +58,7 @@ const ChatListBody = ({
         const user = users[chat.other_id];
         return (
           <View key={chat.chat_id} className="border-b border-gray-200 py-3">
-            <TouchableOpacity
-              onPress={() => navigate('ChatMessagesScreen', { chat, user })}
-            >
+            <TouchableOpacity onPress={() => navigate('Chat', { chat, user })}>
               <View className="flex-row items-center">
                 <Image
                   className="mr-4 h-12 w-12 rounded-full"
