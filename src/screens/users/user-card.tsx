@@ -1,3 +1,5 @@
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React from 'react';
 
 import type { UserType } from '@/core/auth/utils';
@@ -23,11 +25,20 @@ const UserCard = ({
           </View>
 
           <View className="mx-3">
-            <Text className="text-base font-medium leading-6 text-black">
-              {user.first_name}
-              <Text className="text-sm font-medium leading-5 text-gray-400 transition duration-150 ease-in-out group-hover:text-gray-300">
+            <Text className="text-base font-medium text-black">
+              {user.first_name} {user.last_name}
+              <Text className="text-sm font-medium leading-10 text-gray-400 transition duration-150 ease-in-out group-hover:text-gray-300">
                 {' '}
-                @{user.username ? user.username : 'default'}
+                @{user.username ? user.username : 'default'}{' '}
+                {user?.certified ? (
+                  <FontAwesomeIcon
+                    icon={faCheckCircle}
+                    size={15}
+                    color="#1DA1F2"
+                  />
+                ) : (
+                  <></>
+                )}
               </Text>
             </Text>
           </View>
