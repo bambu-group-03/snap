@@ -11,9 +11,10 @@ import * as z from 'zod';
 import { getUserState, signInComplete } from '@/core';
 import type { UserType } from '@/core/auth/utils';
 import { predefinedInterests } from '@/screens/profile/components/interests';
-import { Button, ControlledInput, ScrollView, Text, View } from '@/ui';
+import { Button, ControlledInput, Image, ScrollView, Text, View } from '@/ui';
 
 import { locationOptions } from './list-of-countries';
+import useImageUpload from './use-image-upload';
 
 LogBox.ignoreLogs([
   'VirtualizedLists should never be nested inside plain ScrollViews',
@@ -35,9 +36,6 @@ const schema = z.object({
   phone_number: z.string().regex(/^\d{10}$/, 'Invalid phone number format'), // Assuming 10-digit phone number
   ubication: z.string().max(100, 'Ubication cannot exceed 100 characters'),
   bio_msg: z.string().max(500, 'Bio Message cannot exceed 500 characters'),
-  profile_photo_id: z
-    .string()
-    .max(200, 'Profile Photo ID cannot exceed 100 characters'),
 });
 
 export type FormType = z.infer<typeof schema>;
@@ -78,23 +76,27 @@ export const FormForSignInComplete = ({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<FormType> = (data) => {
-    // Combine the form data with the selected interests
-    const combinedData = {
-      ...data,
-      interests: selectedInterests,
-    };
-    // Call the provided onSignUpSubmit function with the combined data
-    onSignUpSubmit(combinedData);
-  };
-
   const [ubication, setSelectedUbication] = useState<string>('Argentina');
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const multiSelect = useRef<MultiSelect | null>(null);
   const [currentUser, setCurrentUser] = useState<UserType | undefined>(
     undefined
   );
+  const { imageUri, handleImagePick } = useImageUpload(
+    currentUser?.id,
+    'profile_images'
+  );
 
+  const onSubmit: SubmitHandler<FormType> = (data) => {
+    // Combine the form data with the selected interests
+    const combinedData = {
+      ...data,
+      interests: selectedInterests,
+      profile_photo_id: imageUri, // Include the image URL in the form data
+    };
+    // Call the provided onSignUpSubmit function with the combined data
+    onSignUpSubmit(combinedData);
+  };
   useEffect(() => {
     const fetchUserState = () => {
       const user = getUserState(); // Assuming getUserState is async
@@ -236,12 +238,13 @@ export const FormForSignInComplete = ({
           label="Bio Message"
         />
 
-        <ControlledInput
-          testID="photo-id-input"
-          control={control}
-          name="profile_photo_id"
-          label="Profile Photo ID"
-        />
+        <Button label="Upload Image" onPress={handleImagePick} />
+        {imageUri && (
+          <Image
+            source={{ uri: imageUri }}
+            className="h-20 w-20 rounded-full"
+          />
+        )}
       </ScrollView>
 
       <Button
