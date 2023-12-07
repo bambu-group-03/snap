@@ -71,7 +71,10 @@ const ChatListBody = ({
                     {user?.first_name} {user?.last_name}
                   </Text>
                   {/* Uncomment if you want to display the last message */}
-                  {/* <Text className="text-base text-gray-600">{chat.last_message}</Text> */}
+                  <Text className="text-base text-gray-600">
+                    Las msg sent
+                    {/* {chat.last_message} */}
+                  </Text>
                 </View>
               </View>
             </TouchableOpacity>
