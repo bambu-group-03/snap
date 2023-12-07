@@ -131,7 +131,17 @@ const registerWithEmailAndPassword = async (
 const sendPasswordReset = async (email: string) => {
   try {
     await sendPasswordResetEmail(auth, email);
+    // Log reset_password_successful
+    await client.identity.post('/api/logger/reset_password_successful', {
+      email: email,
+      message: null,
+    });
   } catch (err) {
+    // Log reset_password_error
+    await client.identity.post('/api/logger/reset_password_error', {
+      email: email,
+      message: null,
+    });
     console.error(err);
   }
 };
