@@ -15,7 +15,7 @@ const UserList = ({ users }: { users: UserType[] }) => {
       <UserCard
         user={item}
         onPress={() => {
-          navigate('UserProfile', { user: item });
+          navigate('Profile', { user: item });
         }}
       />
     );

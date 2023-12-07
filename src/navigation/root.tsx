@@ -54,7 +54,7 @@ export const Root = ({ navigationRef }: RootProps) => {
     <Stack.Navigator
       screenOptions={{
         title: 'Snap',
-        headerShown: true,
+        headerShown: false,
         gestureEnabled: false,
         animation: 'none',
       }}

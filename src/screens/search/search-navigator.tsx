@@ -16,7 +16,7 @@ import Users from './users';
 
 export type SearchStackParamList = {
   Search: any;
-  UserProfile: { user: UserType };
+  Profile: { user: UserType };
   Users: { users: UserType[] | undefined };
   Followers: { users: UserType[] | undefined };
   Following: { users: UserType[] | undefined };
@@ -36,7 +36,7 @@ export const SearchNavigator = () => {
     <Stack.Navigator>
       <Stack.Screen name="Search" component={SearchView} />
       <Stack.Screen name="Users" component={Users} />
-      <Stack.Screen name="UserProfile" component={ProfileScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Followers" component={InteractionsScreen} />
       <Stack.Screen name="Following" component={InteractionsScreen} />
       <Stack.Screen name="SnapList" component={SnapList} />

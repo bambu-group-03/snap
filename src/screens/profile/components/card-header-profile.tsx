@@ -56,7 +56,7 @@ const CardHeaderProfile = memo(
         `/api/auth/users/${snap.author}`
       );
 
-      navigate('UserProfile', { user });
+      navigate('Profile', { user });
     };
     return (
       <Pressable className="group block shrink-0" onPress={handlePress}>

@@ -18,7 +18,7 @@ export type FeedStackParamList = {
   Snap: { snap: SnapType };
   AddSnap: undefined;
   Auth: undefined;
-  UserProfile: { user: UserType };
+  Profile: { user: UserType };
 };
 
 const Stack = createNativeStackNavigator<FeedStackParamList>();
@@ -52,7 +52,7 @@ export const FeedNavigator = () => {
       </Stack.Group>
 
       <Stack.Screen name="AddSnap" component={AddSnap} />
-      <Stack.Screen name="UserProfile" component={ProfileScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
     </Stack.Navigator>
   );
 };

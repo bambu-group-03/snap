@@ -1,12 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { memo } from 'react';
+import { useEffect, useState } from 'react';
 
 import { client } from '@/api/common/client';
 import type { Snap } from '@/api/snaps/types';
 import type { UserType } from '@/core/auth/utils';
-import { Image, Pressable, TouchableOpacity, Text, View } from '@/ui';
-import { useEffect, useState } from 'react';
+import { Image, Text, TouchableOpacity, View } from '@/ui';
 
 import CardSharedInfo from './card-shared-info';
 
@@ -18,7 +18,7 @@ const CardHeader = memo(
         `/api/auth/users/${snap.author}`
       );
 
-      navigate.navigate('UserProfile', { user });
+      navigate.navigate('Profile', { user });
     };
 
     const [parentSnap, setParentSnap] = useState<Snap | null>(null);
