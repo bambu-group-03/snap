@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -13,7 +14,10 @@ type UserListProps = {
 };
 
 const UserList = ({ users, headerComponent, title }: UserListProps) => {
-  const renderItem = ({ item }: { item: UserType }) => <UserCard user={item} />;
+  const { navigate } = useNavigation();
+  const renderItem = ({ item }: { item: UserType }) => (
+    <UserCard user={item} onPress={() => navigate('Profile', { user: item })} />
+  );
   const renderHeader = () => (
     <>
       <>{headerComponent}</>
