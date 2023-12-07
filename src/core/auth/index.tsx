@@ -52,7 +52,7 @@ const _useAuth = create<AuthState>((set, get) => ({
 
     if (user.blocked) {
       await removeToken();
-      console.error('TAS BLOQUEAO PA');
+      console.error('Your user is blocked');
       set({ status: 'signOut', token: null });
       return;
     }
@@ -63,7 +63,7 @@ const _useAuth = create<AuthState>((set, get) => ({
     // Register for push notifications after successful sign-in
     try {
       const expoPushToken = await registerForPushNotificationsAsync();
-      console.log('EXPO PUSH TOKEN', expoPushToken);
+      console.log('Expo push token', expoPushToken);
       client.identity.post('/api/pushtoken/register', {
         user_id: user.id,
         pushtoken: expoPushToken,
@@ -77,7 +77,7 @@ const _useAuth = create<AuthState>((set, get) => ({
     set({ status: 'signOut', token: null });
   },
   hydrate: () => {
-    console.log('HIDRATANDOO');
+    console.log('hydrate');
     try {
       const userToken = getToken();
       const oldLoggedUser = getUser();

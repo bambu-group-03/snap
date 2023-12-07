@@ -15,6 +15,7 @@ type TrendingTopic = {
   id: string;
   name: string;
   created_at: string;
+  times_used: number;
 };
 
 const SearchView = () => {
@@ -54,10 +55,7 @@ const SearchView = () => {
   };
 
   const recentTrends = trendingTopics
-    .sort(
-      (a, b) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    )
+    .sort((a, b) => b.times_used - a.times_used)
     .slice(0, LAST_N_TRENDING_TOPICS);
 
   const renderTrendingTopics = () => (
@@ -71,7 +69,9 @@ const SearchView = () => {
             onPress={() => handleTopicSelect(topic)}
             className="m-1 rounded-full bg-blue-100 px-4 py-2"
           >
-            <Text className="text-blue-500">{topic.name}</Text>
+            <Text className="text-blue-500">
+              {topic.name} ({topic.times_used}){' '}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
