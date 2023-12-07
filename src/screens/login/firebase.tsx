@@ -10,6 +10,7 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 import { client } from '@/api/common';
 import { signIn, useAuth } from '@/core/auth';
@@ -28,6 +29,7 @@ const app = initializeApp(firebaseConfig);
 const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(MMKVPersistence),
 });
+const storage = getStorage(app);
 
 auth.onIdTokenChanged(async (user) => {
   if (user) {
@@ -160,6 +162,7 @@ export {
   logout,
   registerIntoDb,
   registerWithEmailAndPassword,
-  sendPasswordReset,
   resetPasswordEmail,
+  sendPasswordReset,
+  storage,
 };
