@@ -65,7 +65,7 @@ const ChatListBody = ({
                 <Image
                   className="mr-4 h-12 w-12 rounded-full"
                   source={{
-                    uri: user?.profile_photo_id || 'https://i.pravatar.cc/100',
+                    uri: user?.profile_photo_id || '',
                   }}
                 />
                 <View className="flex-1">

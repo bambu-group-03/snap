@@ -35,7 +35,7 @@ const MentionScreen = () => {
   );
 
   return (
-    <View>
+    <>
       <FocusAwareStatusBar />
 
       <FlatList
@@ -52,7 +52,7 @@ const MentionScreen = () => {
           index,
         })}
       />
-    </View>
+    </>
   );
 };
 

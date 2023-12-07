@@ -1,20 +1,20 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
+import type { Snap } from '@/api';
 import type { UserType } from '@/core/auth/utils';
 import { SignInComplete } from '@/navigation/signin-complete';
 
 import type { Chat } from '../chat/chat-list-screen';
 import ChatScreen from '../chat/chat-screen';
+import FavoriteSnapScreen from './fav-snaps-screen';
 import InteractionsScreen from './interaction-view';
 import ProfileScreen from './profile-screen';
 import StadisticsScreen from './stadistics-screen';
 import VerifyScreen from './verify-screen';
-import { Snap } from '@/api';
-import FavoriteSnapScreen from './fav-snaps-screen';
 
 export type ProfileStackParamList = {
-  UserProfile: { user: UserType };
+  Profile: { user: UserType };
   Followers: { users: UserType[] | undefined };
   Following: { users: UserType[] | undefined };
   FavSnaps: { snaps: Snap[] };
@@ -32,7 +32,7 @@ const Stack = createNativeStackNavigator<ProfileStackParamList>();
 export const ProfileNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="UserProfile" component={ProfileScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Followers" component={InteractionsScreen} />
       <Stack.Screen name="Following" component={InteractionsScreen} />
       <Stack.Screen name="FavSnaps" component={FavoriteSnapScreen} />

@@ -81,7 +81,7 @@ export const ProfileStats = ({
       </View>
 
       {user?.id === currentUser?.id ? (
-        <View className="p-3 text-center ">
+        <View className="p-2 text-center ">
           <TouchableOpacity onPress={() => setOption(!option)}>
             <Text className=" tracking-wide text-slate-700" />
             <Text className="text-sm text-blue-600">

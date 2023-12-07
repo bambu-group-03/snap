@@ -15,8 +15,8 @@ import SnapList from './snap-list';
 import Users from './users';
 
 export type SearchStackParamList = {
-  SearchView: any;
-  UserProfile: { user: UserType };
+  Search: any;
+  Profile: { user: UserType };
   Users: { users: UserType[] | undefined };
   Followers: { users: UserType[] | undefined };
   Following: { users: UserType[] | undefined };
@@ -34,9 +34,9 @@ const Stack = createNativeStackNavigator<SearchStackParamList>();
 export const SearchNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="SearchView" component={SearchView} />
+      <Stack.Screen name="Search" component={SearchView} />
       <Stack.Screen name="Users" component={Users} />
-      <Stack.Screen name="UserProfile" component={ProfileScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Followers" component={InteractionsScreen} />
       <Stack.Screen name="Following" component={InteractionsScreen} />
       <Stack.Screen name="SnapList" component={SnapList} />

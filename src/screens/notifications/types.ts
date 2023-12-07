@@ -4,6 +4,7 @@ export type Notification = {
   id: number;
   user_id: number;
   type: string;
+  title: string;
   content: string;
   created_at: string;
   updated_at: string;

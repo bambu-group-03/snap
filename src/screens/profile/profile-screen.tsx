@@ -14,7 +14,7 @@ import ProfileSnapsView from './profile-snaps-view';
 import ProfileScreenView from './profile-view';
 
 const ProfileScreen = () => {
-  const route = useRoute<RouteProp<ProfileStackParamList, 'UserProfile'>>();
+  const route = useRoute<RouteProp<ProfileStackParamList, 'Profile'>>();
   const currentUser = getUserState();
   const [userData, setUserData] = useState<{
     user: UserType | undefined;

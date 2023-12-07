@@ -10,7 +10,7 @@ import InteractionsScreen from '../profile/interaction-view';
 import ProfileScreen from '../profile/profile-screen';
 
 export type UserStackParamList = {
-  UserProfile: { user: UserType };
+  Profile: { user: UserType };
   Followers: { users: UserType[] | undefined };
   Following: { users: UserType[] | undefined };
   EditProfileScreen: { user: UserType | undefined };
@@ -25,7 +25,7 @@ const Stack = createNativeStackNavigator<UserStackParamList>();
 export const UserNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="UserProfile" component={ProfileScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Followers" component={InteractionsScreen} />
       <Stack.Screen name="Following" component={InteractionsScreen} />
       <Stack.Screen name="EditProfileScreen" component={SignInComplete} />
