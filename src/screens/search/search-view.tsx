@@ -15,7 +15,7 @@ type TrendingTopic = {
 };
 
 const SearchView = () => {
-  const [users, setUsers] = useState<UserType[]>([]);
+  const [recommendedUsers, setRecommendedUsers] = useState<UserType[]>([]);
   const [trendingTopics, setTrendingTopics] = useState<TrendingTopic[]>([]);
   const currentUser = getUserState();
   const { navigate } = useNavigation();
@@ -23,21 +23,22 @@ const SearchView = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await client.identity.get(
-          'api/auth/users?limit=10&offset=0'
-        );
-        setUsers(userResponse.data);
-
         const trendingResponse = await client.content.get(
           '/api/trending/get_all'
         );
         setTrendingTopics(trendingResponse.data);
+
+        const usersRecommneded = await client.identity.get(
+          `/api/interactions/${currentUser?.id}/recommended_users`
+        );
+
+        setRecommendedUsers(usersRecommneded.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
     fetchData();
-  }, []);
+  }, [currentUser?.id]);
 
   const handleTopicSelect = async (topic: TrendingTopic) => {
     const topicName = topic.name.replace(/^#/, '');
@@ -71,7 +72,7 @@ const SearchView = () => {
     <View className="flex flex-col">
       <UserList
         title="Recommended Users"
-        users={users}
+        users={recommendedUsers}
         headerComponent={renderTrendingTopics()}
       />
     </View>
