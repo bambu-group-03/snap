@@ -9,7 +9,7 @@ const ChatHeader = ({ chatUser }: { chatUser: UserType }) => {
       <View className="relative flex items-center space-x-4">
         <View className="relative">
           <Image
-            source={chatUser?.profile_photo_id || 'https://i.pravatar.cc/300'}
+            source={chatUser?.profile_photo_id || ''}
             className="h-10 w-10 rounded-full sm:h-16 sm:w-16"
           />
         </View>
