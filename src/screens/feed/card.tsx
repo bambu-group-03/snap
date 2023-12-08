@@ -9,6 +9,28 @@ import CardContent from './components/card/card-content';
 import CardFooter from './components/card/card-footer';
 import CardHeader from './components/card/card-header';
 
+const formatRelativeDate = (dateString: string) => {
+  const date: Date = new Date(dateString);
+  const now: Date = new Date();
+  const differenceInSeconds = Math.round(
+    (now.getTime() - date.getTime()) / 1000
+  );
+
+  const minute: number = 60;
+  const hour: number = minute * 60;
+  const day: number = hour * 24;
+
+  if (differenceInSeconds < minute) {
+    return 'just now';
+  } else if (differenceInSeconds < hour) {
+    return `${Math.floor(differenceInSeconds / minute)} minutes ago`;
+  } else if (differenceInSeconds < day) {
+    return `${Math.floor(differenceInSeconds / hour)} hours ago`;
+  } else {
+    return `${Math.floor(differenceInSeconds / day)} days ago`;
+  }
+};
+
 export const Card = ({
   snap,
   onPress,
@@ -33,11 +55,7 @@ export const Card = ({
 
   // Verificar si ya esta bookmarked
 
-  const formattedDate = new Date(snap.created_at).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  });
+  const formattedDate = formatRelativeDate(snap.created_at);
 
   useEffect(() => {
     setIsLiked(snap.has_liked);

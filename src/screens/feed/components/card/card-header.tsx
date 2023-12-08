@@ -25,7 +25,7 @@ const CardHeader = memo(
 
     useEffect(() => {
       const fetchParentSnap = async () => {
-        if (snap.parent_id) {
+        if (snap.parent_id && snap.parent_id !== 'None') {
           try {
             const { data: snapResponse } = await client.content.get<Snap>(
               `/api/feed/snap/${snap.parent_id}?user_id=${snap.author}`
@@ -63,7 +63,7 @@ const CardHeader = memo(
           <View className="mx-3">
             <Text className="text-base leading-6 text-black">
               {snap.fullname}
-              <Text className="text-sm leading-5 text-gray-400">
+              <Text className="text-xs leading-5 text-gray-400">
                 {' '}
                 @{snap.username ? snap.username : 'default'} - {formattedDate}
               </Text>

@@ -77,6 +77,7 @@ export const Root = ({ navigationRef }: RootProps) => {
         <Stack.Screen name="NewMentionNotification" component={SnapScreen} />
         <Stack.Screen name="NewMessageNotification" component={ChatScreen} />
         <Stack.Screen name="NewTrendingNotification" component={SnapScreen} />
+        <Stack.Screen name="NewCommentNotification" component={SnapScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );

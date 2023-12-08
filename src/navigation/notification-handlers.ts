@@ -23,6 +23,7 @@ export type NotificationReceivedStackParamList = {
     user: UserType;
   };
   NewTrendingNotification: { snap: Snap };
+  NewCommentNotification: { snap: Snap };
 };
 
 export const onNotificationArrived = (notif: Notifications.Notification) => {

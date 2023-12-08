@@ -10,24 +10,23 @@ import {
   faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { useNavigation } from '@react-navigation/native';
 import { Text, View } from 'react-native';
 
 import { client } from '@/api/common/client';
 import type { Snap } from '@/api/snaps/types';
+import { getUserState } from '@/core';
 import type { UserType } from '@/core/auth/utils';
+import { TouchableOpacity } from '@/ui';
+
+import type { Message } from '../chat';
+import type { Notification } from './types';
 
 type NotificationMetadata = {
   icon: IconDefinition;
   navigate: string;
   redirect_id: string;
 };
-
-import { useNavigation } from '@react-navigation/native';
-
-import { getUserState } from '@/core';
-import { TouchableOpacity } from '@/ui';
-
-import type { Notification } from './types';
 
 function getNotificationMetada(
   notification: Notification
@@ -63,7 +62,7 @@ function getNotificationMetada(
       return {
         icon: faMessage,
         navigate: 'Chat',
-        redirect_id: `/api/feed/snap/${notification.redirect_id}?user_id=${notification.user_id}`,
+        redirect_id: `/api/chat/get_messages_by_chat/${notification.redirect_id}`,
       };
     } else {
       return {
@@ -162,15 +161,19 @@ export default function NotificationCard({
       notif_metadata.navigate === 'Chat' &&
       notif_metadata.redirect_id !== ''
     ) {
-      const { data: otherUser } = await client.identity.get<UserType>(
+      const { data: messages } = await client.identity.get<Message[]>(
         notif_metadata.redirect_id
+      );
+      const otherId = messages?.[0]?.from_id;
+      const { data: otherUser } = await client.identity.get<UserType>(
+        `/api/auth/users/${otherId}`
       );
 
       if (currentUser) {
         navigate.navigate('Chat', {
           user: otherUser,
           chat: {
-            chat_id: '',
+            chat_id: messages?.[0]?.chat_id,
             owner_id: currentUser.id,
             other_id: otherUser.id,
             created_at: '',
