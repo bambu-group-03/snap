@@ -1,6 +1,6 @@
 {
   "name": "snap",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
     "start": "cross-env EXPO_NO_DOTENV=1 expo start",
