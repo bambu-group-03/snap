@@ -1,9 +1,10 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
-import type { Snap } from '@/api';
+import type { Snap as SnapType } from '@/api';
 import type { UserType } from '@/core/auth/utils';
 import { SignInComplete } from '@/navigation/signin-complete';
+import { Snap } from '@/screens';
 
 import type { Chat } from '../chat/chat-list-screen';
 import ChatScreen from '../chat/chat-screen';
@@ -20,8 +21,9 @@ export type SearchStackParamList = {
   Users: { users: UserType[] | undefined };
   Followers: { users: UserType[] | undefined };
   Following: { users: UserType[] | undefined };
-  SnapList: { snaps: Snap[] };
-  FavSnaps: { snaps: Snap[] };
+  SnapList: { snaps: SnapType[] };
+  Snap: { snap: SnapType };
+  FavSnaps: { snaps: SnapType[] };
   EditProfile: { user: UserType | undefined };
   Chat: {
     chat: Chat | undefined;
@@ -40,6 +42,7 @@ export const SearchNavigator = () => {
       <Stack.Screen name="Followers" component={InteractionsScreen} />
       <Stack.Screen name="Following" component={InteractionsScreen} />
       <Stack.Screen name="SnapList" component={SnapList} />
+      <Stack.Screen name="Snap" component={Snap} />
       <Stack.Screen name="FavSnaps" component={FavoriteSnapScreen} />
       <Stack.Screen name="EditProfile" component={SignInComplete} />
       <Stack.Screen name="Chat" component={ChatScreen} />
