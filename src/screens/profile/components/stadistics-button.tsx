@@ -20,7 +20,7 @@ export const StadisticsButton = ({
       <View className="flex justify-center px-2">
         <Button
           label="Stats"
-          className="mt-4 rounded-full bg-violet-400 px-4 py-2 text-center font-bold text-white shadow"
+          className="mt-4 rounded-full bg-blue-500 px-4 py-2 text-center font-bold text-white shadow"
           onPress={() => {
             navigate('Stadistics');
           }}

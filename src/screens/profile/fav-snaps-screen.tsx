@@ -29,7 +29,7 @@ const FavoriteSnapScreen = () => {
     <View>
       <FocusAwareStatusBar />
       <FlatList
-        data={snaps}
+        data={snaps.reverse()}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         onEndReachedThreshold={0.8}

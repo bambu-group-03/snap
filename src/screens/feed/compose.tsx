@@ -1,10 +1,3 @@
-import {
-  faCalendarAlt,
-  faImage,
-  faPollH,
-  faSmile,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
@@ -118,18 +111,13 @@ export const Compose = ({ user }: { user: UserType | undefined }) => {
         </View>
         <View className="flex flex-row items-center justify-between border-t border-gray-500  p-2 text-blue-400">
           <View className="flex flex-row pl-12">
-            <TouchableOpacity className="flex items-center justify-center rounded-full bg-blue-100 p-3">
-              <FontAwesomeIcon icon={faImage} />
-            </TouchableOpacity>
-            <TouchableOpacity className="flex items-center justify-center rounded-full bg-blue-100 p-3">
-              <FontAwesomeIcon icon={faPollH} />
-            </TouchableOpacity>
-            <TouchableOpacity className="flex items-center justify-center rounded-full bg-blue-100 p-3">
-              <FontAwesomeIcon icon={faSmile} />
-            </TouchableOpacity>
-            <TouchableOpacity className="flex items-center justify-center rounded-full bg-blue-100 p-3">
-              <FontAwesomeIcon icon={faCalendarAlt} />
-            </TouchableOpacity>
+            <TouchableOpacity className="flex items-center justify-center rounded-full bg-blue-100 p-3" />
+            <TouchableOpacity className="flex items-center justify-center rounded-full bg-blue-100 p-3" />
+            <TouchableOpacity className="flex items-center justify-center rounded-full bg-blue-100 p-3" />
+            <TouchableOpacity
+              className="flex items-center justify-center rounded-full bg-blue-100 p-3"
+              onPress={() => alert('AUCH')}
+            />
           </View>
           <View>
             <Button

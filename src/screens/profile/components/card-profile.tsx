@@ -5,7 +5,7 @@ import { client } from '@/api/common';
 import { getUserState } from '@/core';
 import CardContent from '@/screens/feed/components/card/card-content';
 import CardFooter from '@/screens/feed/components/card/card-footer';
-import { Pressable, View } from '@/ui';
+import { TouchableOpacity, View } from '@/ui';
 
 import CardHeaderProfile from './card-header-profile';
 
@@ -82,7 +82,7 @@ export const CardProfile = ({
       ? 'bg-gray-100 border-transparent rounded-lg shadow-sm border border-gray-100 ml-4 mr-2'
       : '';
   return (
-    <Pressable
+    <TouchableOpacity
       className={`flex shrink-0 p-4 pb-0 ${cardHeaderClass}`}
       onPress={onPress}
     >
@@ -104,7 +104,7 @@ export const CardProfile = ({
           onFavBookmark={handleFavBookmark}
         />
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 
