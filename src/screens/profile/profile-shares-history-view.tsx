@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 
@@ -36,8 +37,14 @@ const ProfileSharesHistoryView = ({
     hasNextPage && fetchNextPage();
   };
 
+  const { navigate } = useNavigation();
+
   const renderItem = ({ item }: { item: Snap }) => (
-    <CardProfile snap={item} username={user?.username || ''} />
+    <CardProfile
+      snap={item}
+      username={user?.username || ''}
+      onPress={() => navigate('Snap', { snap: item })}
+    />
   );
 
   if (isLoading && !data) {
