@@ -65,12 +65,18 @@ export const FormForSearch: React.FC<SearchFormProps> = ({
           </View>
         </View>
       </View>
-      <ControlledInput testID="search-input" control={control} name="search" />
+      <ControlledInput
+        testID="search-input"
+        control={control}
+        className="w-50 h-10 border-spacing-0 resize-none rounded-md border border-gray-300 px-3 text-xl focus:border-blue-500 focus:outline-none"
+        placeholder={'Search by ' + type}
+        name="search"
+      />
 
       <Button
         testID="search-button"
         label="Search"
-        className="mt-2 flex items-center justify-center rounded-full bg-blue-500 px-4 py-2 font-bold text-white shadow"
+        className=" flex items-center justify-center rounded-full bg-blue-500 px-4 py-2 font-bold text-white shadow"
         onPress={handleSubmit(onSearchSubmit)}
         variant="primary"
       />
