@@ -69,7 +69,7 @@ const _useAuth = create<AuthState>((set, get) => ({
         pushtoken: expoPushToken,
       });
     } catch (error) {
-      console.error('Error registering for push notifications:', error);
+      // console.error('Error registering for push notifications:', error);
     }
   },
   signOut: async () => {
