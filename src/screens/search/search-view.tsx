@@ -63,17 +63,23 @@ const SearchView = () => {
       <SearchBar />
       <View className="flex flex-row flex-wrap p-4">
         <Text className="w-full text-lg font-bold">Trending Topics</Text>
-        {recentTrends.map((topic) => (
-          <TouchableOpacity
-            key={topic.id}
-            onPress={() => handleTopicSelect(topic)}
-            className="m-1 rounded-full bg-blue-100 px-4 py-2"
-          >
-            <Text className="text-blue-500">
-              {topic.name} ({topic.times_used}){' '}
-            </Text>
-          </TouchableOpacity>
-        ))}
+        {recentTrends.length === 0 ? (
+          <View className="p-2 text-center">
+            <Text>No current trending topics</Text>
+          </View>
+        ) : (
+          recentTrends.map((topic) => (
+            <TouchableOpacity
+              key={topic.id}
+              onPress={() => handleTopicSelect(topic)}
+              className="m-1 rounded-full bg-blue-100 px-4 py-2"
+            >
+              <Text className="text-blue-500">
+                {topic.name} ({topic.times_used}){' '}
+              </Text>
+            </TouchableOpacity>
+          ))
+        )}
       </View>
     </>
   );
