@@ -70,6 +70,7 @@ export const FormForSearch: React.FC<SearchFormProps> = ({
       <Button
         testID="search-button"
         label="Search"
+        className="mt-2 flex items-center justify-center rounded-full bg-blue-500 px-4 py-2 font-bold text-white shadow"
         onPress={handleSubmit(onSearchSubmit)}
         variant="primary"
       />
